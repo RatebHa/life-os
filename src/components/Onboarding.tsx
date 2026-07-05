@@ -29,7 +29,7 @@ export const Onboarding: React.FC = () => {
   const [taskDomain, setTaskDomain] = useState<DomainId>(defaultDomainId);
   const [domainName, setDomainName] = useState('');
   const [domainIcon, setDomainIcon] = useState('[D]');
-  const [domainColor, setDomainColor] = useState('#4afa4a');
+  const [domainColor, setDomainColor] = useState('#7C6CFF');
   const [creatingDomain, setCreatingDomain] = useState(false);
   const [deletingDomainId, setDeletingDomainId] = useState<string | null>(null);
   const [domainError, setDomainError] = useState<string | null>(null);
@@ -56,11 +56,11 @@ export const Onboarding: React.FC = () => {
       const created = await createDomain({
         name: domainName.trim() || `Domain ${orderedDomains.length + 1}`,
         icon: domainIcon.trim() || '[D]',
-        color: domainColor.trim() || '#4afa4a',
+        color: domainColor.trim() || '#7C6CFF',
       });
       setDomainName('');
       setDomainIcon('[D]');
-      setDomainColor('#4afa4a');
+      setDomainColor('#7C6CFF');
       if (!hasDomains) {
         setHabitDomain(created.id);
         setTaskDomain(created.id);
@@ -228,8 +228,8 @@ export const Onboarding: React.FC = () => {
                   <input className="input" placeholder="DOMAIN NAME" value={domainName} onChange={(event) => setDomainName(event.target.value)} />
                   <input className="input" placeholder="ICON OR TAG" value={domainIcon} maxLength={8} onChange={(event) => setDomainIcon(event.target.value)} />
                   <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                    <input className="input" value={domainColor} onChange={(event) => setDomainColor(event.target.value)} placeholder="#4afa4a" style={{ flex: 1 }} />
-                    <input type="color" value={/^#[0-9a-fA-F]{6}$/.test(domainColor) ? domainColor : '#4afa4a'} onChange={(event) => setDomainColor(event.target.value)} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
+                    <input className="input" value={domainColor} onChange={(event) => setDomainColor(event.target.value)} placeholder="#7C6CFF" style={{ flex: 1 }} />
+                    <input type="color" value={/^#[0-9a-fA-F]{6}$/.test(domainColor) ? domainColor : '#7C6CFF'} onChange={(event) => setDomainColor(event.target.value)} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
                   </div>
                   <button className="btn btn-primary" type="button" onClick={() => void handleAddDomain()} disabled={creatingDomain}>
                     {creatingDomain ? 'ADDING...' : 'ADD DOMAIN'}

@@ -16,8 +16,8 @@ import { getDomainLabel } from '../lib/domain-utils';
 import { getAchievementDisplay } from '../lib/achievement-display';
 import { formatDateDisplay } from '../lib/date-format';
 
-// ── Domain palette (Pip-Boy themed) ────────────────────────────────────────
-const FALLBACK_DOMAIN_COLOR = '#4afa4a';
+// ── Domain palette default ──────────────────────────────────────────────────
+const FALLBACK_DOMAIN_COLOR = '#7C6CFF';
 
 // ── Custom tooltip ──────────────────────────────────────────────────────────
 interface TooltipProps {

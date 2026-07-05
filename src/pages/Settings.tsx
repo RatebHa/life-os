@@ -37,7 +37,7 @@ interface DomainDraft {
 const EMPTY_DOMAIN_DRAFT: Omit<DomainDraft, 'id'> = {
   name: '',
   icon: '[D]',
-  color: '#4afa4a',
+  color: '#7C6CFF',
 };
 
 function isHexColor(value: string): boolean {
@@ -1088,8 +1088,8 @@ export const SettingsPage: React.FC = () => {
                   <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     <span style={rowLabelStyle}>COLOR</span>
                     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                      <input className="input" value={domain.color} onChange={(event) => handleDomainDraftChange(domain.id, 'color', event.target.value)} placeholder="#4afa4a" style={{ flex: 1 }} />
-                      <input type="color" value={isHexColor(domain.color) ? domain.color : '#4afa4a'} onChange={(event) => handleDomainDraftChange(domain.id, 'color', event.target.value)} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
+                      <input className="input" value={domain.color} onChange={(event) => handleDomainDraftChange(domain.id, 'color', event.target.value)} placeholder="#7C6CFF" style={{ flex: 1 }} />
+                      <input type="color" value={isHexColor(domain.color) ? domain.color : '#7C6CFF'} onChange={(event) => handleDomainDraftChange(domain.id, 'color', event.target.value)} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
                     </div>
                   </label>
                 </div>
@@ -1110,8 +1110,8 @@ export const SettingsPage: React.FC = () => {
               <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <span style={rowLabelStyle}>COLOR</span>
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                  <input className="input" value={newDomainDraft.color} onChange={(event) => setNewDomainDraft((current) => ({ ...current, color: event.target.value }))} placeholder="#4afa4a" style={{ flex: 1 }} />
-                  <input type="color" value={isHexColor(newDomainDraft.color) ? newDomainDraft.color : '#4afa4a'} onChange={(event) => setNewDomainDraft((current) => ({ ...current, color: event.target.value }))} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
+                  <input className="input" value={newDomainDraft.color} onChange={(event) => setNewDomainDraft((current) => ({ ...current, color: event.target.value }))} placeholder="#7C6CFF" style={{ flex: 1 }} />
+                  <input type="color" value={isHexColor(newDomainDraft.color) ? newDomainDraft.color : '#7C6CFF'} onChange={(event) => setNewDomainDraft((current) => ({ ...current, color: event.target.value }))} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
                 </div>
               </label>
               <button className="btn btn-primary" onClick={() => void handleCreateDomain()}>
