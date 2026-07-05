@@ -6,7 +6,6 @@ import { formatDateDisplay } from '../../lib/date-format';
 export const FooterBar: React.FC = () => {
   const { appState } = useAppStore();
   const activeTaskId = useTimerStore((state) => state.activeTaskId);
-  const crtLabel = (appState?.crt_intensity ?? 'medium').toUpperCase();
   const scaleLabel = (appState?.text_scale ?? 'normal').toUpperCase();
   const densityLabel = (appState?.ui_density ?? 'comfortable').toUpperCase();
   const backupLabel = appState?.last_backup_at ? formatDateDisplay(appState.last_backup_at) : 'NONE';
@@ -35,8 +34,6 @@ export const FooterBar: React.FC = () => {
         </span>
         <span>|</span>
         <span>DB: LOCAL</span>
-        <span>|</span>
-        <span>CRT: {crtLabel}</span>
         <span>|</span>
         <span>TEXT: {scaleLabel}</span>
         <span>|</span>
