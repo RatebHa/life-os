@@ -30,14 +30,14 @@ const ChartTooltip: React.FC<TooltipProps> = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
     <div style={{
-      background: 'var(--pip-panel)',
-      border: '1px solid var(--pip-border)',
+      background: 'var(--color-surface)',
+      border: '1px solid var(--color-border)',
       padding: '6px 10px',
-      fontFamily: 'var(--font-body)',
+      fontFamily: 'var(--font-sans)',
       fontSize: 10,
       minWidth: 100,
     }}>
-      {label && <div style={{ color: 'var(--pip-muted)', marginBottom: 4 }}>{label}</div>}
+      {label && <div style={{ color: 'var(--color-text-muted)', marginBottom: 4 }}>{label}</div>}
       {payload.map((p) => (
         <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <div style={{ width: 8, height: 8, background: p.color }} />
@@ -57,14 +57,14 @@ const AchievementTile: React.FC<{
   unlockedAt: string | null;
 }> = React.memo(({ icon, title, description, unlocked, unlockedAt }) => (
   <div
-    className="pip-panel"
+    className="card"
     style={{
       padding: '8px 12px',
       display: 'flex',
       alignItems: 'flex-start',
       gap: 10,
       opacity: unlocked ? 1 : 0.35,
-      borderColor: unlocked ? 'var(--pip-border)' : 'var(--pip-faint)',
+      borderColor: unlocked ? 'var(--color-border)' : 'var(--color-surface-hover)',
     }}
   >
     <div style={{
@@ -74,39 +74,39 @@ const AchievementTile: React.FC<{
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontFamily: 'var(--font-body)',
+      fontFamily: 'var(--font-sans)',
       fontSize: 10,
       letterSpacing: 0.5,
-      color: unlocked ? 'var(--pip-bright)' : 'var(--pip-muted)',
-      background: unlocked ? 'var(--pip-faint)' : 'var(--pip-dark)',
-      border: `1px solid ${unlocked ? 'var(--pip-border)' : 'var(--pip-faint)'}`,
+      color: unlocked ? 'var(--color-text)' : 'var(--color-text-muted)',
+      background: unlocked ? 'var(--color-surface-hover)' : 'var(--color-bg)',
+      border: `1px solid ${unlocked ? 'var(--color-border)' : 'var(--color-surface-hover)'}`,
     }}>
       {icon}
     </div>
     <div style={{ minWidth: 0 }}>
       <div style={{
-        fontFamily: 'var(--font-display)',
+        fontFamily: 'var(--font-sans)',
         fontSize: 14,
         letterSpacing: 1.5,
         textTransform: 'uppercase',
-        color: unlocked ? 'var(--pip-amber)' : 'var(--pip-muted)',
+        color: unlocked ? 'var(--color-warning)' : 'var(--color-text-muted)',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
       }}>
         {title}
       </div>
-      <div style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)', marginTop: 2 }}>
+      <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', marginTop: 2 }}>
         {description}
       </div>
       {unlocked && unlockedAt && (
-        <div style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)', marginTop: 2 }}>
+        <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', marginTop: 2 }}>
           {formatDateDisplay(unlockedAt)}
         </div>
       )}
     </div>
     {unlocked && (
-      <span style={{ fontFamily: 'var(--font-display)', fontSize: 14, color: 'var(--pip-amber)', flexShrink: 0, marginTop: 2 }}>★</span>
+      <span style={{ fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--color-warning)', flexShrink: 0, marginTop: 2 }}>★</span>
     )}
   </div>
 ));
@@ -400,7 +400,7 @@ export const AnalyticsPage: React.FC = () => {
 
   const unlockedCount = achievements.filter((a) => a.unlocked).length;
 
-  const chartAxisStyle = { fill: 'var(--pip-muted)', fontSize: 9, fontFamily: 'var(--font-body)' };
+  const chartAxisStyle = { fill: 'var(--color-text-muted)', fontSize: 9, fontFamily: 'var(--font-sans)' };
 
   return (
     <div className="page-content fade-in">
@@ -441,23 +441,23 @@ export const AnalyticsPage: React.FC = () => {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: 12, marginTop: 12 }}>
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">WHAT KEEPS SLIPPING</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">WHAT KEEPS SLIPPING</span>
           </div>
-          <div className="pip-panel-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {frictionAnalytics.slippingTasks.length === 0 ? (
-              <div className="pip-empty" style={{ padding: '12px 0' }}>
-                <div className="pip-empty-title">NO MAJOR DRAG</div>
+              <div className="empty-state" style={{ padding: '12px 0' }}>
+                <div className="empty-state-title">NO MAJOR DRAG</div>
                 <div>Nothing is repeatedly slipping right now.</div>
               </div>
             ) : (
               frictionAnalytics.slippingTasks.map(({ task, frictionCount, overdueDays }) => (
-                <div key={task.id} data-domain={task.domain_id} style={{ border: '1px solid var(--pip-border)', padding: '8px 10px', background: 'var(--pip-faint)' }}>
-                  <div style={{ fontSize: 14, color: 'var(--pip-bright)' }}>{task.title}</div>
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4, fontSize: 10, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                <div key={task.id} data-domain={task.domain_id} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
+                  <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{task.title}</div>
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4, fontSize: 10, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                     <span>{frictionCount} FRICTION LOGS</span>
-                    {overdueDays > 0 && <span style={{ color: 'var(--pip-red)' }}>{overdueDays}D OVERDUE</span>}
+                    {overdueDays > 0 && <span style={{ color: 'var(--color-danger)' }}>{overdueDays}D OVERDUE</span>}
                     <span>{getDomainLabel(task.domain_id, domains)}</span>
                   </div>
                 </div>
@@ -466,27 +466,27 @@ export const AnalyticsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">PATTERN SIGNALS</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">PATTERN SIGNALS</span>
           </div>
-          <div className="pip-panel-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div style={{ fontSize: 11, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
               Top task friction:
-              <span style={{ color: 'var(--pip-amber)' }}> {frictionAnalytics.frictionByReason[0] ? `${reasonLabel(frictionAnalytics.frictionByReason[0].reason)} (${frictionAnalytics.frictionByReason[0].count})` : 'NONE'}</span>
+              <span style={{ color: 'var(--color-warning)' }}> {frictionAnalytics.frictionByReason[0] ? `${reasonLabel(frictionAnalytics.frictionByReason[0].reason)} (${frictionAnalytics.frictionByReason[0].count})` : 'NONE'}</span>
             </div>
-            <div style={{ fontSize: 11, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
               Top habit skip reason:
-              <span style={{ color: 'var(--pip-amber)' }}> {frictionAnalytics.habitSkipByReason[0] ? `${reasonLabel(frictionAnalytics.habitSkipByReason[0].reason)} (${frictionAnalytics.habitSkipByReason[0].count})` : 'NONE'}</span>
+              <span style={{ color: 'var(--color-warning)' }}> {frictionAnalytics.habitSkipByReason[0] ? `${reasonLabel(frictionAnalytics.habitSkipByReason[0].reason)} (${frictionAnalytics.habitSkipByReason[0].count})` : 'NONE'}</span>
             </div>
-            <div style={{ fontSize: 11, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
               Stalled work:
-              <span style={{ color: frictionAnalytics.stalledTasks.length > 0 ? 'var(--pip-red)' : 'var(--pip-bright)' }}> {frictionAnalytics.stalledTasks.length} TASKS UNTOUCHED 14+D</span>
+              <span style={{ color: frictionAnalytics.stalledTasks.length > 0 ? 'var(--color-danger)' : 'var(--color-text)' }}> {frictionAnalytics.stalledTasks.length} TASKS UNTOUCHED 14+D</span>
             </div>
             {frictionAnalytics.overloadWarnings.length > 0 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 6 }}>
                 {frictionAnalytics.overloadWarnings.map((warning) => (
-                  <div key={warning} style={{ fontSize: 11, color: 'var(--pip-red)', letterSpacing: 1 }}>
+                  <div key={warning} style={{ fontSize: 11, color: 'var(--color-danger)', letterSpacing: 1 }}>
                     ALERT: {warning}
                   </div>
                 ))}
@@ -497,9 +497,9 @@ export const AnalyticsPage: React.FC = () => {
       </div>
 
       {/* Activity over time */}
-      <div className="pip-panel">
-        <div className="pip-panel-header">
-          <span className="pip-panel-title">ACTIVITY OVER TIME</span>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">ACTIVITY OVER TIME</span>
           <div style={{ display: 'flex', gap: 4 }}>
             {([30, 90] as const).map((r) => (
               <button
@@ -512,13 +512,13 @@ export const AnalyticsPage: React.FC = () => {
             ))}
           </div>
         </div>
-        <div className="pip-panel-body">
+        <div className="card-body">
           {loading ? (
             <div className="skeleton" style={{ height: 140 }} />
           ) : (
             <ResponsiveContainer width="100%" height={160}>
               <BarChart data={activityChartData} margin={{ top: 0, right: 0, bottom: 0, left: -20 }}>
-                <CartesianGrid strokeDasharray="2 2" stroke="var(--pip-faint)" vertical={false} />
+                <CartesianGrid strokeDasharray="2 2" stroke="var(--color-surface-hover)" vertical={false} />
                 <XAxis dataKey="date" tick={chartAxisStyle} tickLine={false} axisLine={false} tickFormatter={tickFormatter} interval={0} />
                 <YAxis tick={chartAxisStyle} tickLine={false} axisLine={false} />
                 <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(74,250,74,0.05)' }} />
@@ -532,7 +532,7 @@ export const AnalyticsPage: React.FC = () => {
                     radius={[0, 0, 0, 0]}
                   />
                 ))}
-                <Legend iconType="square" iconSize={8} wrapperStyle={{ fontSize: 9, color: 'var(--pip-muted)', fontFamily: 'var(--font-body)', paddingTop: 6 }} />
+                <Legend iconType="square" iconSize={8} wrapperStyle={{ fontSize: 9, color: 'var(--color-text-muted)', fontFamily: 'var(--font-sans)', paddingTop: 6 }} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -542,22 +542,22 @@ export const AnalyticsPage: React.FC = () => {
       {/* Radar + completion side by side */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         {/* Balance radar */}
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">DOMAIN BALANCE</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">DOMAIN BALANCE</span>
           </div>
-          <div className="pip-panel-body">
+          <div className="card-body">
             <ResponsiveContainer width="100%" height={180}>
               <RadarChart data={radarData} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
-                <PolarGrid stroke="var(--pip-border)" />
-                <PolarAngleAxis dataKey="domain" tick={{ fill: 'var(--pip-muted)', fontSize: 9, fontFamily: 'var(--font-body)' }} />
-                <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: 'var(--pip-muted)', fontSize: 8 }} tickCount={4} />
-                <Radar name="Balance" dataKey="value" stroke="var(--pip)" fill="var(--pip)" fillOpacity={0.12} strokeWidth={1} />
+                <PolarGrid stroke="var(--color-border)" />
+                <PolarAngleAxis dataKey="domain" tick={{ fill: 'var(--color-text-muted)', fontSize: 9, fontFamily: 'var(--font-sans)' }} />
+                <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: 'var(--color-text-muted)', fontSize: 8 }} tickCount={4} />
+                <Radar name="Balance" dataKey="value" stroke="var(--color-accent)" fill="var(--color-accent)" fillOpacity={0.12} strokeWidth={1} />
                 <Tooltip
                   content={({ active, payload }) =>
                     active && payload?.length ? (
-                      <div style={{ background: 'var(--pip-panel)', border: '1px solid var(--pip-border)', padding: '4px 8px', fontFamily: 'var(--font-body)', fontSize: 10 }}>
-                        <span style={{ color: 'var(--pip)' }}>{payload[0].value}%</span>
+                      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', padding: '4px 8px', fontFamily: 'var(--font-sans)', fontSize: 10 }}>
+                        <span style={{ color: 'var(--color-accent)' }}>{payload[0].value}%</span>
                       </div>
                     ) : null
                   }
@@ -568,27 +568,27 @@ export const AnalyticsPage: React.FC = () => {
         </div>
 
         {/* Completion rate line */}
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">COMPLETION RATE (30D)</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">COMPLETION RATE (30D)</span>
           </div>
-          <div className="pip-panel-body">
+          <div className="card-body">
             <ResponsiveContainer width="100%" height={180}>
               <LineChart data={completionData} margin={{ top: 10, right: 0, bottom: 0, left: -20 }}>
-                <CartesianGrid strokeDasharray="2 2" stroke="var(--pip-faint)" vertical={false} />
+                <CartesianGrid strokeDasharray="2 2" stroke="var(--color-surface-hover)" vertical={false} />
                 <XAxis dataKey="date" tick={chartAxisStyle} tickLine={false} axisLine={false} tickFormatter={(v, i) => i % 7 === 0 ? v : ''} interval={0} />
                 <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} tick={chartAxisStyle} tickLine={false} axisLine={false} />
                 <Tooltip
                   content={({ active, payload, label }) =>
                     active && payload?.length ? (
-                      <div style={{ background: 'var(--pip-panel)', border: '1px solid var(--pip-border)', padding: '4px 8px', fontFamily: 'var(--font-body)', fontSize: 10 }}>
-                        <div style={{ color: 'var(--pip-muted)', marginBottom: 2 }}>{label}</div>
-                        <div style={{ color: 'var(--pip-blue)' }}>{payload[0].value}% DONE</div>
+                      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', padding: '4px 8px', fontFamily: 'var(--font-sans)', fontSize: 10 }}>
+                        <div style={{ color: 'var(--color-text-muted)', marginBottom: 2 }}>{label}</div>
+                        <div style={{ color: 'var(--color-info)' }}>{payload[0].value}% DONE</div>
                       </div>
                     ) : null
                   }
                 />
-                <Line type="monotone" dataKey="rate" stroke="var(--pip-blue)" strokeWidth={1} dot={false} activeDot={{ r: 3, fill: 'var(--pip-blue)' }} />
+                <Line type="monotone" dataKey="rate" stroke="var(--color-info)" strokeWidth={1} dot={false} activeDot={{ r: 3, fill: 'var(--color-info)' }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -596,23 +596,23 @@ export const AnalyticsPage: React.FC = () => {
       </div>
 
       {/* Domain workload breakdown */}
-      <div className="pip-panel">
-        <div className="pip-panel-header">
-          <span className="pip-panel-title">DOMAIN BREAKDOWN</span>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">DOMAIN BREAKDOWN</span>
         </div>
-        <div className="pip-panel-body">
+        <div className="card-body">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
             {domains.map((domain) => {
               const color = domain.color || FALLBACK_DOMAIN_COLOR;
               const meta = { label: getDomainLabel(domain.id, domains) };
               const domainTasks = taskStats?.by_domain?.find((d) => d.domain_id === domain.id);
               return (
-                <div key={domain.id} className="pip-panel" data-domain={domain.id} style={{ padding: '10px 12px' }}>
+                <div key={domain.id} className="card" data-domain={domain.id} style={{ padding: '10px 12px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                    <span style={{ fontFamily: 'var(--font-display)', fontSize: 16, color, letterSpacing: 2, textTransform: 'uppercase' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color, letterSpacing: 2, textTransform: 'uppercase' }}>
                       {meta.label}
                     </span>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)' }}>
                       {habits.filter((habit) => habit.domain_id === domain.id && habit.is_active).length} HABITS
                     </span>
                   </div>
@@ -626,14 +626,14 @@ export const AnalyticsPage: React.FC = () => {
                         ).toString(),
                         color,
                       },
-                      { label: 'BEST STREAK', value: `${domain.streak_longest}D`, color: 'var(--pip)' },
-                      domainTasks ? { label: 'TASKS DONE', value: `${domainTasks.completed}/${domainTasks.total}`, color: 'var(--pip)' } : null,
+                      { label: 'BEST STREAK', value: `${domain.streak_longest}D`, color: 'var(--color-accent)' },
+                      domainTasks ? { label: 'TASKS DONE', value: `${domainTasks.completed}/${domainTasks.total}`, color: 'var(--color-accent)' } : null,
                     ].filter(Boolean).map((row) => (
                       <div key={row!.label} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                           {row!.label}
                         </span>
-                        <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: row!.color }}>
+                        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: row!.color }}>
                           {row!.value}
                         </span>
                       </div>
@@ -649,17 +649,17 @@ export const AnalyticsPage: React.FC = () => {
       {/* Domain neglect alert */}
       {neglectedDomains.length > 0 && (
         <div style={{
-          border: '1px solid var(--pip-amber)',
+          border: '1px solid var(--color-warning)',
           background: 'rgba(200,160,32,0.05)',
           padding: '8px 14px',
           display: 'flex',
           alignItems: 'center',
           gap: 12,
         }}>
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: 14, color: 'var(--pip-amber)', letterSpacing: 2 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--color-warning)', letterSpacing: 2 }}>
             ⚠ DOMAIN NEGLECT:
           </span>
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--pip)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-accent)', letterSpacing: 1 }}>
             {neglectedDomains.map((d) => getDomainLabel(d.id, domains)).join(', ')} — NO ACTIVITY IN 5+ DAYS
           </span>
         </div>
@@ -667,27 +667,27 @@ export const AnalyticsPage: React.FC = () => {
 
       {/* Habit health scores */}
       {habitHealth.length > 0 && (
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">HABIT HEALTH (30D)</span>
-            <span className="pip-panel-meta">% COMPLETION RATE</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">HABIT HEALTH (30D)</span>
+            <span className="card-meta">% COMPLETION RATE</span>
           </div>
-          <div className="pip-panel-body" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {habitHealth.map((h) => (
               <div key={h.id} data-domain={h.domain_id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--pip)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200 }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-accent)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200 }}>
                       {h.title}
                     </span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
                       {h.streak > 0 && (
-                        <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-amber)' }}>{h.streak}D STREAK</span>
+                        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-warning)' }}>{h.streak}D STREAK</span>
                       )}
                       <span style={{
-                        fontFamily: 'var(--font-display)',
+                        fontFamily: 'var(--font-sans)',
                         fontSize: 14,
-                        color: h.rate >= 80 ? 'var(--pip-bright)' : h.rate >= 50 ? 'var(--pip)' : h.rate >= 20 ? 'var(--pip-amber)' : 'var(--pip-red)',
+                        color: h.rate >= 80 ? 'var(--color-text)' : h.rate >= 50 ? 'var(--color-accent)' : h.rate >= 20 ? 'var(--color-warning)' : 'var(--color-danger)',
                       }}>
                         {h.rate}%
                       </span>
@@ -699,7 +699,7 @@ export const AnalyticsPage: React.FC = () => {
                       style={{
                         width: `${h.rate}%`,
                         height: '100%',
-                        background: h.rate >= 80 ? 'var(--pip-bright)' : h.rate >= 50 ? 'var(--pip)' : h.rate >= 20 ? 'var(--pip-amber)' : 'var(--pip-red)',
+                        background: h.rate >= 80 ? 'var(--color-text)' : h.rate >= 50 ? 'var(--color-accent)' : h.rate >= 20 ? 'var(--color-warning)' : 'var(--color-danger)',
                       }}
                     />
                   </div>
@@ -712,32 +712,32 @@ export const AnalyticsPage: React.FC = () => {
 
       {/* Goal forecasts */}
       {goalForecasts.length > 0 && (
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">GOAL FORECAST</span>
-            <span className="pip-panel-meta">AT CURRENT PACE</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">GOAL FORECAST</span>
+            <span className="card-meta">AT CURRENT PACE</span>
           </div>
           <div>
             {goalForecasts.map(({ goal, remaining, recentDone, weeksRemaining }) => (
               <div key={goal.id} data-domain={goal.domain_id} style={{
                 padding: '7px 12px',
-                borderBottom: '1px solid var(--pip-faint)',
+                borderBottom: '1px solid var(--color-surface-hover)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 10,
               }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--pip)' }}>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-accent)' }}>
                     {goal.title.length > 40 ? goal.title.slice(0, 40) + '…' : goal.title}
                   </span>
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)', marginTop: 1, letterSpacing: 1 }}>
+                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', marginTop: 1, letterSpacing: 1 }}>
                     {remaining} TASK{remaining !== 1 ? 'S' : ''} REMAINING · {recentDone}/WK PACE
                   </div>
                 </div>
                 <div style={{
-                  fontFamily: 'var(--font-display)',
+                  fontFamily: 'var(--font-sans)',
                   fontSize: 14,
-                  color: weeksRemaining === null ? 'var(--pip-red)' : weeksRemaining <= 2 ? 'var(--pip-bright)' : 'var(--pip-amber)',
+                  color: weeksRemaining === null ? 'var(--color-danger)' : weeksRemaining <= 2 ? 'var(--color-text)' : 'var(--color-warning)',
                   flexShrink: 0,
                 }}>
                   {weeksRemaining === null ? 'STALLED' : weeksRemaining === 0 ? 'DONE SOON' : `~${weeksRemaining}W`}
@@ -749,12 +749,12 @@ export const AnalyticsPage: React.FC = () => {
       )}
 
       {/* Weekly momentum trend */}
-      <div className="pip-panel">
-        <div className="pip-panel-header">
-          <span className="pip-panel-title">WEEKLY TREND (4W)</span>
-          <span className="pip-panel-meta">ACTIVITY SCORE</span>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">WEEKLY TREND (4W)</span>
+          <span className="card-meta">ACTIVITY SCORE</span>
         </div>
-        <div className="pip-panel-body">
+        <div className="card-body">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 8 }}>
             {weeklyTrend.map((w, i) => (
               <div key={w.label} style={{
@@ -763,20 +763,20 @@ export const AnalyticsPage: React.FC = () => {
                 alignItems: 'center',
                 gap: 4,
                 padding: '8px 0',
-                border: `1px solid ${i === 3 ? 'var(--pip-border)' : 'var(--pip-faint)'}`,
-                background: i === 3 ? 'var(--pip-faint)' : 'transparent',
+                border: `1px solid ${i === 3 ? 'var(--color-border)' : 'var(--color-surface-hover)'}`,
+                background: i === 3 ? 'var(--color-surface-hover)' : 'transparent',
               }}>
                 <div style={{
-                  fontFamily: 'var(--font-display)',
+                  fontFamily: 'var(--font-sans)',
                   fontSize: 28,
-                  color: w.score >= 80 ? 'var(--pip-bright)' : w.score >= 50 ? 'var(--pip)' : w.score >= 25 ? 'var(--pip-amber)' : 'var(--pip-muted)',
+                  color: w.score >= 80 ? 'var(--color-text)' : w.score >= 50 ? 'var(--color-accent)' : w.score >= 25 ? 'var(--color-warning)' : 'var(--color-text-muted)',
                 }}>
                   {w.score}
                 </div>
                 <div className="progress-track" style={{ width: '80%', height: 4 }}>
                   <div className="progress-fill" style={{ width: `${w.score}%`, height: '100%' }} />
                 </div>
-                <div style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
                   {w.label}
                 </div>
               </div>
@@ -786,19 +786,19 @@ export const AnalyticsPage: React.FC = () => {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">COACHING RECOMMENDATIONS</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">COACHING RECOMMENDATIONS</span>
           </div>
-          <div className="pip-panel-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {frictionAnalytics.recommendations.length === 0 ? (
-              <div className="pip-empty" style={{ padding: '10px 0' }}>
-                <div className="pip-empty-title">NO MAJOR CORRECTION NEEDED</div>
+              <div className="empty-state" style={{ padding: '10px 0' }}>
+                <div className="empty-state-title">NO MAJOR CORRECTION NEEDED</div>
                 <div>Your current system is not showing a dominant failure pattern.</div>
               </div>
             ) : (
               frictionAnalytics.recommendations.map((recommendation) => (
-                <div key={recommendation} style={{ fontSize: 11, color: 'var(--pip-bright)', border: '1px solid var(--pip-border)', padding: '8px 10px', background: 'var(--pip-faint)' }}>
+                <div key={recommendation} style={{ fontSize: 11, color: 'var(--color-text)', border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
                   {recommendation}
                 </div>
               ))
@@ -806,22 +806,22 @@ export const AnalyticsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">STALLED WORK</span>
-            <span className="pip-panel-meta">{frictionAnalytics.stalledTasks.length} TASKS</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">STALLED WORK</span>
+            <span className="card-meta">{frictionAnalytics.stalledTasks.length} TASKS</span>
           </div>
-          <div className="pip-panel-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {frictionAnalytics.stalledTasks.length === 0 ? (
-              <div className="pip-empty" style={{ padding: '10px 0' }}>
-                <div className="pip-empty-title">NO LONG STALLS</div>
+              <div className="empty-state" style={{ padding: '10px 0' }}>
+                <div className="empty-state-title">NO LONG STALLS</div>
                 <div>Nothing active has been untouched for two weeks.</div>
               </div>
             ) : (
               frictionAnalytics.stalledTasks.map((task) => (
-                <div key={task.id} data-domain={task.domain_id} style={{ border: '1px solid var(--pip-border)', padding: '8px 10px', background: 'var(--pip-faint)' }}>
-                  <div style={{ fontSize: 13, color: 'var(--pip-bright)' }}>{task.title}</div>
-                  <div style={{ fontSize: 10, color: 'var(--pip-muted)', marginTop: 4, textTransform: 'uppercase', letterSpacing: 1 }}>
+                <div key={task.id} data-domain={task.domain_id} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
+                  <div style={{ fontSize: 13, color: 'var(--color-text)' }}>{task.title}</div>
+                  <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 4, textTransform: 'uppercase', letterSpacing: 1 }}>
                     LAST TOUCHED {formatDateDisplay(task.updated_at)} · {getDomainLabel(task.domain_id, domains)}
                   </div>
                 </div>
@@ -832,17 +832,17 @@ export const AnalyticsPage: React.FC = () => {
       </div>
 
       {/* Achievement gallery */}
-      <div className="pip-panel">
-        <div className="pip-panel-header">
-          <span className="pip-panel-title">ACHIEVEMENTS</span>
-          <span className="pip-panel-meta">
-            <span style={{ color: 'var(--pip-amber)' }}>{unlockedCount}</span>/{achievements.length} UNLOCKED
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">ACHIEVEMENTS</span>
+          <span className="card-meta">
+            <span style={{ color: 'var(--color-warning)' }}>{unlockedCount}</span>/{achievements.length} UNLOCKED
           </span>
         </div>
-        <div className="pip-panel-body">
+        <div className="card-body">
           {achievements.length === 0 ? (
-            <div className="pip-empty">
-              <div className="pip-empty-title">NO ACHIEVEMENTS LOADED</div>
+            <div className="empty-state">
+              <div className="empty-state-title">NO ACHIEVEMENTS LOADED</div>
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>

@@ -26,24 +26,24 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside className="app-sidebar">
-      <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid var(--pip-border)' }}>
+      <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid var(--color-border)' }}>
         <div
           style={{
-            fontFamily: 'var(--font-display)',
+            fontFamily: 'var(--font-sans)',
             fontSize: 16,
             letterSpacing: 3,
-            color: 'var(--pip-bright)',
-            textShadow: 'var(--pip-glow)',
+            color: 'var(--color-text)',
+            textShadow: 'var(--shadow-focus-ring)',
           }}
         >
           LIFE-OS
         </div>
         <div
           style={{
-            fontFamily: 'var(--font-body)',
+            fontFamily: 'var(--font-sans)',
             fontSize: 9,
             letterSpacing: 2,
-            color: 'var(--pip-muted)',
+            color: 'var(--color-text-muted)',
             marginTop: 2,
           }}
         >
@@ -53,17 +53,17 @@ export const Sidebar: React.FC = () => {
           style={{
             marginTop: 6,
             padding: '2px 6px',
-            border: '1px solid var(--pip-border)',
+            border: '1px solid var(--color-border)',
             fontSize: 9,
-            fontFamily: 'var(--font-body)',
-            color: 'var(--pip-muted)',
+            fontFamily: 'var(--font-sans)',
+            color: 'var(--color-text-muted)',
             letterSpacing: 1,
             display: 'flex',
             justifyContent: 'space-between',
           }}
         >
           <span>SYS</span>
-          <span style={{ color: 'var(--pip)', textShadow: 'var(--glow-text)' }}>ONLINE</span>
+          <span style={{ color: 'var(--color-accent)', textShadow: 'var(--glow-text)' }}>ONLINE</span>
         </div>
       </div>
 
@@ -72,10 +72,10 @@ export const Sidebar: React.FC = () => {
           <div
             style={{
               padding: '0 12px 3px',
-              fontFamily: 'var(--font-body)',
+              fontFamily: 'var(--font-sans)',
               fontSize: 9,
               letterSpacing: 2,
-              color: 'var(--pip-muted)',
+              color: 'var(--color-text-muted)',
               textTransform: 'uppercase',
             }}
           >
@@ -97,16 +97,16 @@ export const Sidebar: React.FC = () => {
           })}
         </nav>
 
-        <div style={{ margin: '3px 12px', borderTop: '1px solid var(--pip-border)' }} />
+        <div style={{ margin: '3px 12px', borderTop: '1px solid var(--color-border)' }} />
 
         <div style={{ padding: '3px 0', display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
               padding: '0 12px 3px',
-              fontFamily: 'var(--font-body)',
+              fontFamily: 'var(--font-sans)',
               fontSize: 9,
               letterSpacing: 2,
-              color: 'var(--pip-muted)',
+              color: 'var(--color-text-muted)',
               textTransform: 'uppercase',
             }}
           >
@@ -123,7 +123,7 @@ export const Sidebar: React.FC = () => {
                 title={item.description}
                 style={{
                   fontSize: 11,
-                  color: active ? 'var(--pip-bright)' : 'var(--pip-muted)',
+                  color: active ? 'var(--color-text)' : 'var(--color-text-muted)',
                   opacity: active ? 1 : 0.82,
                 }}
               >
@@ -133,16 +133,16 @@ export const Sidebar: React.FC = () => {
           })}
         </div>
 
-        <div style={{ margin: '3px 12px', borderTop: '1px solid var(--pip-border)' }} />
+        <div style={{ margin: '3px 12px', borderTop: '1px solid var(--color-border)' }} />
 
         <div style={{ padding: '3px 0', display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
               padding: '0 12px 3px',
-              fontFamily: 'var(--font-body)',
+              fontFamily: 'var(--font-sans)',
               fontSize: 9,
               letterSpacing: 2,
-              color: 'var(--pip-muted)',
+              color: 'var(--color-text-muted)',
               textTransform: 'uppercase',
             }}
           >
@@ -150,7 +150,7 @@ export const Sidebar: React.FC = () => {
           </div>
 
           {domains.length === 0 ? (
-            <div style={{ padding: '8px 12px', fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+            <div style={{ padding: '8px 12px', fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               NO DOMAINS CONFIGURED. COMPLETE SETUP TO CREATE YOUR FIRST ONE.
             </div>
           ) : domains.map((domain) => {
@@ -185,10 +185,10 @@ export const Sidebar: React.FC = () => {
               >
                 <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 4 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: active ? 'var(--domain-primary)' : 'var(--pip-muted)', letterSpacing: 1 }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: active ? 'var(--domain-primary)' : 'var(--color-text-muted)', letterSpacing: 1 }}>
                       {meta.icon}
                     </span>
-                    <span style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: active ? 'var(--pip-bright)' : 'var(--pip-muted)', letterSpacing: 2, textShadow: active ? 'var(--pip-glow)' : 'none', textTransform: 'uppercase' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: active ? 'var(--color-text)' : 'var(--color-text-muted)', letterSpacing: 2, textShadow: active ? 'var(--shadow-focus-ring)' : 'none', textTransform: 'uppercase' }}>
                       {meta.label}
                     </span>
                     <StreakFlame count={domain.streak_current} size="sm" />
@@ -196,9 +196,9 @@ export const Sidebar: React.FC = () => {
 
                   <div
                     style={{
-                      fontFamily: 'var(--font-body)',
+                      fontFamily: 'var(--font-sans)',
                       fontSize: 9,
-                      color: 'var(--pip-muted)',
+                      color: 'var(--color-text-muted)',
                       letterSpacing: 1,
                       display: 'grid',
                       gridTemplateColumns: '1fr 1fr',
@@ -228,7 +228,7 @@ export const Sidebar: React.FC = () => {
           title="Search (Ctrl+K)"
         >
           <span>SEARCH</span>
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 8, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 8, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             CTRL+K
           </span>
         </button>
@@ -240,7 +240,7 @@ export const Sidebar: React.FC = () => {
           title="Quick Capture (Ctrl+N)"
         >
           <span>CAPTURE</span>
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 8, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 8, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             CTRL+N
           </span>
         </button>

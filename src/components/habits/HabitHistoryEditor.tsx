@@ -57,7 +57,7 @@ export const HabitHistoryEditor: React.FC<HabitHistoryEditorProps> = ({
   return (
     <div className="habit-history-shell">
       <div className="habit-history-copy">
-        <div className="habit-history-title" dir="auto" style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-body)' }}>
+        <div className="habit-history-title" dir="auto" style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }}>
           {habit.title}
         </div>
         <div className="habit-history-note">
@@ -67,7 +67,7 @@ export const HabitHistoryEditor: React.FC<HabitHistoryEditorProps> = ({
 
       <div className="habit-history-grid">
         <div className="habit-history-panel">
-          <label className="pip-label" htmlFor="habit-history-date">Date To Adjust</label>
+          <label className="meta-label" htmlFor="habit-history-date">Date To Adjust</label>
           <input
             id="habit-history-date"
             className="input"
@@ -145,7 +145,7 @@ export const HabitHistoryEditor: React.FC<HabitHistoryEditorProps> = ({
 
         <div className="habit-history-panel">
           <div className="habit-history-panel-head">
-            <span className="pip-label">Quick Misses</span>
+            <span className="meta-label">Quick Misses</span>
             <span className="habit-history-panel-meta">LAST 45 DAYS</span>
           </div>
 

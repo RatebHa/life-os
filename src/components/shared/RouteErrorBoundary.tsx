@@ -40,17 +40,17 @@ export class RouteErrorBoundary extends React.Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="page-content fade-in">
-          <div className="pip-panel" style={{ borderColor: 'var(--pip-red)' }}>
-            <div className="pip-panel-header" style={{ borderColor: 'var(--pip-red)' }}>
-              <span className="pip-panel-title" style={{ color: 'var(--pip-red)' }}>
+          <div className="card" style={{ borderColor: 'var(--color-danger)' }}>
+            <div className="card-header" style={{ borderColor: 'var(--color-danger)' }}>
+              <span className="card-title" style={{ color: 'var(--color-danger)' }}>
                 {this.props.scope.toUpperCase()} ERROR
               </span>
             </div>
-            <div className="pip-panel-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <div style={{ color: 'var(--pip-muted)', fontSize: 12 }}>
+            <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ color: 'var(--color-text-muted)', fontSize: 12 }}>
                 This screen hit a runtime error. Open the debug console to inspect the exact failure.
               </div>
-              <div style={{ color: 'var(--pip-red)', fontSize: 11, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+              <div style={{ color: 'var(--color-danger)', fontSize: 11, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                 {this.state.message}
               </div>
             </div>

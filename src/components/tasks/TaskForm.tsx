@@ -143,8 +143,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
                 className={clsx(
                   'flex items-center gap-2 px-3 py-2 border text-sm font-semibold transition-all',
                   domain === entry.id
-                    ? 'border-[var(--domain-primary)] bg-[var(--domain-bg)] text-[var(--text-primary)]'
-                    : 'border-[var(--border-base)] text-[var(--text-muted)] hover:border-[var(--border-bright)]',
+                    ? 'border-[var(--domain-primary)] bg-[var(--domain-bg)] text-[var(--color-text)]'
+                    : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)]',
                 )}
                 style={{ ...getDomainThemeStyle(entry), clipPath: 'polygon(6px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 6px)' }}
               >
@@ -166,7 +166,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
           onChange={(event) => setTitle(event.target.value)}
           autoFocus
           required
-          style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-body)' }}
+          style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }}
         />
       </div>
 
@@ -179,7 +179,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           rows={3}
-          style={{ fontFamily: descriptionArabic ? 'var(--font-arabic)' : 'var(--font-body)' }}
+          style={{ fontFamily: descriptionArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }}
         />
       </div>
 
@@ -219,15 +219,15 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
         </div>
       </div>
 
-      <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+      <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
         Start date means the task will begin showing up in Today on that date and stay active there until it is done.
       </div>
 
-      <div className="border border-[var(--border-base)] bg-[var(--bg-base)] p-3 space-y-3">
+      <div className="border border-[var(--color-border)] bg-[var(--color-bg)] p-3 space-y-3">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <div className="text-xs uppercase tracking-wide text-[var(--text-muted)]">Advanced Planning</div>
-            <div className="text-[12px] text-[var(--text-muted)]">Goal links, repeat rules, and day-shaping flags live here.</div>
+            <div className="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Advanced Planning</div>
+            <div className="text-[12px] text-[var(--color-text-muted)]">Goal links, repeat rules, and day-shaping flags live here.</div>
           </div>
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => setShowAdvanced((value) => !value)}>
             {showAdvanced ? 'HIDE' : 'SHOW'}
@@ -273,7 +273,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
               </div>
             )}
 
-            <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
               MIT and Top 3 usually belong to Today. Set them here only if this task should already land in the daily plan.
             </div>
 
@@ -285,7 +285,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
                   'flex items-center gap-2.5 px-3 py-2 border text-sm font-semibold tracking-wider transition-all w-full',
                   isMit
                     ? 'border-yellow-500 bg-[rgba(234,179,8,0.08)] text-yellow-400'
-                    : 'border-[var(--border-base)] text-[var(--text-muted)] hover:border-[var(--border-bright)]',
+                    : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)]',
                 )}
                 style={{ clipPath: 'polygon(6px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 6px)' }}
               >
@@ -299,8 +299,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
                 className={clsx(
                   'flex items-center gap-2.5 px-3 py-2 border text-sm font-semibold tracking-wider transition-all w-full',
                   isTopThree
-                    ? 'border-[var(--pip)] bg-[rgba(74,250,74,0.08)] text-[var(--pip-bright)]'
-                    : 'border-[var(--border-base)] text-[var(--text-muted)] hover:border-[var(--border-bright)]',
+                    ? 'border-[var(--color-accent)] bg-[rgba(74,250,74,0.08)] text-[var(--color-text)]'
+                    : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)]',
                 )}
                 style={{ clipPath: 'polygon(6px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 6px)' }}
               >
@@ -312,8 +312,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
         )}
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t border-[var(--border-dim)]">
-        <div className="text-[12px] text-[var(--text-muted)]">
+      <div className="flex items-center justify-between pt-3 border-t border-[var(--color-border)]">
+        <div className="text-[12px] text-[var(--color-text-muted)]">
           {recurrenceType !== 'none' && !isRecurringInstance ? 'This will save as a recurring template and generate dated instances automatically.' : 'This task will appear wherever its due date, start date, or status makes it relevant.'}
         </div>
         <div className="flex items-center gap-2">

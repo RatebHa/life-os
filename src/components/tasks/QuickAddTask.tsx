@@ -92,7 +92,7 @@ export const QuickAddTask: React.FC<QuickAddTaskProps> = ({ onClose, defaultDoma
           </div>
         </div>
 
-        <div className="px-3 py-2 bg-[var(--bg-base)] border border-[var(--border-base)] text-[12px] text-[var(--text-muted)]">
+        <div className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] text-[12px] text-[var(--color-text-muted)]">
           Quick add creates a clean commitment entry. You can add planning, recurrence, and richer details later from the full task editor.
         </div>
 

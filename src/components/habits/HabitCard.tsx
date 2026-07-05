@@ -154,7 +154,7 @@ const HabitCardComponent: React.FC<HabitCardProps> = ({
       <div className="habit-card-main">
         <div className="habit-card-header">
           <div className="habit-card-heading">
-            <div dir="auto" className="habit-card-title" style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-body)' }}>
+            <div dir="auto" className="habit-card-title" style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }}>
               {habit.title}
             </div>
             <div className="habit-chip-row">
@@ -174,13 +174,13 @@ const HabitCardComponent: React.FC<HabitCardProps> = ({
         {(habit.description || habit.minimum_version || state.note) && (
           <div className="habit-card-summary">
             {habit.description ? (
-              <div dir="auto" className="habit-card-description" style={{ fontFamily: descriptionArabic ? 'var(--font-arabic)' : 'var(--font-body)' }}>
+              <div dir="auto" className="habit-card-description" style={{ fontFamily: descriptionArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }}>
                 {habit.description}
               </div>
             ) : null}
 
             {habit.minimum_version ? (
-              <div dir="auto" className="habit-card-minimum" style={{ fontFamily: minimumArabic ? 'var(--font-arabic)' : 'var(--font-body)' }}>
+              <div dir="auto" className="habit-card-minimum" style={{ fontFamily: minimumArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }}>
                 <span className="habit-card-minimum-label">MINIMUM VERSION</span>
                 <span>{habit.minimum_version}</span>
               </div>

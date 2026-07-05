@@ -44,9 +44,9 @@ export const CompletionButton: React.FC<Props> = React.memo(({ done, onComplete,
         onClick={handleClick}
         disabled={isDisabled}
         title={done && onUndo ? 'Undo completion' : 'Complete'}
-        className={`text-[var(--color-text-dim)] transition-colors disabled:cursor-default ${
+        className={`text-[var(--color-text-faint)] transition-colors disabled:cursor-default ${
           done
-            ? (onUndo ? 'hover:text-[var(--pip-amber)]' : '')
+            ? (onUndo ? 'hover:text-[var(--color-warning)]' : '')
             : 'hover:text-green-400'
         }`}
       >

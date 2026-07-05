@@ -159,20 +159,20 @@ export const NotesPage: React.FC = () => {
       <div style={{
         width: 260,
         minWidth: 260,
-        borderRight: '2px solid var(--pip-border)',
-        background: 'var(--pip-panel)',
+        borderRight: '2px solid var(--color-border)',
+        background: 'var(--color-surface)',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
       }}>
         {/* Header */}
-        <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid var(--pip-border)' }}>
+        <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid var(--color-border)' }}>
           <div className="page-title" style={{ fontSize: 22 }}>NOTES</div>
           <div className="page-subtitle">// FIELD ENTRIES — {notes.length} TOTAL</div>
         </div>
 
         {/* Search */}
-        <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--pip-border)' }}>
+        <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--color-border)' }}>
           <input
             className="input"
             placeholder="> SEARCH ENTRIES..."
@@ -185,8 +185,8 @@ export const NotesPage: React.FC = () => {
         {/* List */}
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {filtered.length === 0 ? (
-            <div className="pip-empty" style={{ padding: '30px 10px' }}>
-              <div className="pip-empty-title">NO ENTRIES</div>
+            <div className="empty-state" style={{ padding: '30px 10px' }}>
+              <div className="empty-state-title">NO ENTRIES</div>
               <span>FOUND<span className="boot-cursor" /></span>
             </div>
           ) : (
@@ -205,9 +205,9 @@ export const NotesPage: React.FC = () => {
                   width: '100%',
                   textAlign: 'left',
                   padding: '8px 12px',
-                  borderBottom: '1px solid var(--pip-faint)',
-                  background: selectedNoteId === n.id ? 'var(--pip-faint)' : 'transparent',
-                  borderLeft: selectedNoteId === n.id ? '2px solid var(--pip)' : '2px solid transparent',
+                  borderBottom: '1px solid var(--color-surface-hover)',
+                  background: selectedNoteId === n.id ? 'var(--color-surface-hover)' : 'transparent',
+                  borderLeft: selectedNoteId === n.id ? '2px solid var(--color-accent)' : '2px solid transparent',
                   cursor: 'crosshair',
                   display: 'flex',
                   flexDirection: 'column',
@@ -215,11 +215,11 @@ export const NotesPage: React.FC = () => {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  {n.pinned && <span style={{ color: 'var(--pip-amber)', fontSize: 9 }}>PIN</span>}
+                  {n.pinned && <span style={{ color: 'var(--color-warning)', fontSize: 9 }}>PIN</span>}
                   <span style={{
-                    fontFamily: 'var(--font-display)',
+                    fontFamily: 'var(--font-sans)',
                     fontSize: 14,
-                    color: selectedNoteId === n.id ? 'var(--pip-bright)' : 'var(--pip)',
+                    color: selectedNoteId === n.id ? 'var(--color-text)' : 'var(--color-accent)',
                     letterSpacing: 1,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -230,9 +230,9 @@ export const NotesPage: React.FC = () => {
                   </span>
                 </div>
                 <div style={{
-                  fontFamily: 'var(--font-body)',
+                  fontFamily: 'var(--font-sans)',
                   fontSize: 10,
-                  color: 'var(--pip-muted)',
+                  color: 'var(--color-text-muted)',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
@@ -243,24 +243,24 @@ export const NotesPage: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 6,
-                  fontFamily: 'var(--font-body)',
+                  fontFamily: 'var(--font-sans)',
                   fontSize: 9,
-                  color: 'var(--pip-muted)',
+                  color: 'var(--color-text-muted)',
                   letterSpacing: 1,
                   flexWrap: 'wrap',
                 }}>
                   <span>{relativeTime(n.updated_at)}</span>
-                  {n.domain_id && <span style={{ color: 'var(--pip-dim)' }}>| {getDomainLabel(n.domain_id, domains).toUpperCase()}</span>}
+                  {n.domain_id && <span style={{ color: 'var(--color-text-faint)' }}>| {getDomainLabel(n.domain_id, domains).toUpperCase()}</span>}
                   {(() => {
                     try {
                       const tags = JSON.parse(n.tags || '[]') as string[];
                       return tags.slice(0, 2).map((t) => (
                         <span key={t} style={{
-                          background: 'var(--pip-faint)',
-                          border: '1px solid var(--pip-border)',
+                          background: 'var(--color-surface-hover)',
+                          border: '1px solid var(--color-border)',
                           padding: '0 3px',
                           fontSize: 8,
-                          color: 'var(--pip-muted)',
+                          color: 'var(--color-text-muted)',
                         }}>
                           {t}
                         </span>
@@ -274,7 +274,7 @@ export const NotesPage: React.FC = () => {
         </div>
 
         {/* New Note Button */}
-        <div style={{ padding: '8px 10px', borderTop: '1px solid var(--pip-border)' }}>
+        <div style={{ padding: '8px 10px', borderTop: '1px solid var(--color-border)' }}>
           <button className="btn btn-primary" style={{ width: '100%' }} onClick={handleNewNote}>
             [+ NEW ENTRY]
           </button>
@@ -286,7 +286,7 @@ export const NotesPage: React.FC = () => {
         {note ? (
           <>
             {/* Title input */}
-            <div style={{ padding: '12px 16px 8px', borderBottom: '1px solid var(--pip-border)' }}>
+            <div style={{ padding: '12px 16px 8px', borderBottom: '1px solid var(--color-border)' }}>
               <input
                 value={titleDraft}
                 onChange={(e) => handleTitleChange(e.target.value)}
@@ -296,9 +296,9 @@ export const NotesPage: React.FC = () => {
                   background: 'transparent',
                   border: 'none',
                   outline: 'none',
-                  fontFamily: 'var(--font-display)',
+                  fontFamily: 'var(--font-sans)',
                   fontSize: 24,
-                  color: 'var(--pip-bright)',
+                  color: 'var(--color-text)',
                   letterSpacing: 3,
                   textTransform: 'uppercase',
                 }}
@@ -311,8 +311,8 @@ export const NotesPage: React.FC = () => {
               alignItems: 'center',
               gap: 10,
               padding: '5px 16px',
-              borderBottom: '1px solid var(--pip-border)',
-              background: 'var(--pip-faint)',
+              borderBottom: '1px solid var(--color-border)',
+              background: 'var(--color-surface-hover)',
               flexWrap: 'wrap',
             }}>
               {/* Domain selector */}
@@ -370,11 +370,11 @@ export const NotesPage: React.FC = () => {
 
               {/* Save status */}
               <span style={{
-                fontFamily: 'var(--font-body)',
+                fontFamily: 'var(--font-sans)',
                 fontSize: 9,
                 letterSpacing: 1.5,
-                color: saveStatus === 'modified' ? 'var(--pip-amber)'
-                     : saveStatus === 'saved'    ? 'var(--pip-muted)'
+                color: saveStatus === 'modified' ? 'var(--color-warning)'
+                     : saveStatus === 'saved'    ? 'var(--color-text-muted)'
                      : 'transparent',
                 textTransform: 'uppercase',
               }}>
@@ -390,13 +390,13 @@ export const NotesPage: React.FC = () => {
               style={{
                 flex: 1,
                 width: '100%',
-                background: 'var(--pip-bg)',
+                background: 'var(--color-bg)',
                 border: 'none',
                 outline: 'none',
                 padding: '14px 18px',
-                fontFamily: 'var(--font-body)',
+                fontFamily: 'var(--font-sans)',
                 fontSize: 12,
-                color: 'var(--pip)',
+                color: 'var(--color-accent)',
                 resize: 'none',
                 lineHeight: 1.7,
               }}
@@ -405,13 +405,13 @@ export const NotesPage: React.FC = () => {
             {/* Footer */}
             <div style={{
               padding: '5px 16px',
-              borderTop: '1px solid var(--pip-border)',
-              background: 'var(--pip-faint)',
+              borderTop: '1px solid var(--color-border)',
+              background: 'var(--color-surface-hover)',
               display: 'flex',
               justifyContent: 'space-between',
-              fontFamily: 'var(--font-body)',
+              fontFamily: 'var(--font-sans)',
               fontSize: 9,
-              color: 'var(--pip-muted)',
+              color: 'var(--color-text-muted)',
               letterSpacing: 1,
               textTransform: 'uppercase',
             }}>
@@ -420,8 +420,8 @@ export const NotesPage: React.FC = () => {
             </div>
           </>
         ) : (
-          <div className="pip-empty" style={{ height: '100%' }}>
-            <div className="pip-empty-title">NO ENTRY SELECTED</div>
+          <div className="empty-state" style={{ height: '100%' }}>
+            <div className="empty-state-title">NO ENTRY SELECTED</div>
             <span>{'> SELECT AN ENTRY OR CREATE NEW'}<span className="boot-cursor" /></span>
           </div>
         )}

@@ -82,8 +82,8 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
     >
       <div
         style={{
-          background: 'var(--pip-panel)',
-          border: '2px solid var(--pip)',
+          background: 'var(--color-surface)',
+          border: '2px solid var(--color-accent)',
           padding: '18px 22px',
           width: 500,
           maxWidth: '90vw',
@@ -104,7 +104,7 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
               </button>
             ))}
           </div>
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             TAB TO SWITCH · ESC TO CANCEL
           </span>
         </div>
@@ -137,8 +137,8 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
               </div>
             </>
           ) : (
-            <div className="pip-empty" style={{ padding: '16px 0' }}>
-              <div className="pip-empty-title">NO DOMAINS YET</div>
+            <div className="empty-state" style={{ padding: '16px 0' }}>
+              <div className="empty-state-title">NO DOMAINS YET</div>
               <div>CREATE AT LEAST ONE DOMAIN DURING SETUP BEFORE USING QUICK CAPTURE.</div>
             </div>
           )}

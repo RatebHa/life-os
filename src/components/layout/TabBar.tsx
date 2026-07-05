@@ -10,7 +10,7 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
   const onOverview = location.pathname.startsWith('/overview') || location.pathname.startsWith('/command-center');
 
   return (
-    <div className="pip-tabbar" style={{ justifyContent: 'space-between', gap: 12, padding: '0 12px' }}>
+    <div className="tabbar" style={{ justifyContent: 'space-between', gap: 12, padding: '0 12px' }}>
       <div style={{ display: 'flex', alignItems: 'center', minWidth: 0, gap: 12 }}>
         <div
           style={{
@@ -18,10 +18,10 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
             alignItems: 'center',
             paddingRight: 12,
             fontSize: 9,
-            fontFamily: 'var(--font-body)',
-            color: 'var(--pip-muted)',
+            fontFamily: 'var(--font-sans)',
+            color: 'var(--color-text-muted)',
             letterSpacing: 2,
-            borderRight: '1px solid var(--pip-border)',
+            borderRight: '1px solid var(--color-border)',
             textTransform: 'uppercase',
             whiteSpace: 'nowrap',
           }}
@@ -29,14 +29,14 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
           {pageMeta.sectionLabel}
         </div>
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 18, color: 'var(--pip-bright)', letterSpacing: 2 }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 18, color: 'var(--color-text)', letterSpacing: 2 }}>
             {pageMeta.label}
           </div>
           <div
             style={{
-              fontFamily: 'var(--font-body)',
+              fontFamily: 'var(--font-sans)',
               fontSize: 9,
-              color: 'var(--pip-muted)',
+              color: 'var(--color-text-muted)',
               letterSpacing: 1,
               textTransform: 'uppercase',
               whiteSpace: 'nowrap',
@@ -65,15 +65,15 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
           alignItems: 'center',
           gap: 6,
           fontSize: 9,
-          fontFamily: 'var(--font-body)',
-          color: apiKey ? 'var(--pip)' : 'var(--pip-muted)',
+          fontFamily: 'var(--font-sans)',
+          color: apiKey ? 'var(--color-accent)' : 'var(--color-text-muted)',
           letterSpacing: 1,
         }}>
           <span style={{
             width: 6,
             height: 6,
-            background: apiKey ? 'var(--pip)' : 'var(--pip-muted)',
-            boxShadow: apiKey ? 'var(--pip-glow)' : 'none',
+            background: apiKey ? 'var(--color-accent)' : 'var(--color-text-muted)',
+            boxShadow: apiKey ? 'var(--shadow-focus-ring)' : 'none',
             display: 'inline-block',
           }} />
           {apiKey ? 'ASSIST READY' : 'LOCAL MODE'}

@@ -299,8 +299,8 @@ export const TasksPage: React.FC = () => {
             gap: 10,
             padding: '10px 12px',
             paddingLeft: 12 + (depth * 26),
-            borderBottom: '1px solid var(--pip-faint)',
-            borderLeft: isHighlighted ? '2px solid var(--pip-bright)' : undefined,
+            borderBottom: '1px solid var(--color-surface-hover)',
+            borderLeft: isHighlighted ? '2px solid var(--color-text)' : undefined,
             opacity: isDone ? 0.55 : 1,
             background: depth > 0 ? 'rgba(74,250,74,0.03)' : undefined,
           }}
@@ -311,9 +311,9 @@ export const TasksPage: React.FC = () => {
               width: 14,
               height: 14,
               marginTop: 2,
-              fontFamily: 'var(--font-display)',
+              fontFamily: 'var(--font-sans)',
               fontSize: 14,
-              color: 'var(--pip-muted)',
+              color: 'var(--color-text-muted)',
               background: 'none',
               border: 'none',
               cursor: hasSubTasks ? 'crosshair' : 'default',
@@ -324,7 +324,7 @@ export const TasksPage: React.FC = () => {
             {isExpanded ? 'v' : '>'}
           </button>
           {isTemplate ? (
-            <div style={{ width: 16, height: 16, marginTop: 1, border: '1px solid var(--pip-blue)' }} />
+            <div style={{ width: 16, height: 16, marginTop: 1, border: '1px solid var(--color-info)' }} />
           ) : (
             <CompletionButton
               done={isDone}
@@ -338,9 +338,9 @@ export const TasksPage: React.FC = () => {
               <span
                 dir="auto"
                 style={{
-                  fontFamily: containsArabic(task.title) ? 'var(--font-arabic)' : 'var(--font-body)',
+                  fontFamily: containsArabic(task.title) ? 'var(--font-arabic)' : 'var(--font-sans)',
                   fontSize: depth > 0 ? 14 : 15,
-                  color: isDone ? 'var(--pip-muted)' : 'var(--pip)',
+                  color: isDone ? 'var(--color-text-muted)' : 'var(--color-accent)',
                   textDecoration: isDone ? 'line-through' : 'none',
                 }}
               >
@@ -348,22 +348,22 @@ export const TasksPage: React.FC = () => {
               </span>
               {task.is_mit && <span className="priority-badge-high">MIT</span>}
               {task.is_top_three && <span className="priority-badge-medium">TOP 3</span>}
-              {isTemplate && <span style={{ fontSize: 11, color: 'var(--pip-blue)', textTransform: 'uppercase', letterSpacing: 1 }}>TEMPLATE</span>}
+              {isTemplate && <span style={{ fontSize: 11, color: 'var(--color-info)', textTransform: 'uppercase', letterSpacing: 1 }}>TEMPLATE</span>}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, flexWrap: 'wrap' }}>
               <span className={`priority-badge-${task.priority}`}>{task.priority}</span>
-              <span style={{ fontSize: 11, color: task.energy_level === 'deep' ? 'var(--pip-amber)' : task.energy_level === 'light' ? 'var(--pip-blue)' : 'var(--pip-muted)', border: '1px solid var(--pip-border)', padding: '1px 5px', textTransform: 'uppercase', letterSpacing: 1 }}>{task.energy_level}</span>
-              <span style={{ fontSize: 11, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{formatMinutes(taskEstimatedMinutes(task))}</span>
-              {taskDueDay(task) && <span style={{ fontSize: 11, color: isTaskOverdue(task, today) && !isDone ? 'var(--pip-red)' : 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>DUE {formatDateDisplay(taskDueDay(task))}</span>}
+              <span style={{ fontSize: 11, color: task.energy_level === 'deep' ? 'var(--color-warning)' : task.energy_level === 'light' ? 'var(--color-info)' : 'var(--color-text-muted)', border: '1px solid var(--color-border)', padding: '1px 5px', textTransform: 'uppercase', letterSpacing: 1 }}>{task.energy_level}</span>
+              <span style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{formatMinutes(taskEstimatedMinutes(task))}</span>
+              {taskDueDay(task) && <span style={{ fontSize: 11, color: isTaskOverdue(task, today) && !isDone ? 'var(--color-danger)' : 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>DUE {formatDateDisplay(taskDueDay(task))}</span>}
               {taskPlannedDay(task) && (
                 <span
                   style={{
                     fontSize: 11,
                     color: isTaskStartingOn(task, today)
-                      ? 'var(--pip-bright)'
+                      ? 'var(--color-text)'
                       : hasTaskReachedStartDate(task, today)
-                        ? 'var(--pip-amber)'
-                        : 'var(--pip-muted)',
+                        ? 'var(--color-warning)'
+                        : 'var(--color-text-muted)',
                     textTransform: 'uppercase',
                     letterSpacing: 1,
                   }}
@@ -371,11 +371,11 @@ export const TasksPage: React.FC = () => {
                   START {formatDateDisplay(taskPlannedDay(task))}
                 </span>
               )}
-              {taskScheduledDay(task) && <span style={{ fontSize: 11, color: 'var(--pip-blue)', textTransform: 'uppercase', letterSpacing: 1 }}>RUN {formatDateDisplay(taskScheduledDay(task))}</span>}
-              {getTaskRecurrenceLabel(task) && <span style={{ fontSize: 11, color: 'var(--pip-blue)', textTransform: 'uppercase', letterSpacing: 1 }}>{getTaskRecurrenceLabel(task)}</span>}
-              {goal && <span style={{ fontSize: 11, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>GOAL: {goal.title}</span>}
+              {taskScheduledDay(task) && <span style={{ fontSize: 11, color: 'var(--color-info)', textTransform: 'uppercase', letterSpacing: 1 }}>RUN {formatDateDisplay(taskScheduledDay(task))}</span>}
+              {getTaskRecurrenceLabel(task) && <span style={{ fontSize: 11, color: 'var(--color-info)', textTransform: 'uppercase', letterSpacing: 1 }}>{getTaskRecurrenceLabel(task)}</span>}
+              {goal && <span style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>GOAL: {goal.title}</span>}
               {tags.slice(0, 2).map((tag) => (
-                <span key={tag} style={{ fontSize: 11, color: 'var(--pip-muted)', border: '1px solid var(--pip-border)', padding: '1px 5px' }}>
+                <span key={tag} style={{ fontSize: 11, color: 'var(--color-text-muted)', border: '1px solid var(--color-border)', padding: '1px 5px' }}>
                   {tag}
                 </span>
               ))}
@@ -383,7 +383,7 @@ export const TasksPage: React.FC = () => {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0, flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: 340 }}>
             {!isDone && !isTemplate && (
-              <button className="btn btn-sm btn-primary" onClick={() => handleFocus(task).catch(console.error)} style={activeTaskId === task.id ? { color: 'var(--pip-bright)', borderColor: 'var(--pip-bright)' } : undefined}>
+              <button className="btn btn-sm btn-primary" onClick={() => handleFocus(task).catch(console.error)} style={activeTaskId === task.id ? { color: 'var(--color-text)', borderColor: 'var(--color-text)' } : undefined}>
                 FOCUS
               </button>
             )}
@@ -394,10 +394,10 @@ export const TasksPage: React.FC = () => {
         </div>
 
         {isExpanded && hasSubTasks && (
-          <div style={{ background: 'var(--pip-dark)' }}>
+          <div style={{ background: 'var(--color-bg)' }}>
             {subTasks.open.map((subTask) => renderTaskRow(subTask, depth + 1))}
             {showCompleted && subTasks.done.length > 0 && (
-              <div style={{ padding: '6px 12px', paddingLeft: 38 + (depth * 26), fontSize: 11, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+              <div style={{ padding: '6px 12px', paddingLeft: 38 + (depth * 26), fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                 Completed Subtasks
               </div>
             )}
@@ -432,7 +432,7 @@ export const TasksPage: React.FC = () => {
         ))}
       </div>
 
-      <div className="pip-panel" style={{ padding: '10px 12px', display: 'grid', gap: 10, marginBottom: 12 }}>
+      <div className="card" style={{ padding: '10px 12px', display: 'grid', gap: 10, marginBottom: 12 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
           <input
             className="input"
@@ -483,22 +483,22 @@ export const TasksPage: React.FC = () => {
               <option value="planned">SORT: START DATE</option>
               <option value="created">SORT: NEWEST</option>
             </select>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 6px', fontSize: 12, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 6px', fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
               <input type="checkbox" checked={showCompleted} onChange={(event) => setShowCompleted(event.target.checked)} />
               Show Done ({completedRootTasks.length})
             </label>
           </div>
         )}
 
-        <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+        <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
           Keep the list sorted by what deserves attention. MIT and Top 3 are better set in Today unless you are intentionally reshaping the day here.
         </div>
       </div>
 
-      <div className="pip-panel">
+      <div className="card">
         {openRootTasks.length === 0 && (!showCompleted || completedRootTasks.length === 0) ? (
-          <div className="pip-empty">
-            <div className="pip-empty-title">NO ENTRIES FOUND</div>
+          <div className="empty-state">
+            <div className="empty-state-title">NO ENTRIES FOUND</div>
             <div>Create a task or adjust the filters.</div>
           </div>
         ) : (
@@ -506,7 +506,7 @@ export const TasksPage: React.FC = () => {
             {openRootTasks.map((task) => renderTaskRow(task))}
             {showCompleted && completedRootTasks.length > 0 && (
               <div>
-                <div style={{ padding: '10px 12px 6px', fontSize: 11, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                <div style={{ padding: '10px 12px 6px', fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                   Completed Tasks
                 </div>
                 {completedRootTasks.map((task) => renderTaskRow(task))}
@@ -527,15 +527,15 @@ export const TasksPage: React.FC = () => {
       <Modal open={Boolean(activeActionTask)} onClose={() => { setActionTaskId(null); setCustomStartDate(''); }} title="Task Actions">
         {activeActionTask && (
           <div style={{ display: 'grid', gap: 14 }}>
-            <div style={{ fontSize: 12, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
               {activeActionTask.title}
             </div>
 
             {!activeActionTask.task_kind.includes('template') && activeActionTask.status !== 'done' && (
-              <div className="pip-panel">
+              <div className="card">
                 <PanelHeader title="DAILY COMMITMENT" />
-                <div className="pip-panel-body" style={{ display: 'grid', gap: 10 }}>
-                  <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+                <div className="card-body" style={{ display: 'grid', gap: 10 }}>
+                  <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
                     MIT is the one task that makes the day real. Top 3 is the short list for Today. Set them here only when you mean to reshape the day.
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -551,10 +551,10 @@ export const TasksPage: React.FC = () => {
             )}
 
             {!activeActionTask.task_kind.includes('template') && activeActionTask.status !== 'done' && (
-              <div className="pip-panel">
+              <div className="card">
                 <PanelHeader title="START DATE" />
-                <div className="pip-panel-body" style={{ display: 'grid', gap: 10 }}>
-                  <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+                <div className="card-body" style={{ display: 'grid', gap: 10 }}>
+                  <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
                     A start date makes the task appear in Today from that date onward until you finish it.
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -573,9 +573,9 @@ export const TasksPage: React.FC = () => {
               </div>
             )}
 
-            <div className="pip-panel">
+            <div className="card">
               <PanelHeader title="MANAGE TASK" />
-              <div className="pip-panel-body" style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              <div className="card-body" style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {activeActionTask.status !== 'done' && activeActionTask.task_kind !== 'recurring_template' && (
                   <button className="btn btn-ghost btn-sm" onClick={() => handleFocus(activeActionTask).catch(console.error)}>FOCUS</button>
                 )}
@@ -608,10 +608,10 @@ export const TasksPage: React.FC = () => {
       <Modal open={Boolean(frictionTask)} onClose={() => setFrictionTask(null)} title="Log Task Friction">
         {frictionTask && (
           <div style={{ display: 'grid', gap: 12 }}>
-            <div style={{ fontSize: 12, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{frictionTask.title}</div>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{frictionTask.title}</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
               {TASK_FRICTION_OPTIONS.map((option) => (
-                <button key={option.value} className="btn btn-ghost btn-sm" style={frictionReason === option.value ? { color: 'var(--pip-amber)', borderColor: 'var(--pip-amber)' } : undefined} onClick={() => setFrictionReason(option.value)}>
+                <button key={option.value} className="btn btn-ghost btn-sm" style={frictionReason === option.value ? { color: 'var(--color-warning)', borderColor: 'var(--color-warning)' } : undefined} onClick={() => setFrictionReason(option.value)}>
                   {option.label}
                 </button>
               ))}

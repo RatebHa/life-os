@@ -176,12 +176,12 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
   if (!open) return null;
 
   const typeColors: Record<SearchResult['type'], string> = {
-    task: 'var(--pip)',
-    goal: 'var(--pip-amber)',
-    note: 'var(--pip-blue)',
-    habit: 'var(--pip-bright)',
-    inbox: 'var(--pip-amber)',
-    command: 'var(--pip-red)',
+    task: 'var(--color-accent)',
+    goal: 'var(--color-warning)',
+    note: 'var(--color-info)',
+    habit: 'var(--color-text)',
+    inbox: 'var(--color-warning)',
+    command: 'var(--color-danger)',
   };
 
   return (
@@ -201,13 +201,13 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
       <div
         style={{
           width: 560,
-          background: 'var(--pip-panel)',
-          border: '1px solid var(--pip-border)',
+          background: 'var(--color-surface)',
+          border: '1px solid var(--color-border)',
           boxShadow: '0 0 24px rgba(74,250,74,0.12)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderBottom: '1px solid var(--pip-border)' }}>
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--pip-muted)' }}>?</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderBottom: '1px solid var(--color-border)' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-text-muted)' }}>?</span>
           <input
             ref={inputRef}
             className="input"
@@ -219,7 +219,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
               setSelected(0);
             }}
           />
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)', letterSpacing: 1 }}>ESC</span>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>ESC</span>
         </div>
 
         {results.length > 0 ? (
@@ -236,15 +236,15 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
                   alignItems: 'center',
                   gap: 10,
                   padding: '8px 14px',
-                  borderBottom: '1px solid var(--pip-faint)',
-                  background: index === selected ? 'var(--pip-faint)' : 'transparent',
+                  borderBottom: '1px solid var(--color-surface-hover)',
+                  background: index === selected ? 'var(--color-surface-hover)' : 'transparent',
                   textAlign: 'left',
                   cursor: 'crosshair',
                 }}
               >
                 <span
                   style={{
-                    fontFamily: 'var(--font-body)',
+                    fontFamily: 'var(--font-sans)',
                     fontSize: 9,
                     color: typeColors[result.type],
                     letterSpacing: 1,
@@ -255,32 +255,32 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
                   {result.type}
                 </span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--pip)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-accent)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {result.title}
                   </div>
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)', letterSpacing: 1, marginTop: 1 }}>
+                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1, marginTop: 1 }}>
                     {result.subtitle}
                   </div>
                 </div>
                 {index === selected && (
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)' }}>ENTER</span>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)' }}>ENTER</span>
                 )}
               </button>
             ))}
           </div>
         ) : query.trim() ? (
-          <div style={{ padding: '20px 14px', fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--pip-muted)', textAlign: 'center', letterSpacing: 1 }}>
+          <div style={{ padding: '20px 14px', fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-text-muted)', textAlign: 'center', letterSpacing: 1 }}>
             NO RESULTS FOR "{query.toUpperCase()}"
           </div>
         ) : (
-          <div style={{ padding: '20px 14px', fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--pip-muted)', textAlign: 'center', letterSpacing: 1 }}>
+          <div style={{ padding: '20px 14px', fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', textAlign: 'center', letterSpacing: 1 }}>
             TYPE TO SEARCH ACROSS ALL ENTRIES
           </div>
         )}
 
-        <div style={{ padding: '4px 14px', borderTop: '1px solid var(--pip-border)', display: 'flex', gap: 14 }}>
+        <div style={{ padding: '4px 14px', borderTop: '1px solid var(--color-border)', display: 'flex', gap: 14 }}>
           {[['UP/DOWN', 'navigate'], ['ENTER', 'open'], ['ESC', 'close']].map(([key, label]) => (
-            <span key={key} style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+            <span key={key} style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               {key} · {label.toUpperCase()}
             </span>
           ))}

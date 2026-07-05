@@ -23,8 +23,8 @@ export const DomainPage: React.FC = () => {
   if (!domain) {
     return (
       <div className="page-content fade-in">
-        <div className="pip-empty">
-          <div className="pip-empty-title">DOMAIN NOT FOUND</div>
+        <div className="empty-state">
+          <div className="empty-state-title">DOMAIN NOT FOUND</div>
         </div>
       </div>
     );
@@ -48,23 +48,23 @@ export const DomainPage: React.FC = () => {
 
   return (
     <div data-domain={domain.id} className="page-content fade-in" style={getDomainThemeStyle(domain)}>
-      <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--pip-muted)', cursor: 'crosshair', letterSpacing: 1.5, textTransform: 'uppercase', padding: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
+      <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', cursor: 'crosshair', letterSpacing: 1.5, textTransform: 'uppercase', padding: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
         {'<'} BACK
       </button>
 
-      <div className="pip-panel">
-        <div className="pip-panel-header">
+      <div className="card">
+        <div className="card-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, color: 'var(--domain-primary)', letterSpacing: 3, textTransform: 'uppercase', textShadow: 'var(--pip-glow)' }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 26, color: 'var(--domain-primary)', letterSpacing: 3, textTransform: 'uppercase', textShadow: 'var(--shadow-focus-ring)' }}>
               {meta.label}
             </div>
-            <div style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               COMMITMENT SNAPSHOT
             </div>
           </div>
           <StreakFlame count={domain.streak_current} size="lg" />
         </div>
-        <div className="pip-panel-body">
+        <div className="card-body">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', gap: 10 }}>
             {[
               { label: 'OPEN', value: openTasks.length },
@@ -82,44 +82,44 @@ export const DomainPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="pip-panel">
-        <div className="pip-panel-header">
-          <span className="pip-panel-title" style={{ color: 'var(--domain-primary)' }}>GOALS ({goals.length})</span>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title" style={{ color: 'var(--domain-primary)' }}>GOALS ({goals.length})</span>
         </div>
-        <div className="pip-panel-body">
+        <div className="card-body">
           {goals.length === 0 ? (
-            <div className="pip-empty" style={{ padding: '16px 0' }}>
-              <div className="pip-empty-title">NO GOALS YET</div>
+            <div className="empty-state" style={{ padding: '16px 0' }}>
+              <div className="empty-state-title">NO GOALS YET</div>
               <div>Add one from the Goals page.</div>
             </div>
           ) : goals.slice(0, 5).map((goal) => (
-            <div key={goal.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--pip-border)' }}>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--pip)' }}>{goal.title}</span>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--pip-muted)' }}>{goal.progress_percent}%</span>
+            <div key={goal.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--color-border)' }}>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--color-accent)' }}>{goal.title}</span>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-text-muted)' }}>{goal.progress_percent}%</span>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="pip-panel">
-        <div className="pip-panel-header">
-          <span className="pip-panel-title" style={{ color: 'var(--domain-primary)' }}>HABITS ({domainHabits.length})</span>
-          <span className="pip-panel-meta">{doneHabits}/{dueHabits.length} TODAY</span>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title" style={{ color: 'var(--domain-primary)' }}>HABITS ({domainHabits.length})</span>
+          <span className="card-meta">{doneHabits}/{dueHabits.length} TODAY</span>
         </div>
-        <div className="pip-panel-body">
+        <div className="card-body">
           {domainHabits.length === 0 ? (
-            <div className="pip-empty" style={{ padding: '16px 0' }}>
-              <div className="pip-empty-title">NO HABITS YET</div>
+            <div className="empty-state" style={{ padding: '16px 0' }}>
+              <div className="empty-state-title">NO HABITS YET</div>
               <div>Add one from the Habits page.</div>
             </div>
           ) : domainHabits.map((habit) => {
             const progress = getHabitProgressForDate(habit, logs, today);
             return (
-              <div key={habit.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--pip-border)', opacity: progress.isComplete ? 0.65 : 1 }}>
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: progress.isComplete ? 'var(--pip-muted)' : 'var(--pip)' }}>{habit.title}</span>
+              <div key={habit.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--color-border)', opacity: progress.isComplete ? 0.65 : 1 }}>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: progress.isComplete ? 'var(--color-text-muted)' : 'var(--color-accent)' }}>{habit.title}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ fontFamily: 'var(--font-display)', fontSize: 15, color: 'var(--pip-bright)' }}>{progress.current}/{progress.target}</span>
-                  <span style={{ fontFamily: 'var(--font-display)', fontSize: 14, color: 'var(--pip-muted)' }}>{habit.streak_current}D</span>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'var(--color-text)' }}>{progress.current}/{progress.target}</span>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--color-text-muted)' }}>{habit.streak_current}D</span>
                 </div>
               </div>
             );
@@ -127,22 +127,22 @@ export const DomainPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="pip-panel">
-        <div className="pip-panel-header">
-          <span className="pip-panel-title" style={{ color: 'var(--domain-primary)' }}>ACTIVE TASKS ({openTasks.length})</span>
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title" style={{ color: 'var(--domain-primary)' }}>ACTIVE TASKS ({openTasks.length})</span>
         </div>
         <div>
           {openTasks.length === 0 ? (
-            <div className="pip-empty" style={{ padding: '16px 0' }}>
-              <div className="pip-empty-title">NO ACTIVE TASKS</div>
+            <div className="empty-state" style={{ padding: '16px 0' }}>
+              <div className="empty-state-title">NO ACTIVE TASKS</div>
               <div>Add one with the New Task button.</div>
             </div>
           ) : openTasks.slice(0, 8).map((task) => (
-            <div key={task.id} className="task-row" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 12px', borderBottom: '1px solid var(--pip-faint)', minHeight: 36 }}>
+            <div key={task.id} className="task-row" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 12px', borderBottom: '1px solid var(--color-surface-hover)', minHeight: 36 }}>
               <div style={{ width: 8, height: 8, border: '1px solid var(--domain-primary)', flexShrink: 0 }} />
-              <span style={{ flex: 1, fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--pip)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{task.title}</span>
-              {task.is_mit && <span style={{ fontSize: 11, color: 'var(--pip-amber)', textTransform: 'uppercase', letterSpacing: 1 }}>MIT</span>}
-              {task.is_top_three && <span style={{ fontSize: 11, color: 'var(--pip-bright)', textTransform: 'uppercase', letterSpacing: 1 }}>TOP 3</span>}
+              <span style={{ flex: 1, fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--color-accent)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{task.title}</span>
+              {task.is_mit && <span style={{ fontSize: 11, color: 'var(--color-warning)', textTransform: 'uppercase', letterSpacing: 1 }}>MIT</span>}
+              {task.is_top_three && <span style={{ fontSize: 11, color: 'var(--color-text)', textTransform: 'uppercase', letterSpacing: 1 }}>TOP 3</span>}
             </div>
           ))}
         </div>

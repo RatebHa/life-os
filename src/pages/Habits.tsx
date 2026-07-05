@@ -143,7 +143,7 @@ const HabitForm: React.FC<HabitFormProps> = ({ onClose, initialHabit }) => {
   return (
     <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 14 }}>
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Domain</label>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Domain</label>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 6 }}>
           {domains.map((entry) => (
             <button key={entry.id} type="button" data-domain={entry.id} onClick={() => setDomain(entry.id)} className={clsx('btn', domain === entry.id ? 'btn-primary' : 'btn-ghost')} style={{ ...getDomainThemeStyle(entry), padding: '5px 8px', fontSize: 13 }}>
@@ -154,13 +154,13 @@ const HabitForm: React.FC<HabitFormProps> = ({ onClose, initialHabit }) => {
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Habit Name *</label>
-        <input className="input" dir="auto" value={title} onChange={(event) => setTitle(event.target.value)} autoFocus required placeholder="Read 20 minutes / Train / Write" style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-body)' }} />
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Habit Name *</label>
+        <input className="input" dir="auto" value={title} onChange={(event) => setTitle(event.target.value)} autoFocus required placeholder="Read 20 minutes / Train / Write" style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }} />
       </div>
 
       <div className="layout-grid-two" style={{ gap: 10 }}>
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Cadence</label>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Cadence</label>
           <select className="input" value={cadenceType} onChange={(event) => setCadenceType(event.target.value as HabitCadenceType)}>
             <option value="daily">DAILY</option>
             <option value="weekdays">WEEKDAYS</option>
@@ -170,7 +170,7 @@ const HabitForm: React.FC<HabitFormProps> = ({ onClose, initialHabit }) => {
           </select>
         </div>
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Target Type</label>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Target Type</label>
           <select className="input" value={targetType} onChange={(event) => setTargetType(event.target.value as HabitTargetType)}>
             <option value="checkbox">CHECKBOX</option>
             <option value="count">COUNT</option>
@@ -181,7 +181,7 @@ const HabitForm: React.FC<HabitFormProps> = ({ onClose, initialHabit }) => {
 
       {cadenceType === 'selected_days' && (
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Selected Days</label>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Selected Days</label>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(68px, 1fr))', gap: 6 }}>
             {WEEKDAY_NAMES.map((name, index) => (
               <button key={name} type="button" className={clsx('btn', selectedDays.includes(index) ? 'btn-primary' : 'btn-ghost')} onClick={() => toggleWeekday(index)} style={{ padding: '4px 0' }}>
@@ -194,14 +194,14 @@ const HabitForm: React.FC<HabitFormProps> = ({ onClose, initialHabit }) => {
 
       {cadenceType === 'interval' && (
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Every N Days</label>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Every N Days</label>
           <input className="input" type="number" min={1} value={cadenceIntervalDays} onChange={(event) => setCadenceIntervalDays(parseInt(event.target.value, 10) || 1)} />
         </div>
       )}
 
       {cadenceType === 'times_per_week' && (
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Times Per Week</label>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Times Per Week</label>
           <input className="input" type="number" min={1} max={14} value={cadenceWeeklyTarget} onChange={(event) => setCadenceWeeklyTarget(parseInt(event.target.value, 10) || 1)} />
         </div>
       )}
@@ -210,34 +210,34 @@ const HabitForm: React.FC<HabitFormProps> = ({ onClose, initialHabit }) => {
         {targetType !== 'checkbox' && (
           <>
             <div>
-              <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Target Value</label>
+              <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Target Value</label>
               <input className="input" type="number" min={1} value={targetValue} onChange={(event) => setTargetValue(parseInt(event.target.value, 10) || 1)} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Minimum Value</label>
+              <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Minimum Value</label>
               <input className="input" type="number" min={1} value={minimumValue} onChange={(event) => setMinimumValue(parseInt(event.target.value, 10) || 1)} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Unit</label>
+              <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Unit</label>
               <input className="input" value={targetType === 'minutes' ? 'min' : unitLabel} onChange={(event) => setUnitLabel(event.target.value)} disabled={targetType === 'minutes'} />
             </div>
           </>
         )}
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Minimum Version</label>
-          <input className="input" dir="auto" value={minimumVersion} onChange={(event) => setMinimumVersion(event.target.value)} placeholder="Smallest valid version" style={{ fontFamily: minimumArabic ? 'var(--font-arabic)' : 'var(--font-body)' }} />
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Minimum Version</label>
+          <input className="input" dir="auto" value={minimumVersion} onChange={(event) => setMinimumVersion(event.target.value)} placeholder="Smallest valid version" style={{ fontFamily: minimumArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }} />
         </div>
       </div>
 
-      <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+      <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
         Minimum version is the honest fallback version of the habit, not the ideal one.
       </div>
 
-      <div style={{ border: '1px solid var(--pip-border)', background: 'var(--pip-faint)', padding: 12, display: 'grid', gap: 10 }}>
+      <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 12, display: 'grid', gap: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
           <div>
-            <div style={{ fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase' }}>Advanced Setup</div>
-            <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>Use this for notes, interval anchors, and recovery behavior.</div>
+            <div style={{ fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase' }}>Advanced Setup</div>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Use this for notes, interval anchors, and recovery behavior.</div>
           </div>
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => setShowAdvanced((value) => !value)}>
             {showAdvanced ? 'HIDE' : 'SHOW'}
@@ -247,26 +247,26 @@ const HabitForm: React.FC<HabitFormProps> = ({ onClose, initialHabit }) => {
         {showAdvanced && (
           <>
             <div>
-              <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Description</label>
-              <textarea className="input" dir="auto" value={description} onChange={(event) => setDescription(event.target.value)} rows={2} style={{ resize: 'none', fontFamily: descriptionArabic ? 'var(--font-arabic)' : 'var(--font-body)' }} placeholder="Why this matters" />
+              <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Description</label>
+              <textarea className="input" dir="auto" value={description} onChange={(event) => setDescription(event.target.value)} rows={2} style={{ resize: 'none', fontFamily: descriptionArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }} placeholder="Why this matters" />
             </div>
 
             {cadenceType === 'interval' && (
               <div>
-                <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Anchor Date</label>
+                <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Anchor Date</label>
                 <input className="input" type="date" lang="en-GB" value={cadenceAnchorDate} onChange={(event) => setCadenceAnchorDate(event.target.value)} />
               </div>
             )}
 
             <div>
-              <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Recovery Days</label>
+              <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Recovery Days</label>
               <input className="input" type="number" min={0} max={7} value={recoveryGraceDays} onChange={(event) => setRecoveryGraceDays(parseInt(event.target.value, 10) || 0)} />
             </div>
           </>
         )}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, paddingTop: 10, borderTop: '1px solid var(--pip-border)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, paddingTop: 10, borderTop: '1px solid var(--color-border)' }}>
         <button type="button" className="btn btn-ghost" onClick={onClose}>CANCEL</button>
         <button type="submit" className="btn btn-primary" disabled={!title.trim() || saving}>{saving ? (isEditing ? 'SAVING...' : 'CREATING...') : (isEditing ? 'SAVE CHANGES' : 'CREATE HABIT')}</button>
       </div>
@@ -373,9 +373,9 @@ export const HabitsPage: React.FC = () => {
       </div>
 
       {activeHabits.length === 0 ? (
-        <div className="pip-panel">
-          <div className="pip-empty">
-            <div className="pip-empty-title">NO HABITS YET</div>
+        <div className="card">
+          <div className="empty-state">
+            <div className="empty-state-title">NO HABITS YET</div>
             <div>Start with one habit you can actually keep, then give it a cadence and a minimum version you trust.</div>
           </div>
         </div>
@@ -386,12 +386,12 @@ export const HabitsPage: React.FC = () => {
             if (domainHabits.length === 0) return null;
 
             return (
-              <div key={domain.id} data-domain={domain.id} className="pip-panel">
+              <div key={domain.id} data-domain={domain.id} className="card">
                 <PanelHeader
                   title={<span style={{ color: 'var(--domain-primary)' }}>{getDomainLabel(domain.id, domains).toUpperCase()}</span>}
                   meta={`${domainHabits.length} ACTIVE | ${domainHabits.filter((habit) => isHabitDueOnDate(habit, today, logs)).length} DUE`}
                 />
-                <div className="pip-panel-body habit-domain-list">
+                <div className="card-body habit-domain-list">
                   {domainHabits.map((habit) => (
                     <HabitCard
                       key={habit.id}
@@ -427,10 +427,10 @@ export const HabitsPage: React.FC = () => {
       <Modal open={Boolean(actionHabit)} onClose={() => setActionHabit(null)} title="Manage Habit">
         {actionHabit && (
           <div style={{ display: 'grid', gap: 12 }}>
-            <div style={{ fontSize: 12, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
               {actionHabit.title}
             </div>
-            <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
               Keep completion actions on the row. Use this panel for maintenance or structural changes.
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -482,10 +482,10 @@ export const HabitsPage: React.FC = () => {
             }}
             style={{ display: 'grid', gap: 12 }}
           >
-            <div style={{ fontSize: 12, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>Why are you skipping "{skipTarget.habit.title}" for {skipTarget.date}?</div>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>Why are you skipping "{skipTarget.habit.title}" for {skipTarget.date}?</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
               {HABIT_SKIP_SUGGESTIONS.map((reason) => (
-                <button key={reason} type="button" className="btn btn-ghost btn-sm" onClick={() => setSkipReason(reason)} style={skipReason === reason ? { color: 'var(--pip-amber)', borderColor: 'var(--pip-amber)' } : undefined}>
+                <button key={reason} type="button" className="btn btn-ghost btn-sm" onClick={() => setSkipReason(reason)} style={skipReason === reason ? { color: 'var(--color-warning)', borderColor: 'var(--color-warning)' } : undefined}>
                   {reason}
                 </button>
               ))}

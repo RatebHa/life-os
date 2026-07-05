@@ -20,8 +20,8 @@ export const PanelHeader: React.FC<PanelHeaderProps> = ({
   titleClassName,
   metaClassName,
 }) => (
-  <div className={clsx('pip-panel-header', className)} style={style}>
-    <span className={clsx('pip-panel-title', titleClassName)}>{title}</span>
-    {right ?? (meta ? <span className={clsx('pip-panel-meta', metaClassName)}>{meta}</span> : null)}
+  <div className={clsx('card-header', className)} style={style}>
+    <span className={clsx('card-title', titleClassName)}>{title}</span>
+    {right ?? (meta ? <span className={clsx('card-meta', metaClassName)}>{meta}</span> : null)}
   </div>
 );

@@ -19,15 +19,15 @@ export const FooterBar: React.FC = () => {
       : `LAST BACKUP: ${backupLabel}`;
 
   return (
-    <div className="pip-footer">
+    <div className="footer">
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <span
             style={{
               width: 5,
               height: 5,
-              background: 'var(--pip)',
-              boxShadow: 'var(--pip-glow)',
+              background: 'var(--color-accent)',
+              boxShadow: 'var(--shadow-focus-ring)',
               display: 'inline-block',
             }}
           />

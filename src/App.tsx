@@ -113,7 +113,7 @@ const BootScreen: React.FC = () => {
   }, []);
 
   return (
-    <div className="pip-screen boot-screen fixed inset-0" style={{ background: 'var(--pip-bg)' }}>
+    <div className="pip-screen boot-screen fixed inset-0" style={{ background: 'var(--color-bg)' }}>
       <div className="boot-shell">
         <div className="boot-header">
           <div className="boot-brand">LIFE OS</div>
@@ -154,12 +154,12 @@ const ShortcutsOverlay: React.FC<{ open: boolean; onClose: () => void }> = ({ op
   <Modal open={open} onClose={onClose} title="KEYBOARD SHORTCUTS">
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
       {SHORTCUT_ITEMS.map((shortcut) => (
-        <div key={shortcut.keys} className="pip-panel" style={{ margin: 0 }}>
-          <div className="pip-panel-body" style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--pip-bright)', letterSpacing: 2 }}>
+        <div key={shortcut.keys} className="card" style={{ margin: 0 }}>
+          <div className="card-body" style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-text)', letterSpacing: 2 }}>
               {shortcut.keys}
             </span>
-            <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               {shortcut.label}
             </span>
           </div>

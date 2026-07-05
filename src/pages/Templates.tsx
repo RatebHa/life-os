@@ -168,10 +168,10 @@ export const TemplatesPage: React.FC = () => {
       <hr className="page-sep" />
 
       {!hasDomains && (
-        <div className="pip-panel" style={{ marginBottom: 12 }}>
-          <div className="pip-panel-body">
-            <div className="pip-empty" style={{ padding: '18px 0' }}>
-              <div className="pip-empty-title">NO DOMAINS YET</div>
+        <div className="card" style={{ marginBottom: 12 }}>
+          <div className="card-body">
+            <div className="empty-state" style={{ padding: '18px 0' }}>
+              <div className="empty-state-title">NO DOMAINS YET</div>
               <div>CREATE A DOMAIN DURING SETUP OR IN SETTINGS BEFORE LAUNCHING ROUTINES OR SAVING TEMPLATES.</div>
             </div>
           </div>
@@ -179,24 +179,24 @@ export const TemplatesPage: React.FC = () => {
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 12, marginBottom: 12 }}>
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">SAVED TASK TEMPLATES</span>
-            <span className="pip-panel-meta">{filteredTemplates.length} STORED</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">SAVED TASK TEMPLATES</span>
+            <span className="card-meta">{filteredTemplates.length} STORED</span>
           </div>
-          <div className="pip-panel-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {filteredTemplates.length === 0 ? (
-              <div className="pip-empty" style={{ padding: '14px 0' }}>
-                <div className="pip-empty-title">NO SAVED TEMPLATES</div>
+              <div className="empty-state" style={{ padding: '14px 0' }}>
+                <div className="empty-state-title">NO SAVED TEMPLATES</div>
                 <div>Save a task as a template or create one from scratch here.</div>
               </div>
             ) : (
               filteredTemplates.map((template) => (
-                <div key={template.id} data-domain={template.domain_id} style={{ border: '1px solid var(--pip-border)', padding: '8px 10px', background: 'var(--pip-faint)' }}>
+                <div key={template.id} data-domain={template.domain_id} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
                     <div>
-                      <div style={{ fontSize: 14, color: 'var(--pip-bright)' }}>{template.title}</div>
-                      <div style={{ fontSize: 11, color: 'var(--pip-muted)', marginTop: 3 }}>
+                      <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{template.title}</div>
+                      <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 3 }}>
                         {getDomainLabel(template.domain_id, domains)} · {template.priority.toUpperCase()} · {template.energy_level.toUpperCase()} · {template.time_estimate_minutes ?? 0}M
                       </div>
                     </div>
@@ -206,18 +206,18 @@ export const TemplatesPage: React.FC = () => {
                       <button className="btn btn-danger btn-sm" disabled={launchingId === template.id} onClick={() => deleteTaskTemplate(template.id).catch(console.error)}>DELETE</button>
                     </div>
                   </div>
-                  {template.description && <div style={{ fontSize: 11, color: 'var(--pip)', marginTop: 6 }}>{template.description}</div>}
+                  {template.description && <div style={{ fontSize: 11, color: 'var(--color-accent)', marginTop: 6 }}>{template.description}</div>}
                 </div>
               ))
             )}
           </div>
         </div>
 
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">NEW TASK TEMPLATE</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">NEW TASK TEMPLATE</span>
           </div>
-          <div className="pip-panel-body">
+          <div className="card-body">
             <form onSubmit={handleCreateTemplate} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <input className="input" placeholder="Template title" value={title} onChange={(event) => setTitle(event.target.value)} disabled={!hasDomains} />
               <textarea className="input" placeholder="Description" rows={3} value={description} onChange={(event) => setDescription(event.target.value)} style={{ resize: 'none' }} disabled={!hasDomains} />
@@ -260,18 +260,18 @@ export const TemplatesPage: React.FC = () => {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">ROUTINES & PLANNING PRESETS</span>
-            <span className="pip-panel-meta">{filteredPresets.filter((preset) => preset.kind !== 'habit_bundle').length} READY</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">ROUTINES & PLANNING PRESETS</span>
+            <span className="card-meta">{filteredPresets.filter((preset) => preset.kind !== 'habit_bundle').length} READY</span>
           </div>
-          <div className="pip-panel-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {filteredPresets.filter((preset) => preset.kind !== 'habit_bundle').map((preset) => (
-              <div key={preset.id} data-domain={hasDomains ? targetDomainId : undefined} style={{ border: '1px solid var(--pip-border)', padding: '8px 10px', background: 'var(--pip-faint)' }}>
+              <div key={preset.id} data-domain={hasDomains ? targetDomainId : undefined} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
                   <div>
-                    <div style={{ fontSize: 14, color: 'var(--pip-bright)' }}>{hasDomains ? (getPresetTitle(preset.id, targetDomainId, domains) || preset.title) : preset.title}</div>
-                    <div style={{ fontSize: 11, color: 'var(--pip-muted)', marginTop: 3 }}>{hasDomains ? (getPresetDescription(preset.id, targetDomainId, domains) || preset.description) : preset.description}</div>
+                    <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{hasDomains ? (getPresetTitle(preset.id, targetDomainId, domains) || preset.title) : preset.title}</div>
+                    <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 3 }}>{hasDomains ? (getPresetDescription(preset.id, targetDomainId, domains) || preset.description) : preset.description}</div>
                   </div>
                   <button className="btn btn-ghost btn-sm" disabled={!hasDomains || launchingId === preset.id} onClick={() => launchPreset(preset.id)}>
                     {launchingId === preset.id ? 'LAUNCHING...' : 'LAUNCH'}
@@ -282,18 +282,18 @@ export const TemplatesPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="pip-panel">
-          <div className="pip-panel-header">
-            <span className="pip-panel-title">HABIT STARTER PACKS</span>
-            <span className="pip-panel-meta">{filteredPresets.filter((preset) => preset.kind === 'habit_bundle').length} READY</span>
+        <div className="card">
+          <div className="card-header">
+            <span className="card-title">HABIT STARTER PACKS</span>
+            <span className="card-meta">{filteredPresets.filter((preset) => preset.kind === 'habit_bundle').length} READY</span>
           </div>
-          <div className="pip-panel-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {filteredPresets.filter((preset) => preset.kind === 'habit_bundle').map((preset) => (
-              <div key={preset.id} data-domain={hasDomains ? targetDomainId : undefined} style={{ border: '1px solid var(--pip-border)', padding: '8px 10px', background: 'var(--pip-faint)' }}>
+              <div key={preset.id} data-domain={hasDomains ? targetDomainId : undefined} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
                   <div>
-                    <div style={{ fontSize: 14, color: 'var(--pip-bright)' }}>{hasDomains ? (getPresetTitle(preset.id, targetDomainId, domains) || preset.title) : preset.title}</div>
-                    <div style={{ fontSize: 11, color: 'var(--pip-muted)', marginTop: 3 }}>{hasDomains ? (getPresetDescription(preset.id, targetDomainId, domains) || preset.description) : preset.description}</div>
+                    <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{hasDomains ? (getPresetTitle(preset.id, targetDomainId, domains) || preset.title) : preset.title}</div>
+                    <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 3 }}>{hasDomains ? (getPresetDescription(preset.id, targetDomainId, domains) || preset.description) : preset.description}</div>
                   </div>
                   <button className="btn btn-ghost btn-sm" disabled={!hasDomains || launchingId === preset.id} onClick={() => launchPreset(preset.id)}>
                     {launchingId === preset.id ? 'INSTALLING...' : 'ADD PACK'}

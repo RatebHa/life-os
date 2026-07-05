@@ -28,12 +28,12 @@ function normalizeText(value: string): string | undefined {
 
 function healthColors(health: GoalHealth): { text: string; border: string; background: string } {
   if (health === 'stalled') {
-    return { text: 'var(--pip-red)', border: 'var(--pip-red)', background: 'rgba(255,64,64,0.08)' };
+    return { text: 'var(--color-danger)', border: 'var(--color-danger)', background: 'rgba(255,64,64,0.08)' };
   }
   if (health === 'at_risk') {
-    return { text: 'var(--pip-amber)', border: 'var(--pip-amber)', background: 'rgba(200,160,32,0.08)' };
+    return { text: 'var(--color-warning)', border: 'var(--color-warning)', background: 'rgba(200,160,32,0.08)' };
   }
-  return { text: 'var(--pip-bright)', border: 'var(--pip-bright)', background: 'rgba(74,250,74,0.08)' };
+  return { text: 'var(--color-text)', border: 'var(--color-text)', background: 'rgba(74,250,74,0.08)' };
 }
 
 function effectiveGoalHealth(goal: Goal): GoalHealth {
@@ -116,7 +116,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
       {!parentGoalId && !isEditing && (
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
             Domain
           </label>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
@@ -137,21 +137,21 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
       )}
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
           Goal Title *
         </label>
         <input className="input" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="WHAT ARE YOU DRIVING TOWARD?" autoFocus required />
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
           Why It Matters
         </label>
         <textarea className="input" value={description} onChange={(event) => setDescription(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHY DOES THIS GOAL MATTER?" />
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
           Next Action
         </label>
         <input className="input" value={nextAction} onChange={(event) => setNextAction(event.target.value)} placeholder="WHAT IS THE VERY NEXT CONCRETE MOVE?" />
@@ -159,13 +159,13 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
 
       <div className="grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
             Review Date
           </label>
           <input className="input" type="date" lang="en-GB" value={reviewDate} onChange={(event) => setReviewDate(event.target.value)} />
         </div>
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
             Target Date
           </label>
           <input className="input" type="date" lang="en-GB" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} />
@@ -173,14 +173,14 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
           Blocked / Stalled Reason
         </label>
         <textarea className="input" value={blockedBy} onChange={(event) => setBlockedBy(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHAT IS SLOWING THIS GOAL DOWN?" />
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
           Health
         </label>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
@@ -198,7 +198,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, paddingTop: 10, borderTop: '1px solid var(--pip-border)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, paddingTop: 10, borderTop: '1px solid var(--color-border)' }}>
         <button type="button" className="btn btn-ghost" onClick={onClose}>CANCEL</button>
         <button type="submit" className="btn btn-primary" disabled={!title.trim() || saving}>
           {saving ? (isEditing ? 'SAVING...' : 'CREATING...') : (isEditing ? 'SAVE GOAL' : 'CREATE GOAL')}
@@ -280,7 +280,7 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
   }
 
   return (
-    <div style={depth > 0 ? { marginLeft: 20, borderLeft: '1px solid var(--pip-border)' } : undefined}>
+    <div style={depth > 0 ? { marginLeft: 20, borderLeft: '1px solid var(--color-border)' } : undefined}>
       <div
         data-domain={goal.domain_id}
         style={{
@@ -289,8 +289,8 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
           gap: 8,
           padding: '10px 10px 12px',
           marginLeft: depth > 0 ? 8 : 0,
-          borderLeft: goal.id === highlightedGoalId ? '2px solid var(--pip-bright)' : undefined,
-          borderBottom: '1px solid var(--pip-faint)',
+          borderLeft: goal.id === highlightedGoalId ? '2px solid var(--color-text)' : undefined,
+          borderBottom: '1px solid var(--color-surface-hover)',
         }}
       >
         <button
@@ -298,9 +298,9 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
           style={{
             flexShrink: 0,
             marginTop: 2,
-            fontFamily: 'var(--font-display)',
+            fontFamily: 'var(--font-sans)',
             fontSize: 12,
-            color: 'var(--pip-muted)',
+            color: 'var(--color-text-muted)',
             background: 'none',
             border: 'none',
             cursor: children.length > 0 ? 'crosshair' : 'default',
@@ -317,9 +317,9 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
           style={{
             flexShrink: 0,
             marginTop: 2,
-            fontFamily: 'var(--font-display)',
+            fontFamily: 'var(--font-sans)',
             fontSize: 14,
-            color: isDone ? 'var(--pip)' : 'var(--domain-primary, var(--pip-muted))',
+            color: isDone ? 'var(--color-accent)' : 'var(--domain-primary, var(--color-text-muted))',
             background: 'none',
             border: 'none',
             cursor: 'crosshair',
@@ -332,36 +332,36 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
 
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 15, color: isDone ? 'var(--pip-muted)' : 'var(--pip)', textDecoration: isDone ? 'line-through' : 'none' }}>
+            <span style={{ fontSize: 15, color: isDone ? 'var(--color-text-muted)' : 'var(--color-accent)', textDecoration: isDone ? 'line-through' : 'none' }}>
               {goal.title}
             </span>
             <span style={{ ...healthTone, borderWidth: 1, borderStyle: 'solid', padding: '1px 5px', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
               {derivedHealth.replace('_', ' ')}
             </span>
             {warnings.map((warning) => (
-              <span key={`${goal.id}-${warning}`} style={{ border: '1px solid var(--pip-amber)', color: 'var(--pip-amber)', background: 'rgba(200,160,32,0.08)', padding: '1px 5px', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
+              <span key={`${goal.id}-${warning}`} style={{ border: '1px solid var(--color-warning)', color: 'var(--color-warning)', background: 'rgba(200,160,32,0.08)', padding: '1px 5px', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
                 {warning}
               </span>
             ))}
           </div>
 
           {goal.description && (
-            <div style={{ fontSize: 11, color: 'var(--pip-muted)', marginTop: 4 }}>
+            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 4 }}>
               {goal.description}
             </div>
           )}
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10, marginTop: 8 }}>
-            <div className="pip-panel" style={{ margin: 0 }}>
-              <div className="pip-panel-header">
-                <span className="pip-panel-title">NEXT ACTION</span>
+            <div className="card" style={{ margin: 0 }}>
+              <div className="card-header">
+                <span className="card-title">NEXT ACTION</span>
               </div>
-              <div className="pip-panel-body" style={{ paddingTop: 8 }}>
-                <div style={{ fontSize: 13, color: goal.next_action ? 'var(--pip-bright)' : 'var(--pip-red)' }}>
+              <div className="card-body" style={{ paddingTop: 8 }}>
+                <div style={{ fontSize: 13, color: goal.next_action ? 'var(--color-text)' : 'var(--color-danger)' }}>
                   {goal.next_action || 'NO NEXT ACTION DEFINED'}
                 </div>
                 {goal.blocked_by && (
-                  <div style={{ fontSize: 11, color: 'var(--pip-amber)', marginTop: 6 }}>
+                  <div style={{ fontSize: 11, color: 'var(--color-warning)', marginTop: 6 }}>
                     BLOCKED BY: {goal.blocked_by}
                   </div>
                 )}
@@ -380,43 +380,43 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
               </div>
             </div>
 
-            <div className="pip-panel" style={{ margin: 0 }}>
-              <div className="pip-panel-header">
-                <span className="pip-panel-title">REVIEW</span>
+            <div className="card" style={{ margin: 0 }}>
+              <div className="card-header">
+                <span className="card-title">REVIEW</span>
               </div>
-              <div className="pip-panel-body" style={{ paddingTop: 8 }}>
-                <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+              <div className="card-body" style={{ paddingTop: 8 }}>
+                <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
                   REVIEW DATE: {goal.review_date ? formatDateDisplay(goal.review_date) : 'NOT SET'}
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--pip-muted)', marginTop: 4 }}>
+                <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginTop: 4 }}>
                   TARGET DATE: {goal.target_date ? formatDateDisplay(goal.target_date) : 'OPEN'}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
-                  <div style={{ flex: 1, maxWidth: 140, height: 4, background: 'var(--pip-faint)' }}>
-                    <div style={{ height: '100%', width: `${computedProgress}%`, background: isDone ? 'var(--pip)' : 'var(--domain-primary, var(--pip))' }} />
+                  <div style={{ flex: 1, maxWidth: 140, height: 4, background: 'var(--color-surface-hover)' }}>
+                    <div style={{ height: '100%', width: `${computedProgress}%`, background: isDone ? 'var(--color-accent)' : 'var(--domain-primary, var(--color-accent))' }} />
                   </div>
-                  <span style={{ fontSize: 10, color: 'var(--pip-muted)' }}>{computedProgress}%</span>
+                  <span style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>{computedProgress}%</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10, marginTop: 8 }}>
-            <div className="pip-panel" style={{ margin: 0 }}>
-              <div className="pip-panel-header">
-                <span className="pip-panel-title">LINKED TASKS</span>
-                <span className="pip-panel-meta">{linkedTasks.length}</span>
+            <div className="card" style={{ margin: 0 }}>
+              <div className="card-header">
+                <span className="card-title">LINKED TASKS</span>
+                <span className="card-meta">{linkedTasks.length}</span>
               </div>
-              <div className="pip-panel-body" style={{ paddingTop: 8 }}>
+              <div className="card-body" style={{ paddingTop: 8 }}>
                 {linkedTasks.length === 0 ? (
-                  <div style={{ fontSize: 11, color: 'var(--pip-muted)' }}>NO TASKS LINKED TO THIS GOAL YET.</div>
+                  <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>NO TASKS LINKED TO THIS GOAL YET.</div>
                 ) : (
                   linkedTasks.slice(0, 4).map((task) => (
                     <div key={task.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 6 }}>
-                      <span style={{ fontSize: 12, color: task.status === 'done' ? 'var(--pip-muted)' : 'var(--pip)' }}>
+                      <span style={{ fontSize: 12, color: task.status === 'done' ? 'var(--color-text-muted)' : 'var(--color-accent)' }}>
                         {task.title}
                       </span>
-                      <span style={{ fontSize: 9, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <span style={{ fontSize: 9, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                         {task.status.replace('_', ' ')}
                       </span>
                     </div>
@@ -425,19 +425,19 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
               </div>
             </div>
 
-            <div className="pip-panel" style={{ margin: 0 }}>
-              <div className="pip-panel-header">
-                <span className="pip-panel-title">LINKED NOTES</span>
-                <span className="pip-panel-meta">{linkedNotes.length}</span>
+            <div className="card" style={{ margin: 0 }}>
+              <div className="card-header">
+                <span className="card-title">LINKED NOTES</span>
+                <span className="card-meta">{linkedNotes.length}</span>
               </div>
-              <div className="pip-panel-body" style={{ paddingTop: 8 }}>
+              <div className="card-body" style={{ paddingTop: 8 }}>
                 {linkedNotes.length === 0 ? (
-                  <div style={{ fontSize: 11, color: 'var(--pip-muted)' }}>NO NOTES LINKED TO THIS GOAL YET.</div>
+                  <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>NO NOTES LINKED TO THIS GOAL YET.</div>
                 ) : (
                   linkedNotes.slice(0, 4).map((note) => (
                     <div key={note.id} style={{ marginBottom: 6 }}>
-                      <div style={{ fontSize: 12, color: 'var(--pip)' }}>{note.title}</div>
-                      <div style={{ fontSize: 9, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+                      <div style={{ fontSize: 12, color: 'var(--color-accent)' }}>{note.title}</div>
+                      <div style={{ fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
                         {formatDateDisplay(note.updated_at)}
                       </div>
                     </div>
@@ -467,7 +467,7 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
               }}
               className="btn btn-sm btn-ghost"
               title="Abandon goal"
-              style={{ padding: '2px 6px', minHeight: 'auto', color: 'var(--pip-amber)', fontSize: 9 }}
+              style={{ padding: '2px 6px', minHeight: 'auto', color: 'var(--color-warning)', fontSize: 9 }}
             >
               ABANDON
             </button>
@@ -544,8 +544,8 @@ export const GoalsPage: React.FC = () => {
       </div>
 
       {missingNextActionCount > 0 && (
-        <div style={{ padding: '8px 12px', border: '1px solid var(--pip-amber)', background: 'rgba(200,160,32,0.06)' }}>
-          <div style={{ fontSize: 12, color: 'var(--pip-amber)', letterSpacing: 1, textTransform: 'uppercase' }}>
+        <div style={{ padding: '8px 12px', border: '1px solid var(--color-warning)', background: 'rgba(200,160,32,0.06)' }}>
+          <div style={{ fontSize: 12, color: 'var(--color-warning)', letterSpacing: 1, textTransform: 'uppercase' }}>
             {missingNextActionCount} active goal{missingNextActionCount !== 1 ? 's have' : ' has'} no next action. Those goals are at risk of becoming passive.
           </div>
         </div>
@@ -569,14 +569,14 @@ export const GoalsPage: React.FC = () => {
       </div>
 
       {roots.length === 0 ? (
-        <div className="pip-panel">
-          <div className="pip-empty">
-            <div className="pip-empty-title">NO GOALS FOUND</div>
+        <div className="card">
+          <div className="empty-state">
+            <div className="empty-state-title">NO GOALS FOUND</div>
             <div>SET YOUR FIRST OBJECTIVE AND DEFINE ITS NEXT MOVE<span className="boot-cursor" /></div>
           </div>
         </div>
       ) : (
-        <div className="pip-panel">
+        <div className="card">
           {roots.map((goal) => (
             <GoalNode key={goal.id} goal={goal} depth={0} highlightedGoalId={highlightedGoalId} />
           ))}

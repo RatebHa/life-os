@@ -21,22 +21,22 @@ export const TitleBar: React.FC = () => {
     height: 22,
     background: 'none',
     border: '1px solid transparent',
-    fontFamily: 'var(--font-body)',
+    fontFamily: 'var(--font-sans)',
     fontSize: 10,
     letterSpacing: 1,
-    color: 'var(--pip-muted)',
+    color: 'var(--color-text-muted)',
     cursor: 'crosshair',
-    transition: 'color var(--t-fast), border-color var(--t-fast), background var(--t-fast)',
+    transition: 'color var(--motion-fast), border-color var(--motion-fast), background var(--motion-fast)',
   };
 
   return (
     <div className="app-titlebar">
       {/* Brand label */}
       <span style={{
-        fontFamily: 'var(--font-display)',
+        fontFamily: 'var(--font-sans)',
         fontSize: 13,
         letterSpacing: 3,
-        color: 'var(--pip-dim)',
+        color: 'var(--color-text-faint)',
         lineHeight: 1,
         pointerEvents: 'none',
       }}>
@@ -51,11 +51,11 @@ export const TitleBar: React.FC = () => {
         onClick={() => appWindow.minimize()}
         style={btnBase}
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.color = 'var(--pip)';
-          (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--pip-border)';
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-accent)';
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-border)';
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.color = 'var(--pip-muted)';
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-muted)';
           (e.currentTarget as HTMLButtonElement).style.borderColor = 'transparent';
         }}
         title="Minimize"
@@ -68,11 +68,11 @@ export const TitleBar: React.FC = () => {
         onClick={() => maximized ? appWindow.unmaximize() : appWindow.maximize()}
         style={btnBase}
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.color = 'var(--pip)';
-          (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--pip-border)';
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-accent)';
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-border)';
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.color = 'var(--pip-muted)';
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-muted)';
           (e.currentTarget as HTMLButtonElement).style.borderColor = 'transparent';
         }}
         title={maximized ? 'Restore' : 'Maximize'}
@@ -85,12 +85,12 @@ export const TitleBar: React.FC = () => {
         onClick={() => appWindow.close()}
         style={btnBase}
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.color = 'var(--pip-red)';
-          (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--pip-red)';
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-danger)';
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-danger)';
           (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,64,64,0.1)';
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLButtonElement).style.color = 'var(--pip-muted)';
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-muted)';
           (e.currentTarget as HTMLButtonElement).style.borderColor = 'transparent';
           (e.currentTarget as HTMLButtonElement).style.background = 'none';
         }}

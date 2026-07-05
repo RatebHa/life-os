@@ -57,9 +57,9 @@ export const TopBar: React.FC = () => {
                 style={{
                   width: 4,
                   height: 12 + index * 4,
-                  background: 'var(--pip)',
+                  background: 'var(--color-accent)',
                   opacity: 0.35 + index * 0.2,
-                  boxShadow: 'var(--pip-glow)',
+                  boxShadow: 'var(--shadow-focus-ring)',
                   display: 'inline-block',
                 }}
               />
@@ -67,10 +67,10 @@ export const TopBar: React.FC = () => {
           </div>
           <span
             style={{
-              fontFamily: 'var(--font-display)',
+              fontFamily: 'var(--font-sans)',
               fontSize: 28,
-              color: 'var(--pip-bright)',
-              textShadow: 'var(--pip-glow)',
+              color: 'var(--color-text)',
+              textShadow: 'var(--shadow-focus-ring)',
               letterSpacing: 3,
               lineHeight: 1,
             }}
@@ -79,7 +79,7 @@ export const TopBar: React.FC = () => {
           </span>
         </div>
 
-        <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, var(--pip-border), transparent)', opacity: 0.65 }} />
+        <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, var(--color-border), transparent)', opacity: 0.65 }} />
 
         <div
           style={{
@@ -87,24 +87,24 @@ export const TopBar: React.FC = () => {
             alignItems: 'center',
             gap: 14,
             padding: '4px 12px',
-            border: '1px solid var(--pip-border)',
-            background: 'var(--pip-faint)',
+            border: '1px solid var(--color-border)',
+            background: 'var(--color-surface-hover)',
           }}
         >
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: mitTask ? 'var(--pip-bright)' : 'var(--pip-amber)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: mitTask ? 'var(--color-text)' : 'var(--color-warning)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
             MIT: {mitTask ? 'SET' : 'MISSING'}
           </span>
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: topThreeCount > 0 ? 'var(--pip-bright)' : 'var(--pip-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: topThreeCount > 0 ? 'var(--color-text)' : 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
             TOP 3: {topThreeCount}/3
           </span>
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: overdueCount > 0 ? 'var(--pip-red)' : 'var(--pip-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: overdueCount > 0 ? 'var(--color-danger)' : 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
             OVERDUE: {overdueCount}
           </span>
           <span
             style={{
-              fontFamily: 'var(--font-body)',
+              fontFamily: 'var(--font-sans)',
               fontSize: 10,
-              color: focusTask ? 'var(--pip-bright)' : 'var(--pip-muted)',
+              color: focusTask ? 'var(--color-text)' : 'var(--color-text-muted)',
               letterSpacing: 1.5,
               textTransform: 'uppercase',
               maxWidth: 280,
@@ -117,13 +117,13 @@ export const TopBar: React.FC = () => {
           </span>
         </div>
 
-        <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, var(--pip-border), transparent)', opacity: 0.65 }} />
+        <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, var(--color-border), transparent)', opacity: 0.65 }} />
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             {dateStr}
           </span>
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--pip-bright)', letterSpacing: 2, lineHeight: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-text)', letterSpacing: 2, lineHeight: 1 }}>
             {clock}
           </span>
         </div>

@@ -128,18 +128,18 @@ export const CommandCenter: React.FC = () => {
   return (
     <div className="page-content fade-in">
       {showStandup && (
-        <div className="pip-panel" style={{ marginBottom: 12 }}>
+        <div className="card" style={{ marginBottom: 12 }}>
           <PanelHeader
             title="SYSTEM NOTE"
             right={<button className="btn btn-ghost btn-sm" onClick={() => setStandupDismissed(true)}>DISMISS</button>}
           />
-          <div className="pip-panel-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div className="panel-note" style={{ color: overviewRiskCount >= 2 ? 'var(--pip-amber)' : 'var(--pip-muted)' }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div className="panel-note" style={{ color: overviewRiskCount >= 2 ? 'var(--color-warning)' : 'var(--color-text-muted)' }}>
               Overview is for orientation. Do the real planning and execution work in Today.
             </div>
-            {!mitTask && <div style={{ fontSize: 13, color: 'var(--pip-amber)' }}>No MIT is set yet, so the day still needs a center of gravity.</div>}
-            {overdueTasks.length > 0 && <div style={{ fontSize: 13, color: 'var(--pip-red)' }}>{overdueTasks.length} task{overdueTasks.length !== 1 ? 's are' : ' is'} slipping past the due date.</div>}
-            {openHabits.length > 0 && <div style={{ fontSize: 13, color: 'var(--pip-muted)' }}>{openHabits.length} habit{openHabits.length !== 1 ? 's' : ''} still need honest logging today.</div>}
+            {!mitTask && <div style={{ fontSize: 13, color: 'var(--color-warning)' }}>No MIT is set yet, so the day still needs a center of gravity.</div>}
+            {overdueTasks.length > 0 && <div style={{ fontSize: 13, color: 'var(--color-danger)' }}>{overdueTasks.length} task{overdueTasks.length !== 1 ? 's are' : ' is'} slipping past the due date.</div>}
+            {openHabits.length > 0 && <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{openHabits.length} habit{openHabits.length !== 1 ? 's' : ''} still need honest logging today.</div>}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               <button className="btn btn-primary btn-sm" onClick={() => navigate('/today')}>OPEN TODAY</button>
               <button className="btn btn-ghost btn-sm" onClick={() => navigate('/weekly-review')}>WEEKLY REVIEW</button>
@@ -176,38 +176,38 @@ export const CommandCenter: React.FC = () => {
       </div>
 
       <div className="layout-grid-two" style={{ marginBottom: 12 }}>
-        <div className="pip-panel">
+        <div className="card">
           <PanelHeader title="TODAY READINESS" meta={todayReadyState} />
-          <div className="pip-panel-body" style={{ display: 'grid', gap: 10 }}>
+          <div className="card-body" style={{ display: 'grid', gap: 10 }}>
             {nextAction ? (
               <div data-domain={nextAction.domain_id} style={{ display: 'grid', gap: 10 }}>
                 <div className="panel-note">
                   Today is where you commit and start. Overview only tells you what needs your judgment.
                 </div>
-                <div style={{ border: '1px solid var(--pip-border)', background: 'var(--pip-faint)', padding: '10px 12px' }}>
-                  <div style={{ fontSize: 11, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>Next task likely to matter</div>
-                  <div style={{ fontSize: 18, color: 'var(--pip-bright)', marginTop: 4 }}>{nextAction.title}</div>
+                <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: '10px 12px' }}>
+                  <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>Next task likely to matter</div>
+                  <div style={{ fontSize: 18, color: 'var(--color-text)', marginTop: 4 }}>{nextAction.title}</div>
                   <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
                     {nextAction.is_mit && <span className="priority-badge-high">MIT</span>}
                     {nextAction.is_top_three && <span className="priority-badge-medium">TOP 3</span>}
                     <span className={`priority-badge-${nextAction.priority}`}>{nextAction.priority}</span>
-                    {nextAction.time_estimate_minutes && <span style={{ fontSize: 12, color: 'var(--pip-muted)' }}>{formatMinutes(nextAction.time_estimate_minutes)}</span>}
+                    {nextAction.time_estimate_minutes && <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>{formatMinutes(nextAction.time_estimate_minutes)}</span>}
                   </div>
                 </div>
                 <div style={{ display: 'grid', gap: 8 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--pip)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
                     <span>MIT</span>
                     <span>{mitTask ? 'SET' : 'OPEN'}</span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--pip)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
                     <span>Top 3 locked</span>
                     <span>{topThreeOpen.length}/3</span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--pip)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
                     <span>Due today complete</span>
                     <span>{dueTodayDone}/{dueTodayAll.length}</span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: openHabits.length > 0 ? 'var(--pip-amber)' : 'var(--pip)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: openHabits.length > 0 ? 'var(--color-warning)' : 'var(--color-accent)' }}>
                     <span>Habits still open</span>
                     <span>{openHabits.length}</span>
                   </div>
@@ -218,38 +218,38 @@ export const CommandCenter: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <div className="pip-empty">
-                <div className="pip-empty-title">NO ACTIVE BOARD</div>
+              <div className="empty-state">
+                <div className="empty-state-title">NO ACTIVE BOARD</div>
                 <div>Open Today to set an MIT and scope the board before the day drifts.</div>
               </div>
             )}
           </div>
         </div>
 
-        <div className="pip-panel">
+        <div className="card">
           <PanelHeader title="SYSTEM HEALTH" />
-          <div className="pip-panel-body" style={{ display: 'grid', gap: 10 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--pip)' }}>
+          <div className="card-body" style={{ display: 'grid', gap: 10 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
               <span>Weekly reliability</span>
               <span>{weeklyReliability}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--pip)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
               <span>MIT hit rate</span>
               <span>{mitHitRate}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--pip)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
               <span>Top 3 hit rate</span>
               <span>{topThreeHitRate}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--pip)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
               <span>Done today</span>
               <span>{doneToday}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: distractionCount > 0 ? 'var(--pip-amber)' : 'var(--pip)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: distractionCount > 0 ? 'var(--color-warning)' : 'var(--color-accent)' }}>
               <span>Distraction rate</span>
               <span>{distractionRate}/session</span>
             </div>
-            <div style={{ fontSize: 12, color: overviewRiskCount >= 2 ? 'var(--pip-amber)' : 'var(--pip-muted)' }}>
+            <div style={{ fontSize: 12, color: overviewRiskCount >= 2 ? 'var(--color-warning)' : 'var(--color-text-muted)' }}>
               {overviewRiskCount >= 2
                 ? 'Several systems are drifting. Review the watchlist and reset scope before adding more.'
                 : 'Nothing major is slipping. Keep the system quiet and protect consistency.'}
@@ -276,19 +276,19 @@ export const CommandCenter: React.FC = () => {
             <button
               key={domain.id}
               data-domain={domain.id}
-              className="pip-panel"
+              className="card"
               onClick={() => navigate(`/domain/${domain.id}`)}
               style={{ textAlign: 'left', padding: 14 }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--domain-primary)', letterSpacing: 2 }}>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: 20, color: 'var(--domain-primary)', letterSpacing: 2 }}>
                   {getDomainLabel(domain.id, domains).toUpperCase()}
                 </div>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: 16, color: 'var(--pip-bright)' }}>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-text)' }}>
                   {domain.streak_current}D
                 </div>
               </div>
-              <div className="layout-grid-pairs" style={{ gap: 6, fontSize: 12, color: 'var(--pip-muted)' }}>
+              <div className="layout-grid-pairs" style={{ gap: 6, fontSize: 12, color: 'var(--color-text-muted)' }}>
                 <span>Open: {domainOpen}</span>
                 <span>Done: {domainDone}</span>
                 <span>Overdue: {domainOverdue}</span>
@@ -300,31 +300,31 @@ export const CommandCenter: React.FC = () => {
       </div>
 
       <div className="layout-grid-two">
-        <div className="pip-panel">
+        <div className="card">
           <PanelHeader title="WATCHLIST" />
-          <div className="pip-panel-body" style={{ display: 'grid', gap: 8 }}>
-            <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+          <div className="card-body" style={{ display: 'grid', gap: 8 }}>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
               These are the places where the system needs review, not more ambition.
             </div>
             {overdueTasks.slice(0, 4).map((task) => (
               <div key={task.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 13 }}>
-                <span style={{ color: 'var(--pip-red)' }}>{task.title}</span>
-                <span style={{ color: 'var(--pip-muted)' }}>{formatDateDisplay(task.due_date)}</span>
+                <span style={{ color: 'var(--color-danger)' }}>{task.title}</span>
+                <span style={{ color: 'var(--color-text-muted)' }}>{formatDateDisplay(task.due_date)}</span>
               </div>
             ))}
             {stalledGoals.slice(0, 3).map((goal) => (
               <div key={goal.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 13 }}>
-                <span style={{ color: 'var(--pip-amber)' }}>{goal.title}</span>
-                <span style={{ color: 'var(--pip-muted)' }}>{getDomainLabel(goal.domain_id, domains)}</span>
+                <span style={{ color: 'var(--color-warning)' }}>{goal.title}</span>
+                <span style={{ color: 'var(--color-text-muted)' }}>{getDomainLabel(goal.domain_id, domains)}</span>
               </div>
             ))}
             {overdueTasks.length === 0 && stalledGoals.length === 0 && (
-              <div style={{ fontSize: 13, color: 'var(--pip-muted)' }}>Nothing urgent is slipping right now.</div>
+              <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>Nothing urgent is slipping right now.</div>
             )}
             {openHabits.length > 0 && (
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 13 }}>
-                <span style={{ color: 'var(--pip)' }}>Open habits today</span>
-                <span style={{ color: 'var(--pip-muted)' }}>{openHabits.length}</span>
+                <span style={{ color: 'var(--color-accent)' }}>Open habits today</span>
+                <span style={{ color: 'var(--color-text-muted)' }}>{openHabits.length}</span>
               </div>
             )}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -335,10 +335,10 @@ export const CommandCenter: React.FC = () => {
           </div>
         </div>
 
-        <div className="pip-panel">
+        <div className="card">
           <PanelHeader title="SUPPORT TOOLS" />
-          <div className="pip-panel-body" style={{ display: 'grid', gap: 8 }}>
-            <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+          <div className="card-body" style={{ display: 'grid', gap: 8 }}>
+            <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
               Helpful utilities live here so the main navigation can stay focused on execution and review.
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>

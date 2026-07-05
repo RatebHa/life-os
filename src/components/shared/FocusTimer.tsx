@@ -80,20 +80,20 @@ export const FocusTimer: React.FC = () => {
           gridTemplateColumns: 'minmax(0, 1fr) auto',
           gap: 12,
           padding: '10px 14px',
-          border: '1px solid var(--pip-border)',
+          border: '1px solid var(--color-border)',
           background: 'linear-gradient(180deg, rgba(10,26,10,0.98), rgba(7,17,7,0.98))',
           boxShadow: '0 0 18px rgba(74,250,74,0.14)',
           backdropFilter: 'blur(3px)',
         }}
       >
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--pip-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
             Focus Draft
           </div>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, lineHeight: 1, color: 'var(--pip-bright)', letterSpacing: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 24, lineHeight: 1, color: 'var(--color-text)', letterSpacing: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {trayLabel}
           </div>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 4, fontSize: 13, color: 'var(--pip-bright)', letterSpacing: 1.1, textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 4, fontSize: 13, color: 'var(--color-text)', letterSpacing: 1.1, textTransform: 'uppercase' }}>
             <span>{display}</span>
             <span>Plan {activeDraft.planned_minutes}m</span>
             <span>{plannedDelta === 0 ? 'On Plan' : plannedDelta > 0 ? `+${plannedDelta}m` : `${plannedDelta}m`}</span>
@@ -117,8 +117,8 @@ export const FocusTimer: React.FC = () => {
 
       <Modal open={showSummary} onClose={closeSummary} title="FOCUS SESSION">
         <div style={{ display: 'grid', gap: 12 }}>
-          <div className="pip-panel" style={{ margin: 0 }}>
-            <div className="pip-panel-body" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10 }}>
+          <div className="card" style={{ margin: 0 }}>
+            <div className="card-body" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10 }}>
               {[
                 { label: 'Task', value: trayLabel },
                 { label: 'Elapsed', value: display },
@@ -135,7 +135,7 @@ export const FocusTimer: React.FC = () => {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
             <div>
-              <label style={{ display: 'block', fontSize: 13, color: 'var(--pip-bright)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Planned Minutes</label>
+              <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Planned Minutes</label>
               <input
                 className="input"
                 type="number"
@@ -146,7 +146,7 @@ export const FocusTimer: React.FC = () => {
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 13, color: 'var(--pip-bright)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Interruption Notes</label>
+              <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Interruption Notes</label>
               <input
                 className="input"
                 value={activeDraft.interruption_notes ?? ''}
@@ -157,7 +157,7 @@ export const FocusTimer: React.FC = () => {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: 13, color: 'var(--pip-bright)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Reflection</label>
+            <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Reflection</label>
             <textarea
               className="input"
               rows={4}

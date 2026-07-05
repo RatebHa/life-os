@@ -2,9 +2,9 @@ import React from 'react';
 import { useDebugStore } from '../../store/useDebugStore';
 
 function levelColor(level: 'info' | 'warn' | 'error'): string {
-  if (level === 'error') return 'var(--pip-red)';
-  if (level === 'warn') return 'var(--pip-amber)';
-  return 'var(--pip)';
+  if (level === 'error') return 'var(--color-danger)';
+  if (level === 'warn') return 'var(--color-warning)';
+  return 'var(--color-accent)';
 }
 
 export const DebugConsole: React.FC = () => {
@@ -34,7 +34,7 @@ export const DebugConsole: React.FC = () => {
 
   return (
     <div
-      className="pip-panel fade-in"
+      className="card fade-in"
       style={{
         position: 'fixed',
         right: 12,
@@ -47,15 +47,15 @@ export const DebugConsole: React.FC = () => {
         flexDirection: 'column',
       }}
     >
-      <div className="pip-panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span className="pip-panel-title">DEBUG CONSOLE</span>
+      <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span className="card-title">DEBUG CONSOLE</span>
         <div style={{ display: 'flex', gap: 8 }}>
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => clear()}>CLEAR</button>
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => setOpen(false)}>HIDE</button>
         </div>
       </div>
       <div
-        className="pip-panel-body"
+        className="card-body"
         style={{
           overflowY: 'auto',
           display: 'flex',
@@ -65,14 +65,14 @@ export const DebugConsole: React.FC = () => {
         }}
       >
         {entries.length === 0 ? (
-          <div style={{ color: 'var(--pip-muted)' }}>No debug events captured yet.</div>
+          <div style={{ color: 'var(--color-text-muted)' }}>No debug events captured yet.</div>
         ) : (
           [...entries].reverse().map((entry) => (
             <div
               key={entry.id}
               style={{
-                border: '1px solid var(--pip-border)',
-                background: 'var(--pip-faint)',
+                border: '1px solid var(--color-border)',
+                background: 'var(--color-surface-hover)',
                 padding: '8px 10px',
               }}
             >
@@ -80,13 +80,13 @@ export const DebugConsole: React.FC = () => {
                 <span style={{ color: levelColor(entry.level), textTransform: 'uppercase', letterSpacing: 1 }}>
                   {entry.level} :: {entry.scope}
                 </span>
-                <span style={{ color: 'var(--pip-muted)' }}>{entry.created_at.slice(11, 19)}</span>
+                <span style={{ color: 'var(--color-text-muted)' }}>{entry.created_at.slice(11, 19)}</span>
               </div>
-              <div style={{ marginTop: 4, color: 'var(--pip-bright)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+              <div style={{ marginTop: 4, color: 'var(--color-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                 {entry.message}
               </div>
               {entry.detail ? (
-                <div style={{ marginTop: 4, color: 'var(--pip-muted)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                <div style={{ marginTop: 4, color: 'var(--color-text-muted)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                   {entry.detail}
                 </div>
               ) : null}
