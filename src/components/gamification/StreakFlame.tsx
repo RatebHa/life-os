@@ -12,9 +12,9 @@ export const StreakFlame: React.FC<StreakFlameProps> = React.memo(({ count, size
   return (
     <span style={{
       fontFamily: 'var(--font-sans)',
+      fontWeight: 600,
       fontSize,
-      color: count > 0 ? 'var(--color-text)' : 'var(--color-text-muted)',
-      letterSpacing: 1,
+      color: count > 0 ? 'var(--color-warning)' : 'var(--color-text-faint)',
       lineHeight: 1,
     }}>
       {count > 0 ? `${count}D` : '0D'}

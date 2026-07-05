@@ -13,16 +13,16 @@ describe('StreakFlame', () => {
     expect(screen.getByText('0D')).toBeTruthy();
   });
 
-  it('applies dim color when count is 0', () => {
+  it('applies faint color when count is 0', () => {
     const { container } = render(<StreakFlame count={0} />);
     const el = container.firstChild as HTMLElement;
-    expect(el.style.color).toContain('pip-muted');
+    expect(el.style.color).toContain('color-text-faint');
   });
 
-  it('applies bright color when count > 0', () => {
+  it('applies warning color when count > 0', () => {
     const { container } = render(<StreakFlame count={5} />);
     const el = container.firstChild as HTMLElement;
-    expect(el.style.color).toContain('pip-bright');
+    expect(el.style.color).toContain('color-warning');
   });
 
   it('renders with sm size (default)', () => {
