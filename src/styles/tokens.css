@@ -1,51 +1,34 @@
 :root {
-  /* Core Pip-Boy phosphor green — brighter for authentic CRT bloom */
-  --pip:          #50fa7b;
-  --pip-bright:   #a0ffb0;
-  --pip-dim:      #27a040;
-  --pip-muted:    #3aaa4a;
-  --pip-faint:    #1e401e;
-  --pip-dark:     #080d08;
+  /* Neutral surfaces */
+  --color-bg:               #0C0E12;
+  --color-surface:          #14171D;
+  --color-surface-elevated: #1C2028;
+  --color-surface-hover:    #20242C;
+  --color-border:           #262B34;
+  --color-border-strong:    #3A404C;
+  --color-text:             #EDEEF1;
+  --color-text-muted:       #9BA1AC;
+  --color-text-faint:       #5C636F;
 
-  /* Surfaces */
-  --pip-bg:       #090e09;
-  --pip-panel:    #0f1a0f;
-  --pip-border:   #367836;
-  --pip-elevated: #142014;
+  /* Accent (all primary actions, links, focus, checked states) */
+  --color-accent:       #7C6CFF;
+  --color-accent-hover:  #8F82FF;
+  --color-accent-muted:  rgba(124,108,255,0.15);
 
-  /* Accent colors */
-  --pip-amber:    #ffb627;
-  --pip-red:      #ff5555;
-  --pip-blue:     #40a0ff;
+  /* Status */
+  --color-success: #34D399;
+  --color-warning: #F5A524;
+  --color-danger:  #F0554E;
+  --color-info:    #4A9EFF;
 
-  /* Effects */
-  --scanline: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(80,250,123,0.03) 2px,
-    rgba(80,250,123,0.03) 4px
-  );
-  --vignette: radial-gradient(
-    ellipse at center,
-    transparent 55%,
-    rgba(0,0,0,0.5) 100%
-  );
-  --pip-glow:        0 0 10px rgba(80,250,123,0.5);
-  --pip-glow-bright: 0 0 16px rgba(160,255,176,0.7);
-  --pip-shadow-deep: 0 10px 30px rgba(0,0,0,0.45);
-  --pip-inset-glow: inset 0 0 18px rgba(80,250,123,0.08);
-  --pip-frame: linear-gradient(180deg, rgba(160,255,176,0.06), rgba(0,0,0,0));
-  --pip-grid: linear-gradient(rgba(80,250,123,0.035) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(80,250,123,0.025) 1px, transparent 1px);
+  /* Domain identity base values (sparingly used — left-border stripes, badges, icon tint) */
+  --color-domain-military: #D4A73D;
+  --color-domain-builder:  #4A90E2;
+  --color-domain-self:     #34B27B;
 
   /* Typography */
-  --font-display: 'VT323', monospace;
-  --font-body:    'Share Tech Mono', monospace;
-  --font-arabic:  'Noto Naskh Arabic', 'Amiri', 'Segoe UI', Tahoma, sans-serif;
-  --font-pip:     'Share Tech Mono', monospace;
-  --font-mono:    'Share Tech Mono', monospace;
-  --font-heading: 'VT323', monospace;
+  --font-sans:   'Inter', system-ui, -apple-system, sans-serif;
+  --font-arabic: 'Noto Naskh Arabic', 'Amiri', 'Segoe UI', Tahoma, sans-serif;
 
   /* Spacing */
   --gap-xs: 4px;
@@ -60,119 +43,65 @@
   --tabbar-height:  36px;
   --footer-height:  28px;
 
-  /* Transitions — all LINEAR for Pip-Boy CRT feel */
-  --t-fast:  100ms linear;
-  --t-base:  150ms linear;
-  --t-slow:  200ms linear;
+  /* Shape */
+  --radius-sm:   6px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-full: 9999px;
 
-  /* === BACKWARD COMPAT (never remove — used by momentum.ts, stores) === */
-  --bg-base:            #090e09;
-  --bg-panel:           #0f1a0f;
-  --bg-elevated:        #142014;
-  --bg-input:           #090e09;
-  --border-dim:         #1e401e;
-  --border-base:        #367836;
-  --border-bright:      #50fa7b;
-  --text-primary:       #50fa7b;
-  --text-secondary:     #3aaa4a;
-  --text-muted:         #3aaa4a;
-  --text-faint:         #1e401e;
-  --mil:                #50fa7b;
-  --mil-bright:         #a0ffb0;
-  --mil-dim:            #27a040;
-  --mil-bg:             #090e09;
-  --mil-glow:           rgba(80,250,123,0.20);
-  --bld:                #40a0ff;
-  --bld-bright:         #80c8ff;
-  --bld-dim:            #0a2a4a;
-  --bld-bg:             #090e09;
-  --bld-glow:           rgba(64,160,255,0.20);
-  --slf:                #a0ffb0;
-  --slf-bright:         #c0ffc8;
-  --slf-dim:            #1e5a1e;
-  --slf-bg:             #090e09;
-  --slf-glow:           rgba(160,255,176,0.20);
-  --state-peak:         #ffb627;
-  --state-normal:       #50fa7b;
-  --state-amber:        #ffb627;
-  --state-red:          #ff5555;
-  --state-red-bg:       rgba(255,85,85,0.08);
-  --state-red-dim:      rgba(255,85,85,0.28);
-  --momentum-peak:      #ffb627;
-  --momentum-normal:    #50fa7b;
-  --momentum-amber:     #ffb627;
-  --momentum-red:       #ff5555;
-  --domain:             #50fa7b;
-  --domain-primary:     #50fa7b;
-  --domain-bright:      #a0ffb0;
-  --domain-accent:      #a0ffb0;
-  --domain-dim:         #27a040;
-  --domain-bg:          #090e09;
-  --domain-subtle:      #090e09;
-  --domain-glow:        rgba(80,250,123,0.20);
-  --color-bg-base:      #090e09;
-  --color-bg-panel:     #0f1a0f;
-  --color-bg-elevated:  #142014;
-  --color-bg-hover:     #142014;
-  --color-text-primary: #50fa7b;
-  --color-text-muted:   #3aaa4a;
-  --color-text-dim:     #1e401e;
-  --color-border:       #367836;
-  --color-border-muted: #1e401e;
-  --color-danger:       #ff5555;
-  --color-success:      #50fa7b;
-  --color-warning:      #ffb627;
-  --color-info:         #40a0ff;
-  --transition-fast:    100ms linear;
-  --transition-normal:  150ms linear;
-  --transition-slow:    200ms linear;
-  --shadow-lg:          0 8px 32px rgba(0,0,0,0.9), 0 0 24px rgba(74,250,74,0.04);
-  --clip-card:          none;
-  --clip-btn:           none;
-  --clip-badge:         none;
-  --glow-text:          0 0 6px rgba(74,250,74,0.5);
-  --glow-sm:            0 0 8px rgba(74,250,74,0.4);
-  --glow-md:            0 0 12px rgba(74,250,74,0.35);
-  --glow-lg:            0 0 20px rgba(74,250,74,0.45);
-  --scanline-opacity:   0.72;
-  --vignette-opacity:   0.5;
-  --sweep-opacity:      0.55;
-  --body-scale:         1;
-  --panel-scale:        1;
-  --display-scale:      1;
-  --page-padding:       18px 22px;
-  --panel-padding:      10px 12px;
-  --row-height:         34px;
+  /* Elevation */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.24);
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.28);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.35);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.45);
+  --shadow-focus-ring: 0 0 0 3px rgba(124,108,255,0.35);
+
+  /* Motion */
+  --motion-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-base: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-slow: 260ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Momentum state colors — names consumed as-is by src/lib/momentum.ts, only values change */
+  --momentum-peak:   var(--color-accent);
+  --momentum-normal: var(--color-success);
+  --momentum-amber:  var(--color-warning);
+  --momentum-red:    var(--color-danger);
+
+  /* Density / text-scale preferences — functional (Settings page), not aesthetic. Unchanged. */
+  --body-scale:    1;
+  --panel-scale:   1;
+  --display-scale: 1;
+  --page-padding:  18px 22px;
+  --panel-padding: 10px 12px;
+  --row-height:    34px;
 }
 
-/* Domain aliases for data-domain attribute */
+/* Domain aliases for the data-domain attribute mechanism (kept architecturally, only colors change).
+   Used for small identity accents — left-border stripes, badges, icon tint — never full-panel treatments. */
 [data-domain="military"] {
-  --domain:         #50fa7b;
-  --domain-primary: #50fa7b;
-  --domain-bright:  #a0ffb0;
-  --domain-accent:  #a0ffb0;
-  --domain-dim:     #27a040;
-  --domain-bg:      #090e09;
-  --domain-subtle:  #090e09;
-  --domain-glow:    rgba(80,250,123,0.20);
+  --domain-primary: var(--color-domain-military);
+  --domain-bright:  var(--color-domain-military);
+  --domain-accent:  var(--color-domain-military);
+  --domain-dim:     color-mix(in srgb, var(--color-domain-military) 55%, var(--color-bg));
+  --domain-bg:      var(--color-bg);
+  --domain-subtle:  color-mix(in srgb, var(--color-domain-military) 12%, transparent);
+  --domain-glow:    color-mix(in srgb, var(--color-domain-military) 20%, transparent);
 }
 [data-domain="builder"] {
-  --domain:         #40a0ff;
-  --domain-primary: #40a0ff;
-  --domain-bright:  #80c8ff;
-  --domain-accent:  #80c8ff;
-  --domain-dim:     #0a2a4a;
-  --domain-bg:      #090e09;
-  --domain-subtle:  #090e09;
-  --domain-glow:    rgba(64,160,255,0.20);
+  --domain-primary: var(--color-domain-builder);
+  --domain-bright:  var(--color-domain-builder);
+  --domain-accent:  var(--color-domain-builder);
+  --domain-dim:     color-mix(in srgb, var(--color-domain-builder) 55%, var(--color-bg));
+  --domain-bg:      var(--color-bg);
+  --domain-subtle:  color-mix(in srgb, var(--color-domain-builder) 12%, transparent);
+  --domain-glow:    color-mix(in srgb, var(--color-domain-builder) 20%, transparent);
 }
 [data-domain="self"] {
-  --domain:         #a0ffb0;
-  --domain-primary: #a0ffb0;
-  --domain-bright:  #c0ffc8;
-  --domain-accent:  #c0ffc8;
-  --domain-dim:     #1e5a1e;
-  --domain-bg:      #090e09;
-  --domain-subtle:  #090e09;
-  --domain-glow:    rgba(160,255,176,0.20);
+  --domain-primary: var(--color-domain-self);
+  --domain-bright:  var(--color-domain-self);
+  --domain-accent:  var(--color-domain-self);
+  --domain-dim:     color-mix(in srgb, var(--color-domain-self) 55%, var(--color-bg));
+  --domain-bg:      var(--color-bg);
+  --domain-subtle:  color-mix(in srgb, var(--color-domain-self) 12%, transparent);
+  --domain-glow:    color-mix(in srgb, var(--color-domain-self) 20%, transparent);
 }
