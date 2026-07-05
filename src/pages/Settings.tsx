@@ -107,7 +107,6 @@ export const SettingsPage: React.FC = () => {
   const [apiKeyInput, setApiKeyInput] = useState(appState?.api_key ?? '');
   const [backupDirectoryInput, setBackupDirectoryInput] = useState(appState?.backup_directory ?? '');
   const [autoBackupEnabled, setAutoBackupEnabled] = useState(appState?.auto_backup_enabled ?? false);
-  const [crtIntensity, setCrtIntensity] = useState(appState?.crt_intensity ?? 'medium');
   const [textScale, setTextScale] = useState(appState?.text_scale ?? 'normal');
   const [uiDensity, setUiDensity] = useState(appState?.ui_density ?? 'comfortable');
   const [syncUrlInput, setSyncUrlInput] = useState(appState?.sync_supabase_url ?? '');
@@ -140,7 +139,6 @@ export const SettingsPage: React.FC = () => {
     setApiKeyInput(appState?.api_key ?? '');
     setBackupDirectoryInput(appState?.backup_directory ?? '');
     setAutoBackupEnabled(appState?.auto_backup_enabled ?? false);
-    setCrtIntensity(appState?.crt_intensity ?? 'medium');
     setTextScale(appState?.text_scale ?? 'normal');
     setUiDensity(appState?.ui_density ?? 'comfortable');
     setSyncUrlInput(appState?.sync_supabase_url ?? '');
@@ -150,7 +148,6 @@ export const SettingsPage: React.FC = () => {
     appState?.api_key,
     appState?.backup_directory,
     appState?.auto_backup_enabled,
-    appState?.crt_intensity,
     appState?.text_scale,
     appState?.ui_density,
     appState?.sync_supabase_url,
@@ -457,7 +454,7 @@ export const SettingsPage: React.FC = () => {
 
   const handleSaveDisplaySettings = async () => {
     try {
-      await db.updateUiPreferences(crtIntensity, textScale, uiDensity);
+      await db.updateUiPreferences('medium', textScale, uiDensity);
       await loadAppState();
       setDisplaySaved(true);
       setStatusMessage('DISPLAY PROFILE SAVED');
@@ -1027,17 +1024,9 @@ export const SettingsPage: React.FC = () => {
         <PanelHeader title="DISPLAY TUNING" />
         <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <p style={rowLabelStyle}>
-            TUNE THE CRT FEEL, TEXT SCALE, AND DENSITY PROFILE. THESE SETTINGS PERSIST IN YOUR DATABASE SO THE APP FEELS CONSISTENT AFTER RESTORE.
+            TUNE TEXT SCALE AND DENSITY PROFILE. THESE SETTINGS PERSIST IN YOUR DATABASE SO THE APP FEELS CONSISTENT AFTER RESTORE.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <span style={rowLabelStyle}>CRT INTENSITY</span>
-              <select className="input" value={crtIntensity} onChange={(e) => setCrtIntensity(e.target.value as 'low' | 'medium' | 'high')}>
-                <option value="low">LOW</option>
-                <option value="medium">MEDIUM</option>
-                <option value="high">HIGH</option>
-              </select>
-            </label>
             <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <span style={rowLabelStyle}>TEXT SCALE</span>
               <select className="input" value={textScale} onChange={(e) => setTextScale(e.target.value as 'normal' | 'large' | 'xl')}>
@@ -1060,7 +1049,6 @@ export const SettingsPage: React.FC = () => {
             </button>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 8 }}>
-            <span style={rowLabelStyle}>CURRENT CRT: {appState?.crt_intensity?.toUpperCase() ?? 'MEDIUM'}</span>
             <span style={rowLabelStyle}>CURRENT SCALE: {appState?.text_scale?.toUpperCase() ?? 'NORMAL'}</span>
             <span style={rowLabelStyle}>CURRENT DENSITY: {appState?.ui_density?.toUpperCase() ?? 'COMFORTABLE'}</span>
           </div>
