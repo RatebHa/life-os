@@ -1,0 +1,178 @@
+:root {
+  /* Core Pip-Boy phosphor green — brighter for authentic CRT bloom */
+  --pip:          #50fa7b;
+  --pip-bright:   #a0ffb0;
+  --pip-dim:      #27a040;
+  --pip-muted:    #3aaa4a;
+  --pip-faint:    #1e401e;
+  --pip-dark:     #080d08;
+
+  /* Surfaces */
+  --pip-bg:       #090e09;
+  --pip-panel:    #0f1a0f;
+  --pip-border:   #367836;
+  --pip-elevated: #142014;
+
+  /* Accent colors */
+  --pip-amber:    #ffb627;
+  --pip-red:      #ff5555;
+  --pip-blue:     #40a0ff;
+
+  /* Effects */
+  --scanline: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(80,250,123,0.03) 2px,
+    rgba(80,250,123,0.03) 4px
+  );
+  --vignette: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0,0,0,0.5) 100%
+  );
+  --pip-glow:        0 0 10px rgba(80,250,123,0.5);
+  --pip-glow-bright: 0 0 16px rgba(160,255,176,0.7);
+  --pip-shadow-deep: 0 10px 30px rgba(0,0,0,0.45);
+  --pip-inset-glow: inset 0 0 18px rgba(80,250,123,0.08);
+  --pip-frame: linear-gradient(180deg, rgba(160,255,176,0.06), rgba(0,0,0,0));
+  --pip-grid: linear-gradient(rgba(80,250,123,0.035) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(80,250,123,0.025) 1px, transparent 1px);
+
+  /* Typography */
+  --font-display: 'VT323', monospace;
+  --font-body:    'Share Tech Mono', monospace;
+  --font-arabic:  'Noto Naskh Arabic', 'Amiri', 'Segoe UI', Tahoma, sans-serif;
+  --font-pip:     'Share Tech Mono', monospace;
+  --font-mono:    'Share Tech Mono', monospace;
+  --font-heading: 'VT323', monospace;
+
+  /* Spacing */
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap-md: 12px;
+  --gap-lg: 20px;
+
+  /* Layout */
+  --titlebar-height: 30px;
+  --sidebar-width:  200px;
+  --topbar-height:  48px;
+  --tabbar-height:  36px;
+  --footer-height:  28px;
+
+  /* Transitions — all LINEAR for Pip-Boy CRT feel */
+  --t-fast:  100ms linear;
+  --t-base:  150ms linear;
+  --t-slow:  200ms linear;
+
+  /* === BACKWARD COMPAT (never remove — used by momentum.ts, stores) === */
+  --bg-base:            #090e09;
+  --bg-panel:           #0f1a0f;
+  --bg-elevated:        #142014;
+  --bg-input:           #090e09;
+  --border-dim:         #1e401e;
+  --border-base:        #367836;
+  --border-bright:      #50fa7b;
+  --text-primary:       #50fa7b;
+  --text-secondary:     #3aaa4a;
+  --text-muted:         #3aaa4a;
+  --text-faint:         #1e401e;
+  --mil:                #50fa7b;
+  --mil-bright:         #a0ffb0;
+  --mil-dim:            #27a040;
+  --mil-bg:             #090e09;
+  --mil-glow:           rgba(80,250,123,0.20);
+  --bld:                #40a0ff;
+  --bld-bright:         #80c8ff;
+  --bld-dim:            #0a2a4a;
+  --bld-bg:             #090e09;
+  --bld-glow:           rgba(64,160,255,0.20);
+  --slf:                #a0ffb0;
+  --slf-bright:         #c0ffc8;
+  --slf-dim:            #1e5a1e;
+  --slf-bg:             #090e09;
+  --slf-glow:           rgba(160,255,176,0.20);
+  --state-peak:         #ffb627;
+  --state-normal:       #50fa7b;
+  --state-amber:        #ffb627;
+  --state-red:          #ff5555;
+  --state-red-bg:       rgba(255,85,85,0.08);
+  --state-red-dim:      rgba(255,85,85,0.28);
+  --momentum-peak:      #ffb627;
+  --momentum-normal:    #50fa7b;
+  --momentum-amber:     #ffb627;
+  --momentum-red:       #ff5555;
+  --domain:             #50fa7b;
+  --domain-primary:     #50fa7b;
+  --domain-bright:      #a0ffb0;
+  --domain-accent:      #a0ffb0;
+  --domain-dim:         #27a040;
+  --domain-bg:          #090e09;
+  --domain-subtle:      #090e09;
+  --domain-glow:        rgba(80,250,123,0.20);
+  --color-bg-base:      #090e09;
+  --color-bg-panel:     #0f1a0f;
+  --color-bg-elevated:  #142014;
+  --color-bg-hover:     #142014;
+  --color-text-primary: #50fa7b;
+  --color-text-muted:   #3aaa4a;
+  --color-text-dim:     #1e401e;
+  --color-border:       #367836;
+  --color-border-muted: #1e401e;
+  --color-danger:       #ff5555;
+  --color-success:      #50fa7b;
+  --color-warning:      #ffb627;
+  --color-info:         #40a0ff;
+  --transition-fast:    100ms linear;
+  --transition-normal:  150ms linear;
+  --transition-slow:    200ms linear;
+  --shadow-lg:          0 8px 32px rgba(0,0,0,0.9), 0 0 24px rgba(74,250,74,0.04);
+  --clip-card:          none;
+  --clip-btn:           none;
+  --clip-badge:         none;
+  --glow-text:          0 0 6px rgba(74,250,74,0.5);
+  --glow-sm:            0 0 8px rgba(74,250,74,0.4);
+  --glow-md:            0 0 12px rgba(74,250,74,0.35);
+  --glow-lg:            0 0 20px rgba(74,250,74,0.45);
+  --scanline-opacity:   0.72;
+  --vignette-opacity:   0.5;
+  --sweep-opacity:      0.55;
+  --body-scale:         1;
+  --panel-scale:        1;
+  --display-scale:      1;
+  --page-padding:       18px 22px;
+  --panel-padding:      10px 12px;
+  --row-height:         34px;
+}
+
+/* Domain aliases for data-domain attribute */
+[data-domain="military"] {
+  --domain:         #50fa7b;
+  --domain-primary: #50fa7b;
+  --domain-bright:  #a0ffb0;
+  --domain-accent:  #a0ffb0;
+  --domain-dim:     #27a040;
+  --domain-bg:      #090e09;
+  --domain-subtle:  #090e09;
+  --domain-glow:    rgba(80,250,123,0.20);
+}
+[data-domain="builder"] {
+  --domain:         #40a0ff;
+  --domain-primary: #40a0ff;
+  --domain-bright:  #80c8ff;
+  --domain-accent:  #80c8ff;
+  --domain-dim:     #0a2a4a;
+  --domain-bg:      #090e09;
+  --domain-subtle:  #090e09;
+  --domain-glow:    rgba(64,160,255,0.20);
+}
+[data-domain="self"] {
+  --domain:         #a0ffb0;
+  --domain-primary: #a0ffb0;
+  --domain-bright:  #c0ffc8;
+  --domain-accent:  #c0ffc8;
+  --domain-dim:     #1e5a1e;
+  --domain-bg:      #090e09;
+  --domain-subtle:  #090e09;
+  --domain-glow:    rgba(160,255,176,0.20);
+}

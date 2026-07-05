@@ -1,0 +1,591 @@
+import React, { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { clsx } from 'clsx';
+import { useGoalStore } from '../store/useGoalStore';
+import { useTaskStore } from '../store/useTaskStore';
+import { useNoteStore } from '../store/useNoteStore';
+import { useDomainStore } from '../store/useDomainStore';
+import type { CreateGoalPayload, DomainId, Goal, GoalHealth, UpdateGoalPayload } from '../lib/types';
+import { Modal } from '../components/shared/Modal';
+import { getDefaultDomainId, getDomainLabel, getDomainThemeStyle } from '../lib/domain-utils';
+import { formatDateDisplay } from '../lib/date-format';
+
+interface GoalFormProps {
+  onClose: () => void;
+  parentGoalId?: string;
+  defaultDomain?: DomainId;
+  initialGoal?: Goal;
+}
+
+function todayIso(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function normalizeText(value: string): string | undefined {
+  const trimmed = value.trim();
+  return trimmed ? trimmed : undefined;
+}
+
+function healthColors(health: GoalHealth): { text: string; border: string; background: string } {
+  if (health === 'stalled') {
+    return { text: 'var(--pip-red)', border: 'var(--pip-red)', background: 'rgba(255,64,64,0.08)' };
+  }
+  if (health === 'at_risk') {
+    return { text: 'var(--pip-amber)', border: 'var(--pip-amber)', background: 'rgba(200,160,32,0.08)' };
+  }
+  return { text: 'var(--pip-bright)', border: 'var(--pip-bright)', background: 'rgba(74,250,74,0.08)' };
+}
+
+function effectiveGoalHealth(goal: Goal): GoalHealth {
+  if (goal.status === 'completed') return 'on_track';
+  if (goal.health === 'stalled' || goal.blocked_by) return 'stalled';
+  const today = todayIso();
+  if (!goal.next_action) return 'at_risk';
+  if (goal.review_date && goal.review_date.slice(0, 10) < today) return 'at_risk';
+  if (goal.target_date && goal.target_date.slice(0, 10) < today && goal.progress_percent < 100) return 'at_risk';
+  return goal.health ?? 'on_track';
+}
+
+function goalWarnings(goal: Goal): string[] {
+  if (goal.status !== 'active') return [];
+  const warnings: string[] = [];
+  const today = todayIso();
+  if (!goal.next_action) warnings.push('NO NEXT ACTION');
+  if (goal.review_date && goal.review_date.slice(0, 10) < today) warnings.push('REVIEW OVERDUE');
+  if (goal.target_date && goal.target_date.slice(0, 10) < today && goal.progress_percent < 100) warnings.push('TARGET DATE PASSED');
+  if (goal.blocked_by) warnings.push('BLOCKED');
+  return warnings;
+}
+
+const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomain, initialGoal }) => {
+  const { createGoal, updateGoal } = useGoalStore();
+  const domains = useDomainStore((state) => state.domains);
+  const isEditing = Boolean(initialGoal);
+  const [domain, setDomain] = useState<DomainId>(initialGoal?.domain_id ?? defaultDomain ?? getDefaultDomainId(domains));
+  const [title, setTitle] = useState(initialGoal?.title ?? '');
+  const [description, setDescription] = useState(initialGoal?.description ?? '');
+  const [nextAction, setNextAction] = useState(initialGoal?.next_action ?? '');
+  const [reviewDate, setReviewDate] = useState(initialGoal?.review_date?.slice(0, 10) ?? '');
+  const [blockedBy, setBlockedBy] = useState(initialGoal?.blocked_by ?? '');
+  const [health, setHealth] = useState<GoalHealth>(initialGoal?.health ?? 'on_track');
+  const [targetDate, setTargetDate] = useState(initialGoal?.target_date?.slice(0, 10) ?? '');
+  const [saving, setSaving] = useState(false);
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    if (!title.trim()) return;
+    setSaving(true);
+
+    try {
+      if (isEditing && initialGoal) {
+        const payload: UpdateGoalPayload = {
+          id: initialGoal.id,
+          title: title.trim(),
+          description: description.trim(),
+          next_action: nextAction.trim(),
+          review_date: reviewDate,
+          blocked_by: blockedBy.trim(),
+          health,
+          target_date: targetDate,
+        };
+        await updateGoal(payload);
+      } else {
+        const payload: CreateGoalPayload = {
+          domain_id: domain,
+          title: title.trim(),
+          description: normalizeText(description),
+          parent_goal_id: parentGoalId,
+          next_action: normalizeText(nextAction),
+          review_date: reviewDate || undefined,
+          blocked_by: normalizeText(blockedBy),
+          health,
+          target_date: targetDate || undefined,
+        };
+        await createGoal(payload);
+      }
+
+      onClose();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      {!parentGoalId && !isEditing && (
+        <div>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+            Domain
+          </label>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+            {domains.map((entry) => (
+              <button
+                key={entry.id}
+                type="button"
+                data-domain={entry.id}
+                onClick={() => setDomain(entry.id)}
+                className={clsx('btn', domain === entry.id ? 'btn-primary' : 'btn-ghost')}
+                style={{ ...getDomainThemeStyle(entry), padding: '4px 8px', fontSize: 12 }}
+              >
+                {getDomainLabel(entry.id, domains).toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          Goal Title *
+        </label>
+        <input className="input" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="WHAT ARE YOU DRIVING TOWARD?" autoFocus required />
+      </div>
+
+      <div>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          Why It Matters
+        </label>
+        <textarea className="input" value={description} onChange={(event) => setDescription(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHY DOES THIS GOAL MATTER?" />
+      </div>
+
+      <div>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          Next Action
+        </label>
+        <input className="input" value={nextAction} onChange={(event) => setNextAction(event.target.value)} placeholder="WHAT IS THE VERY NEXT CONCRETE MOVE?" />
+      </div>
+
+      <div className="grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+        <div>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+            Review Date
+          </label>
+          <input className="input" type="date" lang="en-GB" value={reviewDate} onChange={(event) => setReviewDate(event.target.value)} />
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+            Target Date
+          </label>
+          <input className="input" type="date" lang="en-GB" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} />
+        </div>
+      </div>
+
+      <div>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          Blocked / Stalled Reason
+        </label>
+        <textarea className="input" value={blockedBy} onChange={(event) => setBlockedBy(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHAT IS SLOWING THIS GOAL DOWN?" />
+      </div>
+
+      <div>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--pip-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          Health
+        </label>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+          {(['on_track', 'at_risk', 'stalled'] as GoalHealth[]).map((value) => (
+            <button
+              key={value}
+              type="button"
+              className={clsx('btn', health === value ? 'btn-primary' : 'btn-ghost')}
+              onClick={() => setHealth(value)}
+              style={{ padding: '4px 8px', fontSize: 12 }}
+            >
+              {value.replace('_', ' ').toUpperCase()}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, paddingTop: 10, borderTop: '1px solid var(--pip-border)' }}>
+        <button type="button" className="btn btn-ghost" onClick={onClose}>CANCEL</button>
+        <button type="submit" className="btn btn-primary" disabled={!title.trim() || saving}>
+          {saving ? (isEditing ? 'SAVING...' : 'CREATING...') : (isEditing ? 'SAVE GOAL' : 'CREATE GOAL')}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+interface GoalNodeProps {
+  goal: Goal;
+  depth: number;
+  highlightedGoalId: string | null;
+}
+
+const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) => {
+  const { subGoals, updateGoal, deleteGoal } = useGoalStore();
+  const { tasks, createTask } = useTaskStore();
+  const { notes } = useNoteStore();
+  const [expanded, setExpanded] = useState(true);
+  const [showAddSub, setShowAddSub] = useState(false);
+  const [editingGoal, setEditingGoal] = useState(false);
+
+  const children = subGoals(goal.id);
+  const linkedTasks = tasks.filter((task) => task.goal_id === goal.id && task.status !== 'archived');
+  const linkedNotes = notes.filter((note) => note.goal_id === goal.id);
+  const openLinkedTasks = linkedTasks.filter((task) => task.status !== 'done');
+  const doneTasks = linkedTasks.filter((task) => task.status === 'done').length;
+  const computedProgress = linkedTasks.length > 0
+    ? Math.round((doneTasks / linkedTasks.length) * 100)
+    : goal.progress_percent;
+  const derivedHealth = effectiveGoalHealth(goal);
+  const healthTone = healthColors(derivedHealth);
+  const warnings = goalWarnings(goal);
+  const isDone = goal.status === 'completed';
+  const nextActionAlreadyExists = !!goal.next_action && openLinkedTasks.some(
+    (task) => task.title.trim().toLowerCase() === goal.next_action?.trim().toLowerCase()
+  );
+
+  async function handleComplete() {
+    try {
+      await updateGoal({
+        id: goal.id,
+        status: isDone ? 'active' : 'completed',
+        progress_percent: isDone ? 0 : 100,
+        health: isDone ? 'on_track' : goal.health,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function handleDelete() {
+    try {
+      await deleteGoal(goal.id);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function handleCreateNextActionTask() {
+    if (!goal.next_action?.trim()) return;
+
+    try {
+      await createTask({
+        domain_id: goal.domain_id,
+        title: goal.next_action.trim(),
+        description: goal.description ?? undefined,
+        priority: derivedHealth === 'stalled' ? 'critical' : 'high',
+        is_mit: false,
+        goal_id: goal.id,
+        time_estimate_minutes: 45,
+        due_date: goal.review_date || goal.target_date || undefined,
+        tags: JSON.stringify(['goal-next-action']),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return (
+    <div style={depth > 0 ? { marginLeft: 20, borderLeft: '1px solid var(--pip-border)' } : undefined}>
+      <div
+        data-domain={goal.domain_id}
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 8,
+          padding: '10px 10px 12px',
+          marginLeft: depth > 0 ? 8 : 0,
+          borderLeft: goal.id === highlightedGoalId ? '2px solid var(--pip-bright)' : undefined,
+          borderBottom: '1px solid var(--pip-faint)',
+        }}
+      >
+        <button
+          onClick={() => children.length > 0 && setExpanded(!expanded)}
+          style={{
+            flexShrink: 0,
+            marginTop: 2,
+            fontFamily: 'var(--font-display)',
+            fontSize: 12,
+            color: 'var(--pip-muted)',
+            background: 'none',
+            border: 'none',
+            cursor: children.length > 0 ? 'crosshair' : 'default',
+            opacity: children.length > 0 ? 1 : 0,
+            padding: 0,
+            lineHeight: 1,
+          }}
+        >
+          {expanded ? '▼' : '▶'}
+        </button>
+
+        <button
+          onClick={handleComplete}
+          style={{
+            flexShrink: 0,
+            marginTop: 2,
+            fontFamily: 'var(--font-display)',
+            fontSize: 14,
+            color: isDone ? 'var(--pip)' : 'var(--domain-primary, var(--pip-muted))',
+            background: 'none',
+            border: 'none',
+            cursor: 'crosshair',
+            padding: 0,
+            lineHeight: 1,
+          }}
+        >
+          {isDone ? '◆' : '◇'}
+        </button>
+
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 15, color: isDone ? 'var(--pip-muted)' : 'var(--pip)', textDecoration: isDone ? 'line-through' : 'none' }}>
+              {goal.title}
+            </span>
+            <span style={{ ...healthTone, borderWidth: 1, borderStyle: 'solid', padding: '1px 5px', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
+              {derivedHealth.replace('_', ' ')}
+            </span>
+            {warnings.map((warning) => (
+              <span key={`${goal.id}-${warning}`} style={{ border: '1px solid var(--pip-amber)', color: 'var(--pip-amber)', background: 'rgba(200,160,32,0.08)', padding: '1px 5px', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
+                {warning}
+              </span>
+            ))}
+          </div>
+
+          {goal.description && (
+            <div style={{ fontSize: 11, color: 'var(--pip-muted)', marginTop: 4 }}>
+              {goal.description}
+            </div>
+          )}
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10, marginTop: 8 }}>
+            <div className="pip-panel" style={{ margin: 0 }}>
+              <div className="pip-panel-header">
+                <span className="pip-panel-title">NEXT ACTION</span>
+              </div>
+              <div className="pip-panel-body" style={{ paddingTop: 8 }}>
+                <div style={{ fontSize: 13, color: goal.next_action ? 'var(--pip-bright)' : 'var(--pip-red)' }}>
+                  {goal.next_action || 'NO NEXT ACTION DEFINED'}
+                </div>
+                {goal.blocked_by && (
+                  <div style={{ fontSize: 11, color: 'var(--pip-amber)', marginTop: 6 }}>
+                    BLOCKED BY: {goal.blocked_by}
+                  </div>
+                )}
+                <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
+                  <button className="btn btn-ghost btn-sm" onClick={() => setEditingGoal(true)}>
+                    EDIT GOAL
+                  </button>
+                  <button
+                    className="btn btn-ghost btn-sm"
+                    onClick={handleCreateNextActionTask}
+                    disabled={!goal.next_action || nextActionAlreadyExists}
+                  >
+                    {nextActionAlreadyExists ? 'TASK EXISTS' : 'MAKE TASK'}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="pip-panel" style={{ margin: 0 }}>
+              <div className="pip-panel-header">
+                <span className="pip-panel-title">REVIEW</span>
+              </div>
+              <div className="pip-panel-body" style={{ paddingTop: 8 }}>
+                <div style={{ fontSize: 12, color: 'var(--pip-muted)' }}>
+                  REVIEW DATE: {goal.review_date ? formatDateDisplay(goal.review_date) : 'NOT SET'}
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--pip-muted)', marginTop: 4 }}>
+                  TARGET DATE: {goal.target_date ? formatDateDisplay(goal.target_date) : 'OPEN'}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+                  <div style={{ flex: 1, maxWidth: 140, height: 4, background: 'var(--pip-faint)' }}>
+                    <div style={{ height: '100%', width: `${computedProgress}%`, background: isDone ? 'var(--pip)' : 'var(--domain-primary, var(--pip))' }} />
+                  </div>
+                  <span style={{ fontSize: 10, color: 'var(--pip-muted)' }}>{computedProgress}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10, marginTop: 8 }}>
+            <div className="pip-panel" style={{ margin: 0 }}>
+              <div className="pip-panel-header">
+                <span className="pip-panel-title">LINKED TASKS</span>
+                <span className="pip-panel-meta">{linkedTasks.length}</span>
+              </div>
+              <div className="pip-panel-body" style={{ paddingTop: 8 }}>
+                {linkedTasks.length === 0 ? (
+                  <div style={{ fontSize: 11, color: 'var(--pip-muted)' }}>NO TASKS LINKED TO THIS GOAL YET.</div>
+                ) : (
+                  linkedTasks.slice(0, 4).map((task) => (
+                    <div key={task.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 6 }}>
+                      <span style={{ fontSize: 12, color: task.status === 'done' ? 'var(--pip-muted)' : 'var(--pip)' }}>
+                        {task.title}
+                      </span>
+                      <span style={{ fontSize: 9, color: 'var(--pip-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                        {task.status.replace('_', ' ')}
+                      </span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="pip-panel" style={{ margin: 0 }}>
+              <div className="pip-panel-header">
+                <span className="pip-panel-title">LINKED NOTES</span>
+                <span className="pip-panel-meta">{linkedNotes.length}</span>
+              </div>
+              <div className="pip-panel-body" style={{ paddingTop: 8 }}>
+                {linkedNotes.length === 0 ? (
+                  <div style={{ fontSize: 11, color: 'var(--pip-muted)' }}>NO NOTES LINKED TO THIS GOAL YET.</div>
+                ) : (
+                  linkedNotes.slice(0, 4).map((note) => (
+                    <div key={note.id} style={{ marginBottom: 6 }}>
+                      <div style={{ fontSize: 12, color: 'var(--pip)' }}>{note.title}</div>
+                      <div style={{ fontSize: 9, color: 'var(--pip-muted)', letterSpacing: 1 }}>
+                        {formatDateDisplay(note.updated_at)}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
+          {depth < 2 && (
+            <button className="btn btn-sm btn-ghost" title="Add sub-goal" style={{ padding: '2px 6px', minHeight: 'auto' }} onClick={() => setShowAddSub(true)}>
+              +
+            </button>
+          )}
+          {goal.status === 'active' && (
+            <button
+              onClick={async () => {
+                if (window.confirm(`ABANDON "${goal.title}"?\n\nThis logs the decision and archives the goal.`)) {
+                  try {
+                    await updateGoal({ id: goal.id, status: 'archived' });
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }
+              }}
+              className="btn btn-sm btn-ghost"
+              title="Abandon goal"
+              style={{ padding: '2px 6px', minHeight: 'auto', color: 'var(--pip-amber)', fontSize: 9 }}
+            >
+              ABANDON
+            </button>
+          )}
+          <button className="btn btn-sm btn-danger" title="Delete goal" style={{ padding: '2px 6px', minHeight: 'auto' }} onClick={handleDelete}>
+            ✕
+          </button>
+        </div>
+      </div>
+
+      {expanded && children.length > 0 && (
+        <div>
+          {children.map((child) => (
+            <GoalNode key={child.id} goal={child} depth={depth + 1} highlightedGoalId={highlightedGoalId} />
+          ))}
+        </div>
+      )}
+
+      <Modal open={showAddSub} onClose={() => setShowAddSub(false)} title="New Sub-Goal">
+        <GoalForm onClose={() => setShowAddSub(false)} parentGoalId={goal.id} defaultDomain={goal.domain_id as DomainId} />
+      </Modal>
+
+      <Modal open={editingGoal} onClose={() => setEditingGoal(false)} title="Edit Goal">
+        <GoalForm onClose={() => setEditingGoal(false)} initialGoal={goal} />
+      </Modal>
+    </div>
+  );
+};
+
+export const GoalsPage: React.FC = () => {
+  const { goals, rootGoals } = useGoalStore();
+  const domains = useDomainStore((state) => state.domains);
+  const [showNewGoal, setShowNewGoal] = useState(false);
+  const [filterDomain, setFilterDomain] = useState<DomainId | 'all'>('all');
+  const [searchParams] = useSearchParams();
+  const highlightedGoalId = searchParams.get('goal');
+
+  const filteredGoals = useMemo(
+    () => goals.filter((goal) => filterDomain === 'all' || goal.domain_id === filterDomain),
+    [filterDomain, goals]
+  );
+  const roots = rootGoals().filter((goal) => filterDomain === 'all' || goal.domain_id === filterDomain);
+  const activeCount = filteredGoals.filter((goal) => goal.status === 'active').length;
+  const doneCount = filteredGoals.filter((goal) => goal.status === 'completed').length;
+  const missingNextActionCount = filteredGoals.filter((goal) => goal.status === 'active' && !goal.next_action).length;
+  const stalledCount = filteredGoals.filter((goal) => effectiveGoalHealth(goal) === 'stalled' && goal.status === 'active').length;
+
+  return (
+    <div className="page-content fade-in">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div>
+          <div className="page-title">GOALS</div>
+          <div className="page-subtitle">OBJECTIVES THAT CREATE ACTION, REVIEW, AND FOLLOW-THROUGH</div>
+        </div>
+        <button className="btn btn-primary" onClick={() => setShowNewGoal(true)}>
+          + NEW GOAL
+        </button>
+      </div>
+
+      <hr className="page-sep" />
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+        {[
+          { label: 'ACTIVE', value: activeCount },
+          { label: 'COMPLETED', value: doneCount },
+          { label: 'NO NEXT ACTION', value: missingNextActionCount },
+          { label: 'STALLED', value: stalledCount },
+        ].map((item) => (
+          <div key={item.label} className="stat-card">
+            <div className="stat-value">{item.value}</div>
+            <div className="stat-label">{item.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {missingNextActionCount > 0 && (
+        <div style={{ padding: '8px 12px', border: '1px solid var(--pip-amber)', background: 'rgba(200,160,32,0.06)' }}>
+          <div style={{ fontSize: 12, color: 'var(--pip-amber)', letterSpacing: 1, textTransform: 'uppercase' }}>
+            {missingNextActionCount} active goal{missingNextActionCount !== 1 ? 's have' : ' has'} no next action. Those goals are at risk of becoming passive.
+          </div>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <button onClick={() => setFilterDomain('all')} className={clsx('btn btn-sm', filterDomain === 'all' ? 'btn-primary' : 'btn-ghost')}>
+          ALL
+        </button>
+        {domains.map((domain) => (
+          <button
+            key={domain.id}
+            data-domain={domain.id}
+            onClick={() => setFilterDomain(domain.id)}
+            className={clsx('btn btn-sm', filterDomain === domain.id ? 'btn-primary' : 'btn-ghost')}
+            style={getDomainThemeStyle(domain)}
+          >
+            {getDomainLabel(domain.id, domains).toUpperCase()}
+          </button>
+        ))}
+      </div>
+
+      {roots.length === 0 ? (
+        <div className="pip-panel">
+          <div className="pip-empty">
+            <div className="pip-empty-title">NO GOALS FOUND</div>
+            <div>SET YOUR FIRST OBJECTIVE AND DEFINE ITS NEXT MOVE<span className="boot-cursor" /></div>
+          </div>
+        </div>
+      ) : (
+        <div className="pip-panel">
+          {roots.map((goal) => (
+            <GoalNode key={goal.id} goal={goal} depth={0} highlightedGoalId={highlightedGoalId} />
+          ))}
+        </div>
+      )}
+
+      <Modal open={showNewGoal} onClose={() => setShowNewGoal(false)} title="New Goal">
+        <GoalForm onClose={() => setShowNewGoal(false)} defaultDomain={filterDomain !== 'all' ? filterDomain : undefined} />
+      </Modal>
+    </div>
+  );
+};
