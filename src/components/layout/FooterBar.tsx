@@ -23,10 +23,10 @@ export const FooterBar: React.FC = () => {
         <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <span
             style={{
-              width: 5,
-              height: 5,
-              background: 'var(--color-accent)',
-              boxShadow: 'var(--shadow-focus-ring)',
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: 'var(--color-success)',
               display: 'inline-block',
             }}
           />
