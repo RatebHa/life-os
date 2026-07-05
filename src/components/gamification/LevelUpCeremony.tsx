@@ -28,12 +28,21 @@ export const LevelUpCeremony: React.FC = () => {
       className="level-up-overlay"
       style={{
         opacity: visible ? 1 : 0,
-        transition: 'opacity 400ms linear',
+        transition: 'opacity var(--motion-slow)',
         pointerEvents: visible ? 'all' : 'none',
       }}
       onClick={dismissLevelUp}
     >
-      <div className="level-up-shell" data-domain={levelUpEvent.domainId} style={getDomainThemeStyle(levelUpEvent.domainId, domains)}>
+      <div
+        className="level-up-shell"
+        data-domain={levelUpEvent.domainId}
+        style={{
+          ...getDomainThemeStyle(levelUpEvent.domainId, domains),
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'scale(1)' : 'scale(0.96)',
+          transition: 'opacity var(--motion-slow), transform var(--motion-slow)',
+        }}
+      >
         <div className="level-up-hud">
           <span>DOMAIN</span>
           <span>{domainLabel}</span>
