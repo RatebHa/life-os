@@ -50,7 +50,7 @@ const BOOT_STEPS = [
   'MOUNTING LOCAL DATABASE',
   'VERIFYING DOMAIN TELEMETRY',
   'LOADING TODAY BOARD',
-  'CALIBRATING CRT PIPELINE',
+  'PREPARING INTERFACE',
   'READYING COMMAND GRID',
 ] as const;
 
@@ -66,15 +66,9 @@ function resolveShellDomain(pathname: string): DomainId | null {
 }
 
 function buildDisplayVariables(
-  crtIntensity: 'low' | 'medium' | 'high' | undefined,
   textScale: 'normal' | 'large' | 'xl' | undefined,
   uiDensity: 'compact' | 'comfortable' | undefined,
 ): React.CSSProperties {
-  const crtMap = {
-    low: { scanline: '0.45', vignette: '0.35', sweep: '0.28' },
-    medium: { scanline: '0.72', vignette: '0.5', sweep: '0.55' },
-    high: { scanline: '1', vignette: '0.72', sweep: '0.88' },
-  } as const;
   const scaleMap = {
     normal: { body: '1', panel: '1', display: '1' },
     large: { body: '1.08', panel: '1.1', display: '1.08' },
@@ -85,14 +79,10 @@ function buildDisplayVariables(
     comfortable: { page: '18px 22px', panel: '10px 12px', row: '34px' },
   } as const;
 
-  const crt = crtMap[crtIntensity ?? 'medium'];
   const scale = scaleMap[textScale ?? 'normal'];
   const density = densityMap[uiDensity ?? 'comfortable'];
 
   return {
-    ['--scanline-opacity' as string]: crt.scanline,
-    ['--vignette-opacity' as string]: crt.vignette,
-    ['--sweep-opacity' as string]: crt.sweep,
     ['--body-scale' as string]: scale.body,
     ['--panel-scale' as string]: scale.panel,
     ['--display-scale' as string]: scale.display,
@@ -113,11 +103,11 @@ const BootScreen: React.FC = () => {
   }, []);
 
   return (
-    <div className="pip-screen boot-screen fixed inset-0" style={{ background: 'var(--color-bg)' }}>
+    <div className="boot-screen fixed inset-0" style={{ background: 'var(--color-bg)' }}>
       <div className="boot-shell">
         <div className="boot-header">
           <div className="boot-brand">LIFE OS</div>
-          <div className="boot-subtitle">PIP-BOY PRODUCTIVITY MATRIX</div>
+          <div className="boot-subtitle">PREPARING YOUR WORKSPACE</div>
         </div>
         <div className="boot-grid">
           <div className="boot-panel">
@@ -198,8 +188,8 @@ const AppInner: React.FC = () => {
   const appStateRef = useRef(appState);
   const shellDomain = resolveShellDomain(location.pathname);
   const displayVariables = useMemo(
-    () => buildDisplayVariables(appState?.crt_intensity, appState?.text_scale, appState?.ui_density),
-    [appState?.crt_intensity, appState?.text_scale, appState?.ui_density],
+    () => buildDisplayVariables(appState?.text_scale, appState?.ui_density),
+    [appState?.text_scale, appState?.ui_density],
   );
 
   useEffect(() => {
@@ -508,9 +498,8 @@ const AppInner: React.FC = () => {
 
   return (
     <div
-      className="pip-screen app-shell"
+      className="app-shell"
       data-domain={shellDomain ?? undefined}
-      data-crt={appState?.crt_intensity ?? 'medium'}
       data-scale={appState?.text_scale ?? 'normal'}
       data-density={appState?.ui_density ?? 'comfortable'}
       style={displayVariables}
