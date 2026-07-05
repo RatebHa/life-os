@@ -203,7 +203,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
           width: 560,
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
-          boxShadow: '0 0 24px rgba(74,250,74,0.12)',
+          boxShadow: '0 0 24px rgba(124,108,255,0.12)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderBottom: '1px solid var(--color-border)' }}>

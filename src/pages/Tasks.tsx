@@ -302,7 +302,7 @@ export const TasksPage: React.FC = () => {
             borderBottom: '1px solid var(--color-surface-hover)',
             borderLeft: isHighlighted ? '2px solid var(--color-text)' : undefined,
             opacity: isDone ? 0.55 : 1,
-            background: depth > 0 ? 'rgba(74,250,74,0.03)' : undefined,
+            background: depth > 0 ? 'rgba(124,108,255,0.03)' : undefined,
           }}
         >
           <button

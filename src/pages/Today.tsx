@@ -53,9 +53,9 @@ type TaskReason = { label: string; tone: ReasonTone };
 
 function chipStyle(tone: ReasonTone): React.CSSProperties {
   if (tone === 'highlight') return { border: '1px solid var(--color-warning)', color: 'var(--color-warning)', background: 'rgba(200,160,32,0.08)', padding: '2px 6px', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' };
-  if (tone === 'warning') return { border: '1px solid var(--color-text)', color: 'var(--color-text)', background: 'rgba(74,250,74,0.08)', padding: '2px 6px', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' };
+  if (tone === 'warning') return { border: '1px solid var(--color-text)', color: 'var(--color-text)', background: 'rgba(124,108,255,0.08)', padding: '2px 6px', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' };
   if (tone === 'critical') return { border: '1px solid var(--color-danger)', color: 'var(--color-danger)', background: 'rgba(255,64,64,0.08)', padding: '2px 6px', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' };
-  return { border: '1px solid var(--color-border)', color: 'var(--color-text-muted)', background: 'rgba(74,250,74,0.03)', padding: '2px 6px', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' };
+  return { border: '1px solid var(--color-border)', color: 'var(--color-text-muted)', background: 'rgba(124,108,255,0.03)', padding: '2px 6px', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' };
 }
 
 function taskReasons(task: Task, today: string): TaskReason[] {
@@ -453,7 +453,7 @@ export const TodayPage: React.FC = () => {
               data-domain={primaryFocusTask?.domain_id}
               style={{
                 border: '1px solid var(--color-border)',
-                background: 'rgba(74,250,74,0.03)',
+                background: 'rgba(124,108,255,0.03)',
                 padding: '12px 14px',
                 display: 'grid',
                 gap: 10,
@@ -635,7 +635,7 @@ export const TodayPage: React.FC = () => {
                   <div>Try a larger time window or a lighter energy mode.</div>
                 </div>
               ) : suggestedFocusTasks.map((task) => (
-                <div key={`focus-${task.id}`} data-domain={task.domain_id} style={{ border: '1px solid var(--color-surface-hover)', padding: '8px 10px', background: 'rgba(74,250,74,0.03)' }}>
+                <div key={`focus-${task.id}`} data-domain={task.domain_id} style={{ border: '1px solid var(--color-surface-hover)', padding: '8px 10px', background: 'rgba(124,108,255,0.03)' }}>
                   <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{task.title}</div>
                   <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 4, textTransform: 'uppercase', letterSpacing: 1 }}>{task.energy_level} / {formatMinutes(taskEstimatedMinutes(task))}</div>
                   <button className="btn btn-ghost btn-sm" style={{ marginTop: 8 }} onClick={() => handleFocus(task).catch(console.error)}>FOCUS</button>

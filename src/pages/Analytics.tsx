@@ -521,7 +521,7 @@ export const AnalyticsPage: React.FC = () => {
                 <CartesianGrid strokeDasharray="2 2" stroke="var(--color-surface-hover)" vertical={false} />
                 <XAxis dataKey="date" tick={chartAxisStyle} tickLine={false} axisLine={false} tickFormatter={tickFormatter} interval={0} />
                 <YAxis tick={chartAxisStyle} tickLine={false} axisLine={false} />
-                <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(74,250,74,0.05)' }} />
+                <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(124,108,255,0.05)' }} />
                 {domains.map((domain) => (
                   <Bar
                     key={domain.id}

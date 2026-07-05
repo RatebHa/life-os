@@ -154,7 +154,7 @@ export const Onboarding: React.FC = () => {
           maxWidth: '94vw',
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
-          boxShadow: '0 0 24px rgba(74,250,74,0.15)',
+          boxShadow: '0 0 24px rgba(124,108,255,0.15)',
           padding: '32px 36px',
           display: 'flex',
           flexDirection: 'column',

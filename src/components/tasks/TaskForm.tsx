@@ -299,7 +299,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
                 className={clsx(
                   'flex items-center gap-2.5 px-3 py-2 border text-sm font-semibold tracking-wider transition-all w-full',
                   isTopThree
-                    ? 'border-[var(--color-accent)] bg-[rgba(74,250,74,0.08)] text-[var(--color-text)]'
+                    ? 'border-[var(--color-accent)] bg-[rgba(124,108,255,0.08)] text-[var(--color-text)]'
                     : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)]',
                 )}
                 style={{ clipPath: 'polygon(6px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 6px)' }}

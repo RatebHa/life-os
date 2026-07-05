@@ -90,7 +90,7 @@ export const CalendarPage: React.FC = () => {
                     onClick={() => selectDate(isSelected ? null : day.date)}
                     style={{
                       border: isSelected ? '1px solid var(--color-text)' : isToday ? '1px solid var(--color-accent)' : '1px solid var(--color-surface-hover)',
-                      background: isSelected ? 'rgba(74,250,74,0.08)' : isToday ? 'var(--color-surface-hover)' : 'transparent',
+                      background: isSelected ? 'rgba(124,108,255,0.08)' : isToday ? 'var(--color-surface-hover)' : 'transparent',
                       padding: 4,
                       minHeight: 64,
                       cursor: 'crosshair',

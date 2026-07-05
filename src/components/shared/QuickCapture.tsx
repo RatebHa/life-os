@@ -87,7 +87,7 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
           padding: '18px 22px',
           width: 500,
           maxWidth: '90vw',
-          boxShadow: '0 0 40px rgba(74,250,74,0.12)',
+          boxShadow: '0 0 40px rgba(124,108,255,0.12)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>

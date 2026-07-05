@@ -82,7 +82,7 @@ export const FocusTimer: React.FC = () => {
           padding: '10px 14px',
           border: '1px solid var(--color-border)',
           background: 'linear-gradient(180deg, rgba(10,26,10,0.98), rgba(7,17,7,0.98))',
-          boxShadow: '0 0 18px rgba(74,250,74,0.14)',
+          boxShadow: '0 0 18px rgba(124,108,255,0.14)',
           backdropFilter: 'blur(3px)',
         }}
       >

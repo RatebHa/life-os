@@ -33,7 +33,7 @@ function healthColors(health: GoalHealth): { text: string; border: string; backg
   if (health === 'at_risk') {
     return { text: 'var(--color-warning)', border: 'var(--color-warning)', background: 'rgba(200,160,32,0.08)' };
   }
-  return { text: 'var(--color-text)', border: 'var(--color-text)', background: 'rgba(74,250,74,0.08)' };
+  return { text: 'var(--color-text)', border: 'var(--color-text)', background: 'rgba(124,108,255,0.08)' };
 }
 
 function effectiveGoalHealth(goal: Goal): GoalHealth {

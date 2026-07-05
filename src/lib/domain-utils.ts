@@ -47,7 +47,7 @@ function buildAccent(color: string): string {
 
 function buildSubtle(color: string): string {
   const rgb = hexToRgb(color);
-  if (!rgb) return 'rgba(74,250,74,0.08)';
+  if (!rgb) return 'rgba(124,108,255,0.08)';
   return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.12)`;
 }
 
