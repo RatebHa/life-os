@@ -4,16 +4,10 @@
 
 /* ── LOCAL FONTS ───────────────────────────────────────────────────────────── */
 @font-face {
-  font-family: 'VT323';
-  src: url('../assets/fonts/VT323-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
-}
-@font-face {
-  font-family: 'Share Tech Mono';
-  src: url('../assets/fonts/ShareTechMono-Regular.ttf') format('truetype');
-  font-weight: 400;
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-Variable.ttf') format('truetype-variations'),
+       url('../assets/fonts/Inter-Variable.ttf') format('truetype');
+  font-weight: 100 900;
   font-style: normal;
   font-display: block;
 }
@@ -25,65 +19,37 @@ html {
   height: 100%;
   overflow: hidden;
   scrollbar-gutter: stable;
-  background: #060e06;
+  background: #0C0E12;
 }
 body {
   height: 100%;
   overflow: hidden;
-  background: var(--pip-bg);
-  color: var(--pip);
-  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
   font-size: calc(14px * var(--body-scale));
   line-height: 1.5;
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: unset;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 #root { height: 100%; overflow: hidden; }
 
 /* ── CURSOR ────────────────────────────────────────────────────────────────── */
 * { cursor: default; }
-button, [role="button"], .nav-item, .tab-btn, .task-row, .habit-row { cursor: crosshair; }
-input, textarea, select { cursor: text; }
-a { cursor: crosshair; }
+button, [role="button"], .nav-item, .tab, .task-row, .habit-row, select { cursor: pointer; }
+input, textarea { cursor: text; }
+a { cursor: pointer; }
 
 /* ── SCROLLBARS ────────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--pip-faint); border: 1px solid var(--pip-border); }
-::-webkit-scrollbar-thumb { background: var(--pip-dim); border: 1px solid var(--pip-border); }
-::-webkit-scrollbar-thumb:hover { background: var(--pip); }
-::-webkit-scrollbar-corner { background: var(--pip-dark); }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-faint); }
+::-webkit-scrollbar-corner { background: transparent; }
 
 /* ── SELECTION ─────────────────────────────────────────────────────────────── */
-::selection { background: rgba(74,250,74,0.3); color: var(--pip-bright); }
-:focus-visible { outline: 1px solid var(--pip); outline-offset: 1px; }
-
-/* ── PIP-BOY CRT SCREEN WRAPPER ────────────────────────────────────────────── */
-.pip-screen {
-  position: relative;
-  background-image:
-    radial-gradient(circle at top center, rgba(80,250,123,0.07), transparent 35%),
-    var(--pip-grid);
-  background-size: auto, 28px 28px;
-}
-.pip-screen::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--scanline);
-  pointer-events: none;
-  z-index: 100;
-  animation: flicker 8s linear infinite;
-  opacity: var(--scanline-opacity);
-}
-.pip-screen::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--vignette);
-  pointer-events: none;
-  z-index: 101;
-  opacity: var(--vignette-opacity);
-}
+::selection { background: var(--color-accent-muted); color: var(--color-text); }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
 
 /* ── APP SHELL ─────────────────────────────────────────────────────────────── */
 .app-shell {
@@ -101,26 +67,13 @@ a { cursor: crosshair; }
   overflow: hidden;
   position: relative;
   isolation: isolate;
-}
-
-.app-shell::before {
-  content: '';
-  position: absolute;
-  top: calc(var(--titlebar-height) + var(--topbar-height) + var(--tabbar-height));
-  right: 0;
-  bottom: var(--footer-height);
-  left: var(--sidebar-width);
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent, rgba(80,250,123,0.025), transparent);
-  background-size: 100% 180px;
-  animation: screenSweep 9s linear infinite;
-  opacity: var(--sweep-opacity);
+  background: var(--color-bg);
 }
 
 .app-titlebar {
   grid-area: titlebar;
-  background: var(--pip-dark);
-  border-bottom: 1px solid var(--pip-border);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   padding: 0 8px 0 12px;
@@ -146,23 +99,20 @@ a { cursor: crosshair; }
 /* Keep legacy topbar name working */
 .app-topbar {
   grid-area: header;
-  background:
-    linear-gradient(180deg, rgba(160,255,176,0.06), rgba(0,0,0,0)),
-    var(--pip-panel);
-  border-bottom: 2px solid var(--pip-border);
-  box-shadow: var(--pip-inset-glow);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
   height: var(--topbar-height);
   display: flex;
   align-items: center;
   padding: 0 16px;
   gap: 10px;
   z-index: 10;
-  transition: border-color var(--t-base), box-shadow var(--t-base), background var(--t-base);
+  transition: border-color var(--motion-base), background var(--motion-base);
 }
 
 .app-sidebar {
-  background: var(--pip-panel);
-  border-right: 2px solid var(--pip-border);
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -179,13 +129,13 @@ a { cursor: crosshair; }
 
 .app-sidebar-actions {
   flex-shrink: 0;
-  border-top: 1px solid var(--pip-border);
+  border-top: 1px solid var(--color-border);
   padding: 4px 0;
-  background: var(--pip-panel);
+  background: var(--color-surface);
 }
 
 .app-main {
-  background: var(--pip-bg);
+  background: var(--color-bg);
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
@@ -193,41 +143,11 @@ a { cursor: crosshair; }
   contain: paint;
 }
 
-.app-shell[data-domain="military"] .app-topbar,
-.app-shell[data-domain="military"] .pip-tabbar,
-.app-shell[data-domain="military"] .app-sidebar {
-  border-color: var(--domain-primary);
-  box-shadow: inset 0 0 18px var(--domain-glow);
-}
-.app-shell[data-domain="builder"] .app-topbar,
-.app-shell[data-domain="builder"] .pip-tabbar,
-.app-shell[data-domain="builder"] .app-sidebar {
-  border-color: var(--domain-primary);
-  box-shadow: inset 0 0 18px var(--domain-glow);
-}
-.app-shell[data-domain="self"] .app-topbar,
-.app-shell[data-domain="self"] .pip-tabbar,
-.app-shell[data-domain="self"] .app-sidebar {
-  border-color: var(--domain-primary);
-  box-shadow: inset 0 0 18px var(--domain-glow);
-}
-.app-shell[data-domain] .pip-panel-header {
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--domain-primary) 18%, transparent), transparent 55%),
-    var(--pip-faint);
-}
-.app-shell[data-domain] .page-title {
-  color: var(--domain-bright);
-  text-shadow: 0 0 12px var(--domain-primary);
-}
-
-/* ── PIP-BOY TAB BAR ───────────────────────────────────────────────────────── */
-.pip-tabbar {
+/* ── TAB BAR ───────────────────────────────────────────────────────────────── */
+.tabbar {
   grid-area: tabbar;
-  background:
-    linear-gradient(180deg, rgba(160,255,176,0.04), rgba(0,0,0,0)),
-    var(--pip-dark);
-  border-bottom: 2px solid var(--pip-border);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: stretch;
   padding: 0 8px;
@@ -237,67 +157,48 @@ a { cursor: crosshair; }
   overflow-y: hidden;
   scrollbar-width: thin;
 }
-.pip-tab {
+.tab {
   position: relative;
   display: flex;
   align-items: center;
   padding: 0 14px;
-  font-family: var(--font-display);
-  font-size: 16px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--pip-muted);
-  cursor: crosshair;
-  border-bottom: 3px solid transparent;
-  transition: color var(--t-fast), border-color var(--t-fast);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid transparent;
+  transition: color var(--motion-fast), border-color var(--motion-fast);
   user-select: none;
   white-space: nowrap;
 }
-.pip-tab::after {
-  content: '';
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 2px;
-  height: 1px;
-  background: transparent;
+.tab:hover {
+  color: var(--color-text);
+  background: var(--color-surface-hover);
 }
-.pip-tab:hover {
-  color: var(--pip);
-  background: rgba(80,250,123,0.03);
-}
-.pip-tab.active {
-  color: var(--pip-bright);
-  border-bottom-color: var(--pip);
-  text-shadow: var(--pip-glow);
-}
-.pip-tab.active::after {
-  background: linear-gradient(90deg, transparent, var(--pip-bright), transparent);
-  box-shadow: var(--pip-glow);
+.tab.active {
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
+  font-weight: 600;
 }
 
-/* ── PIP-BOY FOOTER ────────────────────────────────────────────────────────── */
-.pip-footer {
+/* ── FOOTER ────────────────────────────────────────────────────────────────── */
+.footer {
   grid-area: footer;
-  background:
-    linear-gradient(180deg, rgba(160,255,176,0.04), rgba(0,0,0,0)),
-    var(--pip-panel);
-  border-top: 2px solid var(--pip-border);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 14px;
-  font-family: var(--font-body);
-  font-size: 9px;
-  letter-spacing: 1px;
-  color: var(--pip-muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--color-text-muted);
   z-index: 10;
-  box-shadow: var(--pip-inset-glow);
 }
-.pip-footer.critical {
-  border-top-color: var(--pip-red);
-  color: var(--pip-red);
-  animation: blink 1s step-end infinite;
+.footer.critical {
+  border-top-color: var(--color-danger);
+  color: var(--color-danger);
+  animation: softPulse 1.6s var(--motion-slow) infinite;
 }
 
 /* ── PAGE LAYOUT ───────────────────────────────────────────────────────────── */
@@ -306,7 +207,7 @@ a { cursor: crosshair; }
   display: flex;
   flex-direction: column;
   gap: 18px;
-  animation: pageRise 220ms linear;
+  animation: pageRise var(--motion-base) both;
 }
 
 .page-header {
@@ -389,24 +290,21 @@ a { cursor: crosshair; }
 
 /* ── PAGE TITLE ────────────────────────────────────────────────────────────── */
 .page-title {
-  font-family: var(--font-display);
-  font-size: calc(30px * var(--display-scale));
-  color: var(--pip-bright);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  text-shadow: var(--pip-glow);
-  line-height: 0.95;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: calc(26px * var(--display-scale));
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  line-height: 1.2;
 }
 .page-subtitle {
-  font-family: var(--font-body);
-  font-size: calc(10px * var(--body-scale));
-  color: var(--pip-muted);
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  font-family: var(--font-sans);
+  font-size: calc(13px * var(--body-scale));
+  color: var(--color-text-muted);
 }
 .page-sep {
   border: none;
-  border-top: 1px solid var(--pip-border);
+  border-top: 1px solid var(--color-border);
   margin: 2px 0 0;
 }
 
