@@ -163,7 +163,7 @@ export const Onboarding: React.FC = () => {
       >
         {step === 0 && (
           <>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 40, color: 'var(--color-text)', letterSpacing: 5, textShadow: 'var(--shadow-md)' }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 40, color: 'var(--color-text)', letterSpacing: 5 }}>
               DEFINE YOUR DOMAINS
             </div>
             <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-text-muted)', lineHeight: 1.8, letterSpacing: 1 }}>
@@ -346,7 +346,7 @@ export const Onboarding: React.FC = () => {
 
         {step === 4 && (
           <>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 36, color: 'var(--color-text)', letterSpacing: 4, textShadow: 'var(--shadow-md)' }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 36, color: 'var(--color-text)', letterSpacing: 4 }}>
               SYSTEM READY
             </div>
             <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-text-muted)', lineHeight: 1.8, letterSpacing: 1 }}>

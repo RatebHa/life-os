@@ -31,9 +31,9 @@ export const Sidebar: React.FC = () => {
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: 16,
-            letterSpacing: 3,
+            fontWeight: 700,
+            letterSpacing: '-0.01em',
             color: 'var(--color-text)',
-            textShadow: 'var(--shadow-focus-ring)',
           }}
         >
           LIFE-OS
@@ -63,7 +63,7 @@ export const Sidebar: React.FC = () => {
           }}
         >
           <span>SYS</span>
-          <span style={{ color: 'var(--color-accent)', textShadow: 'var(--glow-text)' }}>ONLINE</span>
+          <span style={{ color: 'var(--color-success)' }}>ONLINE</span>
         </div>
       </div>
 
@@ -188,7 +188,7 @@ export const Sidebar: React.FC = () => {
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: active ? 'var(--domain-primary)' : 'var(--color-text-muted)', letterSpacing: 1 }}>
                       {meta.icon}
                     </span>
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: active ? 'var(--color-text)' : 'var(--color-text-muted)', letterSpacing: 2, textShadow: active ? 'var(--shadow-focus-ring)' : 'none', textTransform: 'uppercase' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 600, color: active ? 'var(--color-text)' : 'var(--color-text-muted)' }}>
                       {meta.label}
                     </span>
                     <StreakFlame count={domain.streak_current} size="sm" />

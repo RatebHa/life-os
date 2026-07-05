@@ -70,7 +70,6 @@ export const TopBar: React.FC = () => {
               fontFamily: 'var(--font-sans)',
               fontSize: 28,
               color: 'var(--color-text)',
-              textShadow: 'var(--shadow-focus-ring)',
               letterSpacing: 3,
               lineHeight: 1,
             }}

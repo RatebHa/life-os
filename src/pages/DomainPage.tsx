@@ -55,7 +55,7 @@ export const DomainPage: React.FC = () => {
       <div className="card">
         <div className="card-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 26, color: 'var(--domain-primary)', letterSpacing: 3, textTransform: 'uppercase', textShadow: 'var(--shadow-focus-ring)' }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 26, color: 'var(--domain-primary)', letterSpacing: 3 }}>
               {meta.label}
             </div>
             <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
