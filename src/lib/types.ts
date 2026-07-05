@@ -578,9 +578,9 @@ export interface TaskStats {
 export type MomentumState = 'peak' | 'normal' | 'amber' | 'red_alert';
 
 export const DOMAIN_META = {
-  military: { label: 'Military', icon: '[M]', color: '#C8A96E', accent: '#8B0000' },
-  builder:  { label: 'Builder',  icon: '[B]', color: '#4A9EFF', accent: '#00D4AA' },
-  self:     { label: 'Self',     icon: '[+]', color: '#7EC87A', accent: '#A78BFA' },
+  military: { label: 'Military', icon: '[M]', color: '#D4A73D', accent: '#B8901F' },
+  builder:  { label: 'Builder',  icon: '[B]', color: '#4A90E2', accent: '#3574C4' },
+  self:     { label: 'Self',     icon: '[+]', color: '#34B27B', accent: '#26935F' },
 };
 
 export const LEVEL_TITLES: Record<number, string> = {

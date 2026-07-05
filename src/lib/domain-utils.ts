@@ -99,8 +99,8 @@ export function getDomainMeta(
     return {
       label: 'Global',
       icon: '[*]',
-      color: '#4afa4a',
-      accent: '#1e7a1e',
+      color: '#7C6CFF',
+      accent: '#5B4FCF',
     };
   }
 
