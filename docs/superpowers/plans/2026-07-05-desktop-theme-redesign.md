@@ -1665,6 +1665,19 @@ git commit -m "theme: globals.css part 3/4 — buttons, inputs, badges, modal, s
   background: var(--color-accent);
   transition: width var(--motion-base);
 }
+@keyframes hardBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.boot-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.1em;
+  background: var(--color-accent);
+  vertical-align: middle;
+  margin-left: 2px;
+  animation: hardBlink 0.8s step-end infinite;
+}
 
 /* ── TYPOGRAPHY UTILITIES ──────────────────────────────────────────────────── */
 .font-display { font-family: var(--font-sans); }
