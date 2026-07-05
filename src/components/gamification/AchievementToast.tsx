@@ -30,7 +30,6 @@ export const AchievementToast: React.FC = () => {
           <div className="achievement-toast-kicker">ACHIEVEMENT UNLOCKED</div>
           <div className="achievement-toast-title">{display.title}</div>
           <div className="achievement-toast-copy">{display.description}</div>
-          <div className="achievement-toast-scan" />
         </div>
       </div>
     </div>
