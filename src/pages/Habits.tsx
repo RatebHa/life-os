@@ -391,7 +391,7 @@ export const HabitsPage: React.FC = () => {
                   title={<span style={{ color: 'var(--domain-primary)' }}>{getDomainLabel(domain.id, domains).toUpperCase()}</span>}
                   meta={`${domainHabits.length} ACTIVE | ${domainHabits.filter((habit) => isHabitDueOnDate(habit, today, logs)).length} DUE`}
                 />
-                <div className="card-body habit-domain-list">
+                <div className="card-body habit-domain-list stagger-in">
                   {domainHabits.map((habit) => (
                     <HabitCard
                       key={habit.id}

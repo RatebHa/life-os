@@ -502,7 +502,7 @@ export const TasksPage: React.FC = () => {
             <div>Create a task or adjust the filters.</div>
           </div>
         ) : (
-          <div>
+          <div className="stagger-in">
             {openRootTasks.map((task) => renderTaskRow(task))}
             {showCompleted && completedRootTasks.length > 0 && (
               <div>

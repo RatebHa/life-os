@@ -573,7 +573,9 @@ export const TodayPage: React.FC = () => {
                   <div className="empty-state-title">NO FOCUS BOARD YET</div>
                   <div>Stage up to three tasks that matter now, then start the first one quickly.</div>
                 </div>
-              ) : boardTasks.map((task) => {
+              ) : (
+                <div className="stagger-in">
+                  {boardTasks.map((task) => {
                 const goal = task.goal_id ? goals.find((item) => item.id === task.goal_id) : null;
                 const topThreeLimitReached = !task.is_top_three && topThreeTasks.length >= 3;
                 return (
@@ -604,6 +606,8 @@ export const TodayPage: React.FC = () => {
                   </div>
                 );
               })}
+                </div>
+              )}
             </div>
           </div>
 
