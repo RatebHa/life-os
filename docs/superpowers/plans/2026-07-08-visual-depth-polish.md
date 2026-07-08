@@ -266,6 +266,79 @@ git add src/styles/globals.css
 git commit -m "polish: apply layered elevation, gradient fill, and hover lift to card/habit-card/stat-card"
 ```
 
+- [ ] **Step 6 (review-driven fix): stop `.card`'s nested-card shadow clipping and fix sibling shadow occlusion**
+
+Code review of this task found two real problems the original spec didn't anticipate, both because the old near-invisible `--shadow-xs` never made them noticeable:
+
+1. **`.card` has `overflow: hidden`** (needed so `.card-header`'s square corners don't poke past the parent's rounded corners) — but this also clips the box-shadow of anything *nested inside* a `.card` on hover, including the elevation-2 + glow this task just added. This app nests `.card`/`.habit-card` inside another `.card`'s `.card-body` constantly (`Settings.tsx` — Safety Status, Domain Profiles, and several other panels; `Analytics.tsx`'s Domain Breakdown; every single `HabitCard` in `Habits.tsx`, since each domain wrapper is a `.card`). The fix is the standard pattern for this: give `.card-header` its own top-corner radius so it no longer needs the parent's `overflow: hidden` to look right, then drop `overflow: hidden` from `.card` entirely.
+2. **Sibling cards in a grid can occlude each other's hover glow** — a lifted card's shadow paints at the same stacking level as later-DOM-order siblings, so the glow gets silently cut off toward one side. Fix: bump `z-index` on hover so a lifted card paints above its neighbors.
+
+Find:
+```css
+.card {
+  border: 1px solid var(--color-border);
+  background: var(--surface-gradient);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-1);
+  transition: transform var(--motion-base), border-color var(--motion-base), box-shadow var(--motion-base);
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--elevation-2), var(--elevation-glow);
+  transform: translateY(-2px);
+}
+.card-header {
+  min-height: 40px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+```
+Replace with:
+```css
+.card {
+  border: 1px solid var(--color-border);
+  background: var(--surface-gradient);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-1);
+  transition: transform var(--motion-base), border-color var(--motion-base), box-shadow var(--motion-base);
+  position: relative;
+}
+.card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--elevation-2), var(--elevation-glow);
+  transform: translateY(-2px);
+  z-index: 1;
+}
+.card-header {
+  min-height: 40px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+```
+
+Also add `z-index: 1;` to `.habit-card:hover` (right after its `transform: translateY(-2px);` line), and add `position: relative;` to the `.stat-card` base rule plus `z-index: 1;` to `.stat-card:hover` (both needed together — `z-index` has no effect without `position` being something other than `static`, and `.stat-card` didn't have a `position` declared at all before this fix).
+
+Run the brace-balance check again after these edits, then commit:
+```bash
+git add src/styles/globals.css
+git commit -m "polish: fix nested-card shadow clipping and sibling shadow occlusion on hover"
+```
+
+This was applied directly (not dispatched as a separate subagent task) since it's a small, well-understood, low-risk CSS fix to a problem the code-quality review just found — see the plan's git history for the actual commit. Task 10's visual smoke test should specifically check a few of the ~103 `.card` usages across the app (not just the ones named above) to confirm nothing else relied on the removed `overflow: hidden` for corner-clipping content other than `.card-header`.
+
 ---
 
 ### Task 4: Add press feedback and glow to buttons
@@ -825,6 +898,8 @@ npm run dev
 Walk through: Today page (hover a task card in the Focus Board — confirm it lifts with a visible accent-tinted shadow, and that the board's rows cascade in on page load/refresh), Tasks page (same stagger check), Habits page (same), any modal (confirm it feels "on top" of everything — heaviest shadow in the app), the achievement toast and undo toast if you can trigger them (confirm elevated appearance), completing a task or habit (confirm the checkmark now pops with a visible scale-bounce, not just a fade), the sidebar (confirm the active nav item has a soft glow, not just the flat left bar), and the general background (confirm the faint top-of-viewport glow is present but genuinely subtle — if it's either invisible or distractingly obvious, adjust the `0.06` opacity value from Task 6 and re-check).
 
 Also specifically check for jank: open the Tasks page with a realistically long list (50+ items, create test data if needed) and hover rapidly across several cards in a row — per the design spec's risk note (§5), layered `box-shadow` transitions are more expensive to paint than a single shadow. If you see visible stutter, the fix is to add `will-change: transform, box-shadow;` to `.card`/`.habit-card`/`.stat-card` (not included by default in this plan since it has its own tradeoffs — extra GPU memory per layer — and shouldn't be added speculatively without confirming it's actually needed).
+
+Also specifically check for corner-clipping regressions from Task 3's Step 6 fix (removing `overflow: hidden` from `.card`): visit Settings (Safety Status, Domain Profiles panels), Analytics (Domain Breakdown), and Habits (any domain's habit list) — these are the confirmed nested-card locations. Look for any child content whose square corners now visibly poke past a `.card`'s rounded corners (content other than `.card-header`, which was explicitly fixed). If you find one, give that specific child element its own matching `border-radius` the same way `.card-header` was fixed, rather than re-adding `overflow: hidden` to `.card` (which would silently reintroduce the shadow-clipping bug this fix just closed).
 
 - [ ] **Step 6: Fix anything found in Step 5, then re-verify**
 

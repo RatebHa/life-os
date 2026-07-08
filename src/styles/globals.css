@@ -316,18 +316,19 @@ a { cursor: pointer; }
   box-shadow: var(--elevation-1);
   transition: transform var(--motion-base), border-color var(--motion-base), box-shadow var(--motion-base);
   position: relative;
-  overflow: hidden;
 }
 .card:hover {
   border-color: var(--color-border-strong);
   box-shadow: var(--elevation-2), var(--elevation-glow);
   transform: translateY(-2px);
+  z-index: 1;
 }
 .card-header {
   min-height: 40px;
   padding: 10px 14px;
   border-bottom: 1px solid var(--color-border);
   background: var(--color-surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -435,6 +436,7 @@ a { cursor: pointer; }
   border-color: color-mix(in srgb, var(--domain-primary, var(--color-accent)) 55%, var(--color-border));
   box-shadow: var(--elevation-2), var(--elevation-glow);
   transform: translateY(-2px);
+  z-index: 1;
 }
 
 .habit-card.is-highlighted {
@@ -1524,12 +1526,14 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
   gap: 4px;
   text-align: center;
   box-shadow: var(--elevation-1);
+  position: relative;
   transition: transform var(--motion-base), border-color var(--motion-base), box-shadow var(--motion-base);
 }
 .stat-card:hover {
   border-color: var(--color-border-strong);
   box-shadow: var(--elevation-2);
   transform: translateY(-2px);
+  z-index: 1;
 }
 .stat-value {
   font-family: var(--font-sans);
