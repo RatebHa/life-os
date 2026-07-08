@@ -135,7 +135,9 @@ a { cursor: pointer; }
 }
 
 .app-main {
-  background: var(--color-bg);
+  background:
+    radial-gradient(ellipse 1200px 600px at 50% -10%, rgba(124,108,255,0.06), transparent 70%),
+    var(--color-bg);
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
