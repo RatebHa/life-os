@@ -391,7 +391,7 @@ a { cursor: pointer; }
 .nav-item.active {
   color: var(--color-accent);
   background: var(--color-accent-muted);
-  box-shadow: inset 2px 0 0 var(--color-accent), 0 0 16px -4px rgba(124,108,255,0.35);
+  box-shadow: inset 2px 0 0 var(--color-accent), 0 0 8px -5px var(--domain-glow, rgba(124,108,255,0.35));
   font-weight: 600;
 }
 

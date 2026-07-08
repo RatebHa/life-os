@@ -699,6 +699,37 @@ git add src/styles/globals.css
 git commit -m "polish: add soft glow behind active sidebar nav item"
 ```
 
+- [ ] **Step 4 (review-driven fix): tighten the glow so it can't bleed into adjacent rows, and make it respect domain color**
+
+Code review found two real problems with Step 1's value once actually measured against the sidebar's real layout: (1) `Sidebar.tsx` stacks `.nav-item` rows with zero gap (`display: flex; flex-direction: column`, no `gap`, no margin) and `--row-height` is only 34px — `0 0 16px -4px` reaches ~12px beyond the element's edge (blur minus spread), which is over a third of a zero-gap row's height, so the glow visibly bleeds into whichever row sits above/below the active one. Since exactly one nav item is always active whenever the app is open, this isn't a transient hover state like Tasks 3/5's bugs — it's the sidebar's permanent resting state. (2) The glow hardcodes a generic purple regardless of domain, even though `tokens.css` already defines a per-domain `--domain-glow` token (set via the `[data-domain]` attribute `Sidebar.tsx` already puts directly on each domain nav row's `<button>`) that was never actually consumed anywhere — using it here makes an active Military/Self domain row's glow match its own gold/green accent bar instead of clashing with an unrelated purple.
+
+Find:
+```css
+.nav-item.active {
+  color: var(--color-accent);
+  background: var(--color-accent-muted);
+  box-shadow: inset 2px 0 0 var(--color-accent), 0 0 16px -4px rgba(124,108,255,0.35);
+  font-weight: 600;
+}
+```
+Replace with:
+```css
+.nav-item.active {
+  color: var(--color-accent);
+  background: var(--color-accent-muted);
+  box-shadow: inset 2px 0 0 var(--color-accent), 0 0 8px -5px var(--domain-glow, rgba(124,108,255,0.35));
+  font-weight: 600;
+}
+```
+
+`0 0 8px -5px` reaches only 3px beyond the element's edge (blur 8px minus spread 5px) — small enough to read as a soft edge on the active row without visibly touching a zero-gap neighbor. `var(--domain-glow, rgba(124,108,255,0.35))` resolves to the domain-specific glow color on rows that have `data-domain` set (the domain nav rows), and falls back to the generic accent purple everywhere else (the primary/support nav items, which have no domain).
+
+Run the brace-balance check again, then commit:
+```bash
+git add src/styles/globals.css
+git commit -m "polish: tighten nav-item glow to prevent row bleed, make it respect domain color"
+```
+
 ---
 
 ### Task 8: Give task/habit completion a real "pop" instead of a generic fade-in
