@@ -1064,7 +1064,7 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--elevation-3);
   padding: 0;
   min-width: min(440px, 100%);
   max-width: min(580px, 100%);
@@ -1090,7 +1090,7 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
   font-size: 16px;
   color: var(--color-text);
 }
-.modal-body { padding: var(--panel-padding); }
+.modal-body { padding: var(--panel-padding); padding-bottom: 20px; }
 
 /* ── SKELETON ──────────────────────────────────────────────────────────────── */
 @keyframes shimmer {
@@ -1138,8 +1138,8 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
   50%       { opacity: 0.5; }
 }
 @keyframes toastIn {
-  from { transform: translateX(120%); opacity: 0; }
-  to   { transform: translateX(0);    opacity: 1; }
+  from { transform: translateX(120%) translateY(4px); opacity: 0; }
+  to   { transform: translateX(0)    translateY(0);    opacity: 1; }
 }
 @keyframes toastOut {
   from { transform: translateX(0);    opacity: 1; }
@@ -1263,7 +1263,7 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
   padding: 12px 14px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--elevation-2);
   background: var(--color-surface);
 }
 .achievement-toast::before {
@@ -1329,7 +1329,7 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
   border: 1px solid var(--color-warning);
   border-radius: var(--radius-lg);
   background: var(--color-surface);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--elevation-2);
   pointer-events: auto;
 }
 
