@@ -1138,8 +1138,8 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
   50%       { opacity: 0.5; }
 }
 @keyframes toastIn {
-  from { transform: translateX(120%) translateY(4px); opacity: 0; }
-  to   { transform: translateX(0)    translateY(0);    opacity: 1; }
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
 }
 @keyframes toastOut {
   from { transform: translateX(0);    opacity: 1; }

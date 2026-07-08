@@ -581,24 +581,20 @@ with:
 }
 ```
 
-- [ ] **Step 4: Give the achievement toast's entrance a slight lift, not just a horizontal slide**
+- [x] **Step 4 (superseded — see the correction below before doing anything): Give the achievement toast's entrance a slight lift, not just a horizontal slide**
 
-`.undo-toast` uses `.fade-in` (the `bootIn` keyframe), which already includes a `translateY(4px) → translateY(0)` lift — no change needed there. `.achievement-toast-wrap` uses `toastIn`, which is a pure horizontal slide with no vertical component. Add a small lift to match:
+This step as originally written asked to add `translateY(4px→0)` to `@keyframes toastIn` (the wrapper's animation), reasoning that `.achievement-toast-wrap` had no vertical component while `.undo-toast` did via `.fade-in`. That reasoning missed something: `AchievementToast.tsx`'s inner `<div className="achievement-toast fade-in">` **already** carries `.fade-in` (the `bootIn` keyframe, its own independent `translateY(4px)→0`) — it was there before this plan started, unrelated to toasts specifically. Adding a second, differently-timed `translateY` on the wrapper on top of that stacks two nested transforms with different durations (180ms wrap vs. 120ms inner), producing an ~8px double-lift that settles in two uneven stages instead of one coherent motion — the opposite of "match `.undo-toast`'s single lift."
 
-Find:
+**Do not add `translateY` to `toastIn`.** `.achievement-toast-wrap` doesn't need one — the inner element's pre-existing `.fade-in` already provides the lift, exactly like `.undo-toast-stack` (which also has no entrance animation of its own; only its inner `.undo-toast` element does). `toastIn` stays exactly as it already is:
 ```css
 @keyframes toastIn {
   from { transform: translateX(120%); opacity: 0; }
   to   { transform: translateX(0);    opacity: 1; }
 }
 ```
-Replace with:
-```css
-@keyframes toastIn {
-  from { transform: translateX(120%) translateY(4px); opacity: 0; }
-  to   { transform: translateX(0)    translateY(0);    opacity: 1; }
-}
-```
+No edit needed for this step — confirm the file already matches the above (it does, unchanged since before this task) and move on to Step 5.
+
+(This was caught and fixed during Task 5's code review, when `.modal-content`/`.achievement-toast`/`.undo-toast` were already being touched — since fixing it required *not* making a change rather than making one, the correction is this doc update, not a separate code diff. `AchievementToast` is currently unmounted anywhere in the app — `pendingUnlocks`/`dismissUnlock` wiring exists in `useAppStore` but no page renders `<AchievementToast />` — so this had zero live user-facing impact, but is worth having correct in the CSS now rather than whenever someone wires the component up later.)
 
 - [ ] **Step 5: Verify the file still parses**
 
