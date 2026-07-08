@@ -1143,6 +1143,27 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
 .check-pop    { animation: bootIn var(--motion-fast) both; }
 .streak-pulse { animation: softPulse 1.4s var(--motion-slow); }
 
+/* ── DEPTH & MOTION UTILITIES ──────────────────────────────────────────────── */
+@keyframes staggerRise {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes checkPop {
+  0%   { transform: scale(0.6); opacity: 0; }
+  55%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.stagger-in > * {
+  animation: staggerRise var(--motion-base) both;
+}
+.stagger-in > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-in > *:nth-child(2) { animation-delay: 40ms; }
+.stagger-in > *:nth-child(3) { animation-delay: 80ms; }
+.stagger-in > *:nth-child(4) { animation-delay: 120ms; }
+.stagger-in > *:nth-child(5) { animation-delay: 160ms; }
+.stagger-in > *:nth-child(n+6) { animation-delay: 200ms; }
+
 /* Staggered boot-in for list items */
 .boot-item { animation: bootIn var(--motion-fast) both; }
 .boot-item:nth-child(1)  { animation-delay: 0ms; }
