@@ -311,16 +311,17 @@ a { cursor: pointer; }
 /* ── CARD ───────────────────────────────────────────────────────────────── */
 .card {
   border: 1px solid var(--color-border);
-  background: var(--color-surface);
+  background: var(--surface-gradient);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xs);
-  transition: border-color var(--motion-base), box-shadow var(--motion-base);
+  box-shadow: var(--elevation-1);
+  transition: transform var(--motion-base), border-color var(--motion-base), box-shadow var(--motion-base);
   position: relative;
   overflow: hidden;
 }
 .card:hover {
   border-color: var(--color-border-strong);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--elevation-2), var(--elevation-glow);
+  transform: translateY(-2px);
 }
 .card-header {
   min-height: 40px;
@@ -414,9 +415,10 @@ a { cursor: pointer; }
   gap: 16px;
   padding: 14px;
   border: 1px solid var(--color-border);
-  background: var(--color-surface);
+  background: var(--surface-gradient);
   border-radius: var(--radius-lg);
-  transition: border-color var(--motion-base), transform var(--motion-base), background var(--motion-base);
+  box-shadow: var(--elevation-1);
+  transition: border-color var(--motion-base), transform var(--motion-base), background var(--motion-base), box-shadow var(--motion-base);
 }
 
 .habit-card::before {
@@ -431,7 +433,8 @@ a { cursor: pointer; }
 
 .habit-card:hover {
   border-color: color-mix(in srgb, var(--domain-primary, var(--color-accent)) 55%, var(--color-border));
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--elevation-2), var(--elevation-glow);
+  transform: translateY(-2px);
 }
 
 .habit-card.is-highlighted {
@@ -1510,7 +1513,7 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
 /* ── STAT CARD ─────────────────────────────────────────────────────────────── */
 .stat-card {
   border: 1px solid var(--color-border);
-  background: var(--color-surface);
+  background: var(--surface-gradient);
   border-radius: var(--radius-lg);
   padding: 10px 14px;
   display: flex;
@@ -1520,11 +1523,13 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
   min-height: 74px;
   gap: 4px;
   text-align: center;
-  transition: border-color var(--motion-base), box-shadow var(--motion-base);
+  box-shadow: var(--elevation-1);
+  transition: transform var(--motion-base), border-color var(--motion-base), box-shadow var(--motion-base);
 }
 .stat-card:hover {
   border-color: var(--color-border-strong);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--elevation-2);
+  transform: translateY(-2px);
 }
 .stat-value {
   font-family: var(--font-sans);
