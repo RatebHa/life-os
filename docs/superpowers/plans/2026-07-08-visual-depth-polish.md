@@ -502,6 +502,21 @@ with:
 }
 ```
 
+- [ ] **Step 1b (review-driven fix, from Task 4): give `.modal-body` extra bottom clearance so a primary button's hover glow doesn't get clipped**
+
+Code review of Task 4 found that `.modal-content`'s `overflow-y: auto` clips a `.btn-primary`'s new hover glow (added in Task 4) whenever the button sits near the bottom of a modal — which is exactly where "Create"/"Save" primary CTAs in this app's forms live (`TaskForm.tsx`, `Goals.tsx`, `Habits.tsx`, and others render their primary submit button as the last item in a modal form). `.modal-body`'s existing bottom padding (10px, from `--panel-padding`) is thinner than the glow's blur extent (~16px), so the outer edge of the glow gets cut off. Since this task is already touching `.modal-content`, fix it here rather than as a separate pass.
+
+Find:
+```css
+.modal-body { padding: var(--panel-padding); }
+```
+Replace with:
+```css
+.modal-body { padding: var(--panel-padding); padding-bottom: 20px; }
+```
+
+(Overrides just the bottom side on top of the shared `--panel-padding` shorthand — deliberately not changing `--panel-padding` itself, since that token is used broadly across cards/panels where this extra clearance isn't needed.)
+
 - [ ] **Step 2: `.achievement-toast` → `--elevation-2`**
 
 Replace:
@@ -595,7 +610,7 @@ node -e "const css=require('fs').readFileSync('src/styles/globals.css','utf8'); 
 
 ```bash
 git add src/styles/globals.css
-git commit -m "polish: elevate modal to the highest layer, toasts to elevation-2, add lift to achievement toast entrance"
+git commit -m "polish: elevate modal to the highest layer, toasts to elevation-2, add lift to achievement toast entrance, fix modal-body glow clipping"
 ```
 
 ---
