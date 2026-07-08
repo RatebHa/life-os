@@ -1150,7 +1150,7 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
 
 .blink        { animation: softPulse 1s var(--motion-slow) infinite; }
 .fade-in      { animation: bootIn var(--motion-fast) both; }
-.check-pop    { animation: bootIn var(--motion-fast) both; }
+.check-pop    { animation: checkPop var(--motion-base) both; }
 .streak-pulse { animation: softPulse 1.4s var(--motion-slow); }
 
 /* ── DEPTH & MOTION UTILITIES ──────────────────────────────────────────────── */
