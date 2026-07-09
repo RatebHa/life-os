@@ -550,7 +550,9 @@ const AppInner: React.FC = () => {
 
 const App: React.FC = () => (
   <BrowserRouter>
-    <AppInner />
+    <RouteErrorBoundary scope="app-shell">
+      <AppInner />
+    </RouteErrorBoundary>
   </BrowserRouter>
 );
 

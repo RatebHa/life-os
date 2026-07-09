@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 
+type AppWindow = ReturnType<typeof getCurrentWindow>;
+
+// getCurrentWindow() throws synchronously if window.__TAURI_INTERNALS__ isn't
+// injected (e.g. a plain browser preview) — guard so render can't crash.
+function getAppWindow(): AppWindow | null {
+  try {
+    return getCurrentWindow();
+  } catch {
+    return null;
+  }
+}
+
 export const TitleBar: React.FC = () => {
   const [maximized, setMaximized] = useState(false);
-  const appWindow = getCurrentWindow();
+  const [appWindow] = useState<AppWindow | null>(() => getAppWindow());
 
   useEffect(() => {
+    if (!appWindow) return;
     appWindow.isMaximized().then(setMaximized).catch(() => {});
     const unlisten = appWindow.onResized(() => {
       appWindow.isMaximized().then(setMaximized).catch(() => {});
     });
     return () => { unlisten.then((fn) => fn()); };
-  }, []);
+  }, [appWindow]);
 
   const btnBase: React.CSSProperties = {
     display: 'flex',
@@ -48,7 +61,7 @@ export const TitleBar: React.FC = () => {
 
       {/* Minimize */}
       <button
-        onClick={() => appWindow.minimize()}
+        onClick={() => appWindow?.minimize()}
         style={btnBase}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-accent)';
@@ -65,7 +78,7 @@ export const TitleBar: React.FC = () => {
 
       {/* Maximize / Restore */}
       <button
-        onClick={() => maximized ? appWindow.unmaximize() : appWindow.maximize()}
+        onClick={() => maximized ? appWindow?.unmaximize() : appWindow?.maximize()}
         style={btnBase}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-accent)';
@@ -82,7 +95,7 @@ export const TitleBar: React.FC = () => {
 
       {/* Close */}
       <button
-        onClick={() => appWindow.close()}
+        onClick={() => appWindow?.close()}
         style={btnBase}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-danger)';
