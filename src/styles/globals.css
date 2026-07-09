@@ -4,10 +4,10 @@
 
 /* ── LOCAL FONTS ───────────────────────────────────────────────────────────── */
 @font-face {
-  font-family: 'Inter';
-  src: url('../assets/fonts/Inter-Variable.ttf') format('truetype-variations'),
-       url('../assets/fonts/Inter-Variable.ttf') format('truetype');
-  font-weight: 100 900;
+  font-family: 'Satoshi';
+  src: url('../assets/fonts/Satoshi-Variable.ttf') format('truetype-variations'),
+       url('../assets/fonts/Satoshi-Variable.ttf') format('truetype');
+  font-weight: 300 900;
   font-style: normal;
   font-display: block;
 }
