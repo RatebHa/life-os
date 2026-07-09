@@ -51,6 +51,21 @@ a { cursor: pointer; }
 ::selection { background: var(--color-accent-muted); color: var(--color-text); }
 :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
 
+/* ── REDUCED MOTION ────────────────────────────────────────────────────────── */
+/* Respect the OS-level "reduce motion" preference: kill animations/transitions
+   and hover-lift transforms app-wide rather than gating each one individually. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .card:hover, .habit-card:hover, .stat-card:hover, .btn:active:not(:disabled) {
+    transform: none !important;
+  }
+}
+
 /* ── APP SHELL ─────────────────────────────────────────────────────────────── */
 .app-shell {
   display: grid;

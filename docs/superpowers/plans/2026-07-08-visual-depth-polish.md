@@ -895,6 +895,64 @@ git add src/pages/Today.tsx src/pages/Tasks.tsx src/pages/Habits.tsx
 git commit -m "polish: stagger task/habit list entrance on Today, Tasks, and Habits pages"
 ```
 
+- [ ] **Step 6 (review-driven fix): give the Completed Tasks section its own stagger, decoupled from the open list's length**
+
+Code review found that `Tasks.tsx`'s "Completed Tasks" block is a direct sibling of the open task rows inside the same `.stagger-in` container — so its `nth-child` position (and therefore its entrance delay) depends entirely on how many *open* tasks happen to exist that day, not on anything about the completed section itself: with 0 open tasks it gets 0ms delay, with 5+ it's always pinned to the 200ms tier. On top of that, the whole completed block (header + however many completed rows) animates in as one atomic unit with no internal cascade, while the open rows above it get a proper per-row stagger. Fix: give it its own nested `.stagger-in`.
+
+Find (in `src/pages/Tasks.tsx`):
+```tsx
+            {showCompleted && completedRootTasks.length > 0 && (
+              <div>
+                <div style={{ padding: '10px 12px 6px', fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                  Completed Tasks
+                </div>
+                {completedRootTasks.map((task) => renderTaskRow(task))}
+              </div>
+            )}
+```
+Replace with:
+```tsx
+            {showCompleted && completedRootTasks.length > 0 && (
+              <div>
+                <div style={{ padding: '10px 12px 6px', fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                  Completed Tasks
+                </div>
+                <div className="stagger-in">
+                  {completedRootTasks.map((task) => renderTaskRow(task))}
+                </div>
+              </div>
+            )}
+```
+
+- [ ] **Step 7 (review-driven fix): add a global `prefers-reduced-motion` override**
+
+Code review also flagged that this entire 10-task plan adds a meaningful amount of new motion (hover lifts, press feedback, staggered entrances, a scale-pop) with zero handling anywhere in the codebase for the OS-level "reduce motion" accessibility preference. Rather than gating each animation individually, add one blanket override near the top of `globals.css` (right after the existing `SELECTION`/`:focus-visible` block, before `APP SHELL`):
+
+```css
+/* ── REDUCED MOTION ────────────────────────────────────────────────────────── */
+/* Respect the OS-level "reduce motion" preference: kill animations/transitions
+   and hover-lift transforms app-wide rather than gating each one individually. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .card:hover, .habit-card:hover, .stat-card:hover, .btn:active:not(:disabled) {
+    transform: none !important;
+  }
+}
+```
+
+The `animation-duration`/`transition-duration: 0.01ms` approach (rather than `0s`) is deliberate — some browsers treat a `0s` duration as "no transition happened" and skip firing the `transitionend`/`animationend` event a component might be relying on (e.g. a toast's auto-dismiss timer, if one is ever wired to an animation event rather than a plain `setTimeout` — none currently are in this codebase, but this is the standard defensive pattern for exactly that class of bug). The explicit `transform: none` overrides are needed on top of the duration collapse because `:hover`/`:active` transforms aren't *animations* being shortened, they're instant state-based style changes — without this, hover-lift/press-scale would still happen, just without a smooth transition into place.
+
+Run the brace-balance check again, then commit both fixes together:
+```bash
+git add src/pages/Tasks.tsx src/styles/globals.css
+git commit -m "polish: give completed-tasks section its own stagger, add prefers-reduced-motion support"
+```
+
 ---
 
 ### Task 10: Final verification

@@ -509,7 +509,9 @@ export const TasksPage: React.FC = () => {
                 <div style={{ padding: '10px 12px 6px', fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                   Completed Tasks
                 </div>
-                {completedRootTasks.map((task) => renderTaskRow(task))}
+                <div className="stagger-in">
+                  {completedRootTasks.map((task) => renderTaskRow(task))}
+                </div>
               </div>
             )}
           </div>
