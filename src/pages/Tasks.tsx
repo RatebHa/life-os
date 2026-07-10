@@ -296,9 +296,9 @@ export const TasksPage: React.FC = () => {
           style={{
             display: 'flex',
             alignItems: 'flex-start',
-            gap: 10,
-            padding: '10px 12px',
-            paddingLeft: 12 + (depth * 26),
+            gap: 'var(--space-3)',
+            padding: 'var(--space-3) var(--space-3)',
+            paddingLeft: `calc(var(--space-3) + ${depth * 26}px)`,
             borderBottom: '1px solid var(--color-surface-hover)',
             borderLeft: isHighlighted ? '2px solid var(--color-text)' : undefined,
             opacity: isDone ? 0.55 : 1,
@@ -334,7 +334,7 @@ export const TasksPage: React.FC = () => {
             />
           )}
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
               <span
                 dir="auto"
                 style={{
@@ -350,9 +350,9 @@ export const TasksPage: React.FC = () => {
               {task.is_top_three && <span className="priority-badge-medium">TOP 3</span>}
               {isTemplate && <span style={{ fontSize: 11, color: 'var(--color-info)', textTransform: 'uppercase', letterSpacing: 1 }}>TEMPLATE</span>}
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginTop: 'var(--space-1)', flexWrap: 'wrap' }}>
               <span className={`priority-badge-${task.priority}`}>{task.priority}</span>
-              <span style={{ fontSize: 11, color: task.energy_level === 'deep' ? 'var(--color-warning)' : task.energy_level === 'light' ? 'var(--color-info)' : 'var(--color-text-muted)', border: '1px solid var(--color-border)', padding: '1px 5px', textTransform: 'uppercase', letterSpacing: 1 }}>{task.energy_level}</span>
+              <span style={{ fontSize: 11, color: task.energy_level === 'deep' ? 'var(--color-warning)' : task.energy_level === 'light' ? 'var(--color-info)' : 'var(--color-text-muted)', border: '1px solid var(--color-border)', padding: '1px var(--space-1)', textTransform: 'uppercase', letterSpacing: 1 }}>{task.energy_level}</span>
               <span style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{formatMinutes(taskEstimatedMinutes(task))}</span>
               {taskDueDay(task) && <span style={{ fontSize: 11, color: isTaskOverdue(task, today) && !isDone ? 'var(--color-danger)' : 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>DUE {formatDateDisplay(taskDueDay(task))}</span>}
               {taskPlannedDay(task) && (
@@ -375,13 +375,13 @@ export const TasksPage: React.FC = () => {
               {getTaskRecurrenceLabel(task) && <span style={{ fontSize: 11, color: 'var(--color-info)', textTransform: 'uppercase', letterSpacing: 1 }}>{getTaskRecurrenceLabel(task)}</span>}
               {goal && <span style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>GOAL: {goal.title}</span>}
               {tags.slice(0, 2).map((tag) => (
-                <span key={tag} style={{ fontSize: 11, color: 'var(--color-text-muted)', border: '1px solid var(--color-border)', padding: '1px 5px' }}>
+                <span key={tag} style={{ fontSize: 11, color: 'var(--color-text-muted)', border: '1px solid var(--color-border)', padding: '1px var(--space-1)' }}>
                   {tag}
                 </span>
               ))}
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0, flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: 340 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)', flexShrink: 0, flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: 340 }}>
             {!isDone && !isTemplate && (
               <button className="btn btn-sm btn-primary" onClick={() => handleFocus(task).catch(console.error)} style={activeTaskId === task.id ? { color: 'var(--color-text)', borderColor: 'var(--color-text)' } : undefined}>
                 FOCUS
@@ -397,7 +397,7 @@ export const TasksPage: React.FC = () => {
           <div style={{ background: 'var(--color-bg)' }}>
             {subTasks.open.map((subTask) => renderTaskRow(subTask, depth + 1))}
             {showCompleted && subTasks.done.length > 0 && (
-              <div style={{ padding: '6px 12px', paddingLeft: 38 + (depth * 26), fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+              <div style={{ padding: 'var(--space-2) var(--space-3)', paddingLeft: 38 + (depth * 26), fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                 Completed Subtasks
               </div>
             )}
@@ -418,7 +418,7 @@ export const TasksPage: React.FC = () => {
 
       <hr className="page-sep" />
 
-      <div className="layout-grid-stats" style={{ marginBottom: 12 }}>
+      <div className="layout-grid-stats" style={{ marginBottom: 'var(--space-3)' }}>
         {[
           { label: 'ACTIVE', value: stats.active },
           { label: 'DONE', value: stats.done },
@@ -432,8 +432,8 @@ export const TasksPage: React.FC = () => {
         ))}
       </div>
 
-      <div className="card" style={{ padding: '10px 12px', display: 'grid', gap: 10, marginBottom: 12 }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+      <div className="card" style={{ padding: 'var(--space-3) var(--space-3)', display: 'grid', gap: 'var(--space-3)', marginBottom: 'var(--space-3)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
           <input
             className="input"
             style={{ flex: 1, minWidth: 180 }}
@@ -469,7 +469,7 @@ export const TasksPage: React.FC = () => {
         </div>
 
         {showAdvancedFilters && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
             <select className="input" style={{ width: 'auto' }} value={filterPriority} onChange={(event) => setFilterPriority(event.target.value as FilterPriority)}>
               <option value="all">ALL PRIORITY</option>
               <option value="critical">CRITICAL</option>
@@ -483,7 +483,7 @@ export const TasksPage: React.FC = () => {
               <option value="planned">SORT: START DATE</option>
               <option value="created">SORT: NEWEST</option>
             </select>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 6px', fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', padding: '0 var(--space-2)', fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
               <input type="checkbox" checked={showCompleted} onChange={(event) => setShowCompleted(event.target.checked)} />
               Show Done ({completedRootTasks.length})
             </label>
@@ -506,7 +506,7 @@ export const TasksPage: React.FC = () => {
             {openRootTasks.map((task) => renderTaskRow(task))}
             {showCompleted && completedRootTasks.length > 0 && (
               <div>
-                <div style={{ padding: '10px 12px 6px', fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                <div style={{ padding: 'var(--space-3) var(--space-3) var(--space-2)', fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                   Completed Tasks
                 </div>
                 <div className="stagger-in">
@@ -528,7 +528,7 @@ export const TasksPage: React.FC = () => {
 
       <Modal open={Boolean(activeActionTask)} onClose={() => { setActionTaskId(null); setCustomStartDate(''); }} title="Task Actions">
         {activeActionTask && (
-          <div style={{ display: 'grid', gap: 14 }}>
+          <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
             <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
               {activeActionTask.title}
             </div>
@@ -536,11 +536,11 @@ export const TasksPage: React.FC = () => {
             {!activeActionTask.task_kind.includes('template') && activeActionTask.status !== 'done' && (
               <div className="card">
                 <PanelHeader title="DAILY COMMITMENT" />
-                <div className="card-body" style={{ display: 'grid', gap: 10 }}>
+                <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
                   <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
                     MIT is the one task that makes the day real. Top 3 is the short list for Today. Set them here only when you mean to reshape the day.
                   </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
                     <button className="btn btn-ghost btn-sm" onClick={() => handleToggleMIT(activeActionTask).catch(console.error)}>
                       {activeActionTask.is_mit ? 'CLEAR MIT' : 'MAKE MIT'}
                     </button>
@@ -555,17 +555,17 @@ export const TasksPage: React.FC = () => {
             {!activeActionTask.task_kind.includes('template') && activeActionTask.status !== 'done' && (
               <div className="card">
                 <PanelHeader title="START DATE" />
-                <div className="card-body" style={{ display: 'grid', gap: 10 }}>
+                <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
                   <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
                     A start date makes the task appear in Today from that date onward until you finish it.
                   </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
                     <button className="btn btn-ghost btn-sm" onClick={() => handleSetStartDate(activeActionTask, today).catch(console.error)}>START TODAY</button>
                     <button className="btn btn-ghost btn-sm" onClick={() => handleSetStartDate(activeActionTask, tomorrow).catch(console.error)}>START TOMORROW</button>
                     <button className="btn btn-ghost btn-sm" onClick={() => handleSetStartDate(activeActionTask, nextWeek).catch(console.error)}>START NEXT WEEK</button>
                     <button className="btn btn-ghost btn-sm" onClick={() => handleSetStartDate(activeActionTask, null).catch(console.error)}>CLEAR START DATE</button>
                   </div>
-                  <div style={{ display: 'flex', gap: 8 }}>
+                  <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
                     <input className="input" type="date" lang="en-GB" value={customStartDate} onChange={(event) => setCustomStartDate(event.target.value)} />
                     <button className="btn btn-primary" disabled={!customStartDate} onClick={() => handleSetStartDate(activeActionTask, customStartDate).catch(console.error)}>
                       APPLY
@@ -577,7 +577,7 @@ export const TasksPage: React.FC = () => {
 
             <div className="card">
               <PanelHeader title="MANAGE TASK" />
-              <div className="card-body" style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              <div className="card-body" style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
                 {activeActionTask.status !== 'done' && activeActionTask.task_kind !== 'recurring_template' && (
                   <button className="btn btn-ghost btn-sm" onClick={() => handleFocus(activeActionTask).catch(console.error)}>FOCUS</button>
                 )}
@@ -609,9 +609,9 @@ export const TasksPage: React.FC = () => {
 
       <Modal open={Boolean(frictionTask)} onClose={() => setFrictionTask(null)} title="Log Task Friction">
         {frictionTask && (
-          <div style={{ display: 'grid', gap: 12 }}>
+          <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
             <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{frictionTask.title}</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
               {TASK_FRICTION_OPTIONS.map((option) => (
                 <button key={option.value} className="btn btn-ghost btn-sm" style={frictionReason === option.value ? { color: 'var(--color-warning)', borderColor: 'var(--color-warning)' } : undefined} onClick={() => setFrictionReason(option.value)}>
                   {option.label}
@@ -619,7 +619,7 @@ export const TasksPage: React.FC = () => {
               ))}
             </div>
             <textarea className="input" rows={3} value={frictionDetails} onChange={(event) => setFrictionDetails(event.target.value)} placeholder="What got in the way?" style={{ resize: 'none' }} />
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--space-2)' }}>
               <button className="btn btn-ghost" onClick={() => setFrictionTask(null)}>CANCEL</button>
               <button className="btn btn-primary" onClick={() => handleSaveFriction().catch(console.error)}>SAVE</button>
             </div>
