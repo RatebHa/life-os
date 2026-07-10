@@ -74,6 +74,7 @@ function buildDisplayVariables(
     large: { body: '1.08', panel: '1.1', display: '1.08' },
     xl: { body: '1.16', panel: '1.2', display: '1.14' },
   } as const;
+  // comfortable values must match --page-padding/--panel-padding defaults in tokens.css
   const densityMap = {
     compact: { page: '16px 16px', panel: '8px 12px', row: '28px' },
     comfortable: { page: '16px 24px', panel: '12px 12px', row: '34px' },
