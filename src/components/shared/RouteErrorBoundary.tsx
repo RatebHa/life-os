@@ -46,7 +46,7 @@ export class RouteErrorBoundary extends React.Component<Props, State> {
                 {this.props.scope.toUpperCase()} ERROR
               </span>
             </div>
-            <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
               <div style={{ color: 'var(--color-text-muted)', fontSize: 12 }}>
                 This screen hit a runtime error. Open the debug console to inspect the exact failure.
               </div>
