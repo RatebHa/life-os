@@ -10,13 +10,13 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
   const onOverview = location.pathname.startsWith('/overview') || location.pathname.startsWith('/command-center');
 
   return (
-    <div className="tabbar" style={{ justifyContent: 'space-between', gap: 12, padding: '0 12px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', minWidth: 0, gap: 12 }}>
+    <div className="tabbar" style={{ justifyContent: 'space-between', gap: 'var(--space-3)', padding: '0 var(--space-3)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', minWidth: 0, gap: 'var(--space-3)' }}>
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
-            paddingRight: 12,
+            paddingRight: 'var(--space-3)',
             fontSize: 9,
             fontFamily: 'var(--font-sans)',
             color: 'var(--color-text-muted)',
@@ -49,7 +49,7 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexShrink: 0 }}>
         {!onToday && (
           <button className="btn btn-ghost btn-sm" onClick={() => navigate('/today')}>
             OPEN TODAY
@@ -63,7 +63,7 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 6,
+          gap: 'var(--space-2)',
           fontSize: 9,
           fontFamily: 'var(--font-sans)',
           color: apiKey ? 'var(--color-accent)' : 'var(--color-text-muted)',
