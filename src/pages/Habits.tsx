@@ -158,7 +158,7 @@ const HabitForm: React.FC<HabitFormProps> = ({ onClose, initialHabit }) => {
         <input className="input" dir="auto" value={title} onChange={(event) => setTitle(event.target.value)} autoFocus required placeholder="Read 20 minutes / Train / Write" style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }} />
       </div>
 
-      <div className="layout-grid-two" style={{ gap: 10 }}>
+      <div className="layout-grid-two">
         <div>
           <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>Cadence</label>
           <select className="input" value={cadenceType} onChange={(event) => setCadenceType(event.target.value as HabitCadenceType)}>

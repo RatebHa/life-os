@@ -288,7 +288,7 @@ export const CommandCenter: React.FC = () => {
                   {domain.streak_current}D
                 </div>
               </div>
-              <div className="layout-grid-pairs" style={{ gap: 6, fontSize: 12, color: 'var(--color-text-muted)' }}>
+              <div className="layout-grid-pairs" style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
                 <span>Open: {domainOpen}</span>
                 <span>Done: {domainDone}</span>
                 <span>Overdue: {domainOverdue}</span>

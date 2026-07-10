@@ -398,7 +398,7 @@ export const TodayPage: React.FC = () => {
               Confirm the day in this order: lock one MIT, keep the Top 3 realistic, then start the first focus block before the board gets noisy.
             </div>
 
-            <div className="layout-grid-three" style={{ gap: 10 }}>
+            <div className="layout-grid-three">
               <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: '10px 12px', display: 'grid', gap: 8 }}>
                 <div style={{ fontSize: 11, color: 'var(--color-text-muted)', letterSpacing: 1, textTransform: 'uppercase' }}>1. Confirm MIT</div>
                 <div style={{ fontSize: 15, color: mitTask ? 'var(--color-text)' : 'var(--color-warning)' }}>
