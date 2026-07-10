@@ -49,7 +49,7 @@ export const TopBar: React.FC = () => {
   return (
     <>
       <header className="app-topbar">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
           <div style={{ display: 'flex', gap: 3, alignItems: 'center' }}>
             {[0, 1, 2].map((index) => (
               <span
@@ -84,8 +84,8 @@ export const TopBar: React.FC = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 14,
-            padding: '4px 12px',
+            gap: 'var(--space-4)',
+            padding: 'var(--space-1) var(--space-3)',
             border: '1px solid var(--color-border)',
             background: 'var(--color-surface-hover)',
           }}
@@ -130,7 +130,7 @@ export const TopBar: React.FC = () => {
         <button
           className="btn btn-primary"
           onClick={() => setShowQuickAdd(true)}
-          style={{ minHeight: 30, padding: '4px 14px' }}
+          style={{ minHeight: 30, padding: 'var(--space-1) var(--space-4)' }}
           disabled={domains.length === 0}
         >
           <span style={{ fontSize: 14, letterSpacing: 2 }}>{domains.length === 0 ? 'SET UP DOMAINS' : '+ NEW TASK'}</span>
