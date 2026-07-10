@@ -84,21 +84,21 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
         style={{
           background: 'var(--color-surface)',
           border: '2px solid var(--color-accent)',
-          padding: '18px 22px',
+          padding: 'var(--space-4) var(--space-6)',
           width: 500,
           maxWidth: '90vw',
           boxShadow: '0 0 40px rgba(124,108,255,0.12)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-          <div style={{ display: 'flex', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-4)' }}>
+          <div style={{ display: 'flex', gap: 'var(--space-1)' }}>
             {(['task', 'note'] as Mode[]).map((value) => (
               <button
                 key={value}
                 type="button"
                 className={mode === value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-ghost'}
                 onClick={() => setMode(value)}
-                style={{ padding: '2px 10px', fontSize: 10 }}
+                style={{ padding: '2px var(--space-3)', fontSize: 10 }}
               >
                 {value.toUpperCase()}
               </button>
@@ -109,7 +109,7 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
           </span>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           {hasDomains ? (
             <>
               <input
@@ -121,7 +121,7 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
                 style={{ fontSize: 13, width: '100%' }}
               />
 
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
                 {domains.map((entry) => (
                   <button
                     key={entry.id}
@@ -129,7 +129,7 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
                     data-domain={entry.id}
                     className={domain === entry.id ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-ghost'}
                     onClick={() => setDomain(entry.id)}
-                    style={{ ...getDomainThemeStyle(entry), flex: 1, minWidth: 120, padding: '3px 8px', fontSize: 10 }}
+                    style={{ ...getDomainThemeStyle(entry), flex: 1, minWidth: 120, padding: '3px var(--space-2)', fontSize: 10 }}
                   >
                     {entry.icon} {getDomainLabel(entry.id, domains).toUpperCase()}
                   </button>
@@ -137,13 +137,13 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
               </div>
             </>
           ) : (
-            <div className="empty-state" style={{ padding: '16px 0' }}>
+            <div className="empty-state" style={{ padding: 'var(--space-4) 0' }}>
               <div className="empty-state-title">NO DOMAINS YET</div>
               <div>CREATE AT LEAST ONE DOMAIN DURING SETUP BEFORE USING QUICK CAPTURE.</div>
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+          <div style={{ display: 'flex', gap: 'var(--space-2)', justifyContent: 'flex-end' }}>
             <button type="button" className="btn btn-ghost" onClick={onClose} style={{ fontSize: 10 }}>
               CANCEL
             </button>
