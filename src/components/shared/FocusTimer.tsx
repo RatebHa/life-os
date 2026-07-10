@@ -78,8 +78,8 @@ export const FocusTimer: React.FC = () => {
           zIndex: 200,
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 1fr) auto',
-          gap: 12,
-          padding: '10px 14px',
+          gap: 'var(--space-3)',
+          padding: 'var(--space-3) var(--space-4)',
           border: '1px solid var(--color-border)',
           background: 'linear-gradient(180deg, rgba(10,26,10,0.98), rgba(7,17,7,0.98))',
           boxShadow: '0 0 18px rgba(124,108,255,0.14)',
@@ -93,7 +93,7 @@ export const FocusTimer: React.FC = () => {
           <div style={{ fontFamily: 'var(--font-sans)', fontSize: 24, lineHeight: 1, color: 'var(--color-text)', letterSpacing: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {trayLabel}
           </div>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 4, fontSize: 13, color: 'var(--color-text)', letterSpacing: 1.1, textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', marginTop: 'var(--space-1)', fontSize: 13, color: 'var(--color-text)', letterSpacing: 1.1, textTransform: 'uppercase' }}>
             <span>{display}</span>
             <span>Plan {activeDraft.planned_minutes}m</span>
             <span>{plannedDelta === 0 ? 'On Plan' : plannedDelta > 0 ? `+${plannedDelta}m` : `${plannedDelta}m`}</span>
@@ -102,7 +102,7 @@ export const FocusTimer: React.FC = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
           <button className="btn btn-ghost btn-sm" onClick={() => { void addDistraction(); }}>
             DISTRACT
           </button>
@@ -116,9 +116,9 @@ export const FocusTimer: React.FC = () => {
       </div>
 
       <Modal open={showSummary} onClose={closeSummary} title="FOCUS SESSION">
-        <div style={{ display: 'grid', gap: 12 }}>
+        <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
           <div className="card" style={{ margin: 0 }}>
-            <div className="card-body" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 10 }}>
+            <div className="card-body" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'var(--space-3)' }}>
               {[
                 { label: 'Task', value: trayLabel },
                 { label: 'Elapsed', value: display },
@@ -133,9 +133,9 @@ export const FocusTimer: React.FC = () => {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-3)' }}>
             <div>
-              <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Planned Minutes</label>
+              <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Planned Minutes</label>
               <input
                 className="input"
                 type="number"
@@ -146,7 +146,7 @@ export const FocusTimer: React.FC = () => {
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Interruption Notes</label>
+              <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Interruption Notes</label>
               <input
                 className="input"
                 value={activeDraft.interruption_notes ?? ''}
@@ -157,7 +157,7 @@ export const FocusTimer: React.FC = () => {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 1 }}>Reflection</label>
+            <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Reflection</label>
             <textarea
               className="input"
               rows={4}
@@ -168,7 +168,7 @@ export const FocusTimer: React.FC = () => {
             />
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--space-2)' }}>
             <button className="btn btn-danger" onClick={() => { void stopTimer(); }}>
               DISCARD
             </button>
