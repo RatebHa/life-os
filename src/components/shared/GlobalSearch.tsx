@@ -206,7 +206,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
           boxShadow: '0 0 24px rgba(124,108,255,0.12)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderBottom: '1px solid var(--color-border)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-4)', borderBottom: '1px solid var(--color-border)' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-text-muted)' }}>?</span>
           <input
             ref={inputRef}
@@ -234,8 +234,8 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
                   width: '100%',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 10,
-                  padding: '8px 14px',
+                  gap: 'var(--space-3)',
+                  padding: 'var(--space-2) var(--space-4)',
                   borderBottom: '1px solid var(--color-surface-hover)',
                   background: index === selected ? 'var(--color-surface-hover)' : 'transparent',
                   textAlign: 'left',
@@ -269,16 +269,16 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
             ))}
           </div>
         ) : query.trim() ? (
-          <div style={{ padding: '20px 14px', fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-text-muted)', textAlign: 'center', letterSpacing: 1 }}>
+          <div style={{ padding: 'var(--space-6) var(--space-4)', fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-text-muted)', textAlign: 'center', letterSpacing: 1 }}>
             NO RESULTS FOR "{query.toUpperCase()}"
           </div>
         ) : (
-          <div style={{ padding: '20px 14px', fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', textAlign: 'center', letterSpacing: 1 }}>
+          <div style={{ padding: 'var(--space-6) var(--space-4)', fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', textAlign: 'center', letterSpacing: 1 }}>
             TYPE TO SEARCH ACROSS ALL ENTRIES
           </div>
         )}
 
-        <div style={{ padding: '4px 14px', borderTop: '1px solid var(--color-border)', display: 'flex', gap: 14 }}>
+        <div style={{ padding: 'var(--space-1) var(--space-4)', borderTop: '1px solid var(--color-border)', display: 'flex', gap: 'var(--space-4)' }}>
           {[['UP/DOWN', 'navigate'], ['ENTER', 'open'], ['ESC', 'close']].map(([key, label]) => (
             <span key={key} style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               {key} · {label.toUpperCase()}
