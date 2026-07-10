@@ -206,7 +206,7 @@ export const TemplatesPage: React.FC = () => {
                       <button className="btn btn-danger btn-sm" disabled={launchingId === template.id} onClick={() => deleteTaskTemplate(template.id).catch(console.error)}>DELETE</button>
                     </div>
                   </div>
-                  {template.description && <div style={{ fontSize: 11, color: 'var(--color-accent)', marginTop: 6 }}>{template.description}</div>}
+                  {template.description && <div style={{ fontSize: 11, color: 'var(--color-accent)', marginTop: 'var(--space-2)' }}>{template.description}</div>}
                 </div>
               ))
             )}
