@@ -77,12 +77,12 @@ export const InboxPage: React.FC = () => {
 
   return (
     <div className="page-content fade-in">
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
         <div>
           <div className="page-title">INBOX</div>
           <div className="page-subtitle">CAPTURE FAST. PROCESS LATER.</div>
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
           <div className="btn btn-ghost" style={{ pointerEvents: 'none' }}>
             {pending.length} PENDING
           </div>
@@ -95,32 +95,32 @@ export const InboxPage: React.FC = () => {
       <hr className="page-sep" />
 
       {pending.length === 0 ? (
-        <div className="card" style={{ marginBottom: 12 }}>
+        <div className="card" style={{ marginBottom: 'var(--space-3)' }}>
           <div className="card-header">
             <span className="card-title">INBOX ZERO</span>
             <span className="card-meta">CLEAR</span>
           </div>
           <div className="card-body">
-            <div className="empty-state" style={{ padding: '18px 0' }}>
+            <div className="empty-state" style={{ padding: 'var(--space-4) 0' }}>
               <div className="empty-state-title">NO LOOSE ENDS</div>
               <div>Quick capture now lands here, so an empty inbox means your ideas have been processed.</div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="card" style={{ marginBottom: 12 }}>
+        <div className="card" style={{ marginBottom: 'var(--space-3)' }}>
           <div className="card-header">
             <span className="card-title">READY TO TRIAGE</span>
             <span className="card-meta">{pending.length} ITEMS</span>
           </div>
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
             {pending.map((item) => {
               const busy = workingId === item.id;
               const domainId = item.domain_id ?? suggestedRebalanceDomain;
               return (
-                <div key={item.id} data-domain={domainId} style={{ ...getDomainThemeStyle(domainId, domains), border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: '10px 12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 6 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                <div key={item.id} data-domain={domainId} style={{ ...getDomainThemeStyle(domainId, domains), border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-3) var(--space-3)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
                       <span style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'var(--domain-primary)', letterSpacing: 1 }}>
                         {item.domain_id ? getDomainLabel(item.domain_id, domains).toUpperCase() : 'UNSORTED'}
                       </span>
@@ -132,10 +132,10 @@ export const InboxPage: React.FC = () => {
                       {relativeTime(item.created_at)}
                     </span>
                   </div>
-                  <div style={{ fontSize: 15, color: 'var(--color-text)', marginBottom: 10, whiteSpace: 'pre-wrap' }}>
+                  <div style={{ fontSize: 15, color: 'var(--color-text)', marginBottom: 'var(--space-3)', whiteSpace: 'pre-wrap' }}>
                     {item.content}
                   </div>
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
                     <button className="btn btn-ghost btn-sm" disabled={busy} onClick={() => handleTriage(item, 'task')}>TASK</button>
                     <button className="btn btn-ghost btn-sm" disabled={busy} onClick={() => handleTriage(item, 'goal')}>GOAL</button>
                     <button className="btn btn-ghost btn-sm" disabled={busy} onClick={() => handleTriage(item, 'note')}>NOTE</button>
@@ -154,19 +154,19 @@ export const InboxPage: React.FC = () => {
           <span className="card-title">SOMEDAY / MAYBE</span>
           <span className="card-meta">{someday.length} PARKED</span>
         </div>
-        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
           {someday.length === 0 ? (
             <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
               No parked ideas right now.
             </div>
           ) : (
             someday.map((item) => (
-              <div key={item.id} data-domain={item.domain_id ?? undefined} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+              <div key={item.id} data-domain={item.domain_id ?? undefined} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
                   <div style={{ fontSize: 13, color: 'var(--color-accent)' }}>{item.content}</div>
                   <div style={{ fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>{SOURCE_LABELS[item.source_label]}</div>
                 </div>
-                <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: 'var(--space-2)', marginTop: 'var(--space-2)', flexWrap: 'wrap' }}>
                   <button className="btn btn-ghost btn-sm" disabled={workingId === item.id} onClick={() => handleTriage(item, 'task')}>MAKE TASK</button>
                   <button className="btn btn-ghost btn-sm" disabled={workingId === item.id} onClick={() => handleTriage(item, 'goal')}>MAKE GOAL</button>
                   <button className="btn btn-danger btn-sm" disabled={workingId === item.id} onClick={() => handleDelete(item.id)}>DELETE</button>
