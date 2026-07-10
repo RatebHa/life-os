@@ -75,8 +75,8 @@ function buildDisplayVariables(
     xl: { body: '1.16', panel: '1.2', display: '1.14' },
   } as const;
   const densityMap = {
-    compact: { page: '14px 16px', panel: '8px 10px', row: '28px' },
-    comfortable: { page: '18px 22px', panel: '10px 12px', row: '34px' },
+    compact: { page: '16px 16px', panel: '8px 12px', row: '28px' },
+    comfortable: { page: '16px 24px', panel: '12px 12px', row: '34px' },
   } as const;
 
   const scale = scaleMap[textScale ?? 'normal'];

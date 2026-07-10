@@ -30,11 +30,16 @@
   --font-sans:   'Satoshi', system-ui, -apple-system, sans-serif;
   --font-arabic: 'Noto Naskh Arabic', 'Amiri', 'Segoe UI', Tahoma, sans-serif;
 
-  /* Spacing */
-  --gap-xs: 4px;
-  --gap-sm: 8px;
-  --gap-md: 12px;
-  --gap-lg: 20px;
+  /* Spacing — 4/8/12/16/24/32px, numbered to match Tailwind v4's own default
+     spacing scale (Tailwind's utility N = N * 4px), so --space-4 and
+     Tailwind's `p-4` both mean 16px. The gap in numbering (no --space-5 or
+     --space-7) is intentional, not a mistake to "fill in" later. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
 
   /* Layout */
   --titlebar-height: 30px;
@@ -79,8 +84,8 @@
   --body-scale:    1;
   --panel-scale:   1;
   --display-scale: 1;
-  --page-padding:  18px 22px;
-  --panel-padding: 10px 12px;
+  --page-padding:  16px 24px;
+  --panel-padding: 12px 12px;
   --row-height:    34px;
 }
 
