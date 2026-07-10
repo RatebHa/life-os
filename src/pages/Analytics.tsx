@@ -32,14 +32,14 @@ const ChartTooltip: React.FC<TooltipProps> = ({ active, payload, label }) => {
     <div style={{
       background: 'var(--color-surface)',
       border: '1px solid var(--color-border)',
-      padding: '6px 10px',
+      padding: 'var(--space-2) var(--space-3)',
       fontFamily: 'var(--font-sans)',
       fontSize: 10,
       minWidth: 100,
     }}>
-      {label && <div style={{ color: 'var(--color-text-muted)', marginBottom: 4 }}>{label}</div>}
+      {label && <div style={{ color: 'var(--color-text-muted)', marginBottom: 'var(--space-1)' }}>{label}</div>}
       {payload.map((p) => (
-        <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
           <div style={{ width: 8, height: 8, background: p.color }} />
           <span style={{ color: p.color }}>{p.value} ACTIONS</span>
         </div>
@@ -59,10 +59,10 @@ const AchievementTile: React.FC<{
   <div
     className="card"
     style={{
-      padding: '8px 12px',
+      padding: 'var(--space-2) var(--space-3)',
       display: 'flex',
       alignItems: 'flex-start',
-      gap: 10,
+      gap: 'var(--space-3)',
       opacity: unlocked ? 1 : 0.35,
       borderColor: unlocked ? 'var(--color-border)' : 'var(--color-surface-hover)',
     }}
@@ -413,7 +413,7 @@ export const AnalyticsPage: React.FC = () => {
       <hr className="page-sep" />
 
       {/* Weekly summary row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'var(--space-3)' }}>
         {[
           { label: 'ACTIONS THIS WEEK', value: weeklySummary.weekActions.toLocaleString() },
           { label: 'TASKS COMPLETED', value: taskStats ? `${weeklySummary.weekTasks} / ${taskStats.completed} TOTAL` : weeklySummary.weekTasks },
@@ -426,7 +426,7 @@ export const AnalyticsPage: React.FC = () => {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 10, marginTop: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 'var(--space-3)', marginTop: 'var(--space-3)' }}>
         {[
           { label: 'TASK FRICTION (30D)', value: frictionAnalytics.recentTaskFriction.length },
           { label: 'HABIT SKIPS (30D)', value: frictionAnalytics.recentSkippedHabits.length },
@@ -440,22 +440,22 @@ export const AnalyticsPage: React.FC = () => {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: 12, marginTop: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: 'var(--space-3)', marginTop: 'var(--space-3)' }}>
         <div className="card">
           <div className="card-header">
             <span className="card-title">WHAT KEEPS SLIPPING</span>
           </div>
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {frictionAnalytics.slippingTasks.length === 0 ? (
-              <div className="empty-state" style={{ padding: '12px 0' }}>
+              <div className="empty-state" style={{ padding: 'var(--space-3) 0' }}>
                 <div className="empty-state-title">NO MAJOR DRAG</div>
                 <div>Nothing is repeatedly slipping right now.</div>
               </div>
             ) : (
               frictionAnalytics.slippingTasks.map(({ task, frictionCount, overdueDays }) => (
-                <div key={task.id} data-domain={task.domain_id} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
+                <div key={task.id} data-domain={task.domain_id} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
                   <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{task.title}</div>
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4, fontSize: 10, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                  <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginTop: 'var(--space-1)', fontSize: 10, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                     <span>{frictionCount} FRICTION LOGS</span>
                     {overdueDays > 0 && <span style={{ color: 'var(--color-danger)' }}>{overdueDays}D OVERDUE</span>}
                     <span>{getDomainLabel(task.domain_id, domains)}</span>
@@ -470,7 +470,7 @@ export const AnalyticsPage: React.FC = () => {
           <div className="card-header">
             <span className="card-title">PATTERN SIGNALS</span>
           </div>
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
               Top task friction:
               <span style={{ color: 'var(--color-warning)' }}> {frictionAnalytics.frictionByReason[0] ? `${reasonLabel(frictionAnalytics.frictionByReason[0].reason)} (${frictionAnalytics.frictionByReason[0].count})` : 'NONE'}</span>
@@ -484,7 +484,7 @@ export const AnalyticsPage: React.FC = () => {
               <span style={{ color: frictionAnalytics.stalledTasks.length > 0 ? 'var(--color-danger)' : 'var(--color-text)' }}> {frictionAnalytics.stalledTasks.length} TASKS UNTOUCHED 14+D</span>
             </div>
             {frictionAnalytics.overloadWarnings.length > 0 && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 6 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', marginTop: 6 }}>
                 {frictionAnalytics.overloadWarnings.map((warning) => (
                   <div key={warning} style={{ fontSize: 11, color: 'var(--color-danger)', letterSpacing: 1 }}>
                     ALERT: {warning}
@@ -500,7 +500,7 @@ export const AnalyticsPage: React.FC = () => {
       <div className="card">
         <div className="card-header">
           <span className="card-title">ACTIVITY OVER TIME</span>
-          <div style={{ display: 'flex', gap: 4 }}>
+          <div style={{ display: 'flex', gap: 'var(--space-1)' }}>
             {([30, 90] as const).map((r) => (
               <button
                 key={r}
@@ -532,7 +532,7 @@ export const AnalyticsPage: React.FC = () => {
                     radius={[0, 0, 0, 0]}
                   />
                 ))}
-                <Legend iconType="square" iconSize={8} wrapperStyle={{ fontSize: 9, color: 'var(--color-text-muted)', fontFamily: 'var(--font-sans)', paddingTop: 6 }} />
+                <Legend iconType="square" iconSize={8} wrapperStyle={{ fontSize: 9, color: 'var(--color-text-muted)', fontFamily: 'var(--font-sans)', paddingTop: 'var(--space-2)' }} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -540,7 +540,7 @@ export const AnalyticsPage: React.FC = () => {
       </div>
 
       {/* Radar + completion side by side */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
         {/* Balance radar */}
         <div className="card">
           <div className="card-header">
@@ -556,7 +556,7 @@ export const AnalyticsPage: React.FC = () => {
                 <Tooltip
                   content={({ active, payload }) =>
                     active && payload?.length ? (
-                      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', padding: '4px 8px', fontFamily: 'var(--font-sans)', fontSize: 10 }}>
+                      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', padding: 'var(--space-1) var(--space-2)', fontFamily: 'var(--font-sans)', fontSize: 10 }}>
                         <span style={{ color: 'var(--color-accent)' }}>{payload[0].value}%</span>
                       </div>
                     ) : null
@@ -581,7 +581,7 @@ export const AnalyticsPage: React.FC = () => {
                 <Tooltip
                   content={({ active, payload, label }) =>
                     active && payload?.length ? (
-                      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', padding: '4px 8px', fontFamily: 'var(--font-sans)', fontSize: 10 }}>
+                      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', padding: 'var(--space-1) var(--space-2)', fontFamily: 'var(--font-sans)', fontSize: 10 }}>
                         <div style={{ color: 'var(--color-text-muted)', marginBottom: 2 }}>{label}</div>
                         <div style={{ color: 'var(--color-info)' }}>{payload[0].value}% DONE</div>
                       </div>
@@ -601,14 +601,14 @@ export const AnalyticsPage: React.FC = () => {
           <span className="card-title">DOMAIN BREAKDOWN</span>
         </div>
         <div className="card-body">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'var(--space-3)' }}>
             {domains.map((domain) => {
               const color = domain.color || FALLBACK_DOMAIN_COLOR;
               const meta = { label: getDomainLabel(domain.id, domains) };
               const domainTasks = taskStats?.by_domain?.find((d) => d.domain_id === domain.id);
               return (
-                <div key={domain.id} className="card" data-domain={domain.id} style={{ padding: '10px 12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div key={domain.id} className="card" data-domain={domain.id} style={{ padding: 'var(--space-3) var(--space-3)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color, letterSpacing: 2, textTransform: 'uppercase' }}>
                       {meta.label}
                     </span>
@@ -616,7 +616,7 @@ export const AnalyticsPage: React.FC = () => {
                       {habits.filter((habit) => habit.domain_id === domain.id && habit.is_active).length} HABITS
                     </span>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
                     {[
                       {
                         label: 'RECENT ACTIONS',
@@ -651,10 +651,10 @@ export const AnalyticsPage: React.FC = () => {
         <div style={{
           border: '1px solid var(--color-warning)',
           background: 'rgba(200,160,32,0.05)',
-          padding: '8px 14px',
+          padding: 'var(--space-2) var(--space-4)',
           display: 'flex',
           alignItems: 'center',
-          gap: 12,
+          gap: 'var(--space-3)',
         }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--color-warning)', letterSpacing: 2 }}>
             ⚠ DOMAIN NEGLECT:
@@ -672,15 +672,15 @@ export const AnalyticsPage: React.FC = () => {
             <span className="card-title">HABIT HEALTH (30D)</span>
             <span className="card-meta">% COMPLETION RATE</span>
           </div>
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {habitHealth.map((h) => (
-              <div key={h.id} data-domain={h.domain_id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div key={h.id} data-domain={h.domain_id} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-accent)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200 }}>
                       {h.title}
                     </span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexShrink: 0 }}>
                       {h.streak > 0 && (
                         <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-warning)' }}>{h.streak}D STREAK</span>
                       )}
@@ -720,11 +720,11 @@ export const AnalyticsPage: React.FC = () => {
           <div>
             {goalForecasts.map(({ goal, remaining, recentDone, weeksRemaining }) => (
               <div key={goal.id} data-domain={goal.domain_id} style={{
-                padding: '7px 12px',
+                padding: 'var(--space-2) var(--space-3)',
                 borderBottom: '1px solid var(--color-surface-hover)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 10,
+                gap: 'var(--space-3)',
               }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-accent)' }}>
@@ -755,14 +755,14 @@ export const AnalyticsPage: React.FC = () => {
           <span className="card-meta">ACTIVITY SCORE</span>
         </div>
         <div className="card-body">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 8 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 'var(--space-2)' }}>
             {weeklyTrend.map((w, i) => (
               <div key={w.label} style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 4,
-                padding: '8px 0',
+                gap: 'var(--space-1)',
+                padding: 'var(--space-2) 0',
                 border: `1px solid ${i === 3 ? 'var(--color-border)' : 'var(--color-surface-hover)'}`,
                 background: i === 3 ? 'var(--color-surface-hover)' : 'transparent',
               }}>
@@ -785,20 +785,20 @@ export const AnalyticsPage: React.FC = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
         <div className="card">
           <div className="card-header">
             <span className="card-title">COACHING RECOMMENDATIONS</span>
           </div>
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {frictionAnalytics.recommendations.length === 0 ? (
-              <div className="empty-state" style={{ padding: '10px 0' }}>
+              <div className="empty-state" style={{ padding: 'var(--space-3) 0' }}>
                 <div className="empty-state-title">NO MAJOR CORRECTION NEEDED</div>
                 <div>Your current system is not showing a dominant failure pattern.</div>
               </div>
             ) : (
               frictionAnalytics.recommendations.map((recommendation) => (
-                <div key={recommendation} style={{ fontSize: 11, color: 'var(--color-text)', border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
+                <div key={recommendation} style={{ fontSize: 11, color: 'var(--color-text)', border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
                   {recommendation}
                 </div>
               ))
@@ -811,17 +811,17 @@ export const AnalyticsPage: React.FC = () => {
             <span className="card-title">STALLED WORK</span>
             <span className="card-meta">{frictionAnalytics.stalledTasks.length} TASKS</span>
           </div>
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {frictionAnalytics.stalledTasks.length === 0 ? (
-              <div className="empty-state" style={{ padding: '10px 0' }}>
+              <div className="empty-state" style={{ padding: 'var(--space-3) 0' }}>
                 <div className="empty-state-title">NO LONG STALLS</div>
                 <div>Nothing active has been untouched for two weeks.</div>
               </div>
             ) : (
               frictionAnalytics.stalledTasks.map((task) => (
-                <div key={task.id} data-domain={task.domain_id} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
+                <div key={task.id} data-domain={task.domain_id} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
                   <div style={{ fontSize: 13, color: 'var(--color-text)' }}>{task.title}</div>
-                  <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 4, textTransform: 'uppercase', letterSpacing: 1 }}>
+                  <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 'var(--space-1)', textTransform: 'uppercase', letterSpacing: 1 }}>
                     LAST TOUCHED {formatDateDisplay(task.updated_at)} · {getDomainLabel(task.domain_id, domains)}
                   </div>
                 </div>
@@ -845,7 +845,7 @@ export const AnalyticsPage: React.FC = () => {
               <div className="empty-state-title">NO ACHIEVEMENTS LOADED</div>
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-2)' }}>
               {achievements.map((a) => {
                 const display = getAchievementDisplay(a, domains);
                 return (
