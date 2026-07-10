@@ -128,19 +128,19 @@ export const CommandCenter: React.FC = () => {
   return (
     <div className="page-content fade-in">
       {showStandup && (
-        <div className="card" style={{ marginBottom: 12 }}>
+        <div className="card" style={{ marginBottom: 'var(--space-3)' }}>
           <PanelHeader
             title="SYSTEM NOTE"
             right={<button className="btn btn-ghost btn-sm" onClick={() => setStandupDismissed(true)}>DISMISS</button>}
           />
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             <div className="panel-note" style={{ color: overviewRiskCount >= 2 ? 'var(--color-warning)' : 'var(--color-text-muted)' }}>
               Overview is for orientation. Do the real planning and execution work in Today.
             </div>
             {!mitTask && <div style={{ fontSize: 13, color: 'var(--color-warning)' }}>No MIT is set yet, so the day still needs a center of gravity.</div>}
             {overdueTasks.length > 0 && <div style={{ fontSize: 13, color: 'var(--color-danger)' }}>{overdueTasks.length} task{overdueTasks.length !== 1 ? 's are' : ' is'} slipping past the due date.</div>}
             {openHabits.length > 0 && <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{openHabits.length} habit{openHabits.length !== 1 ? 's' : ''} still need honest logging today.</div>}
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
               <button className="btn btn-primary btn-sm" onClick={() => navigate('/today')}>OPEN TODAY</button>
               <button className="btn btn-ghost btn-sm" onClick={() => navigate('/weekly-review')}>WEEKLY REVIEW</button>
             </div>
@@ -161,7 +161,7 @@ export const CommandCenter: React.FC = () => {
 
       <hr className="page-sep" />
 
-      <div className="layout-grid-stats" style={{ marginBottom: 12 }}>
+      <div className="layout-grid-stats" style={{ marginBottom: 'var(--space-3)' }}>
         {[
           { label: 'TODAY READY', value: `${todayReadyState} / ${topThreeOpen.length} TOP 3` },
           { label: 'WEEKLY RELIABILITY', value: weeklyReliability },
@@ -175,26 +175,26 @@ export const CommandCenter: React.FC = () => {
         ))}
       </div>
 
-      <div className="layout-grid-two" style={{ marginBottom: 12 }}>
+      <div className="layout-grid-two" style={{ marginBottom: 'var(--space-3)' }}>
         <div className="card">
           <PanelHeader title="TODAY READINESS" meta={todayReadyState} />
-          <div className="card-body" style={{ display: 'grid', gap: 10 }}>
+          <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
             {nextAction ? (
-              <div data-domain={nextAction.domain_id} style={{ display: 'grid', gap: 10 }}>
+              <div data-domain={nextAction.domain_id} style={{ display: 'grid', gap: 'var(--space-3)' }}>
                 <div className="panel-note">
                   Today is where you commit and start. Overview only tells you what needs your judgment.
                 </div>
-                <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: '10px 12px' }}>
+                <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-3) var(--space-3)' }}>
                   <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>Next task likely to matter</div>
-                  <div style={{ fontSize: 18, color: 'var(--color-text)', marginTop: 4 }}>{nextAction.title}</div>
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
+                  <div style={{ fontSize: 18, color: 'var(--color-text)', marginTop: 'var(--space-1)' }}>{nextAction.title}</div>
+                  <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginTop: 'var(--space-2)' }}>
                     {nextAction.is_mit && <span className="priority-badge-high">MIT</span>}
                     {nextAction.is_top_three && <span className="priority-badge-medium">TOP 3</span>}
                     <span className={`priority-badge-${nextAction.priority}`}>{nextAction.priority}</span>
                     {nextAction.time_estimate_minutes && <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>{formatMinutes(nextAction.time_estimate_minutes)}</span>}
                   </div>
                 </div>
-                <div style={{ display: 'grid', gap: 8 }}>
+                <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
                     <span>MIT</span>
                     <span>{mitTask ? 'SET' : 'OPEN'}</span>
@@ -212,7 +212,7 @@ export const CommandCenter: React.FC = () => {
                     <span>{openHabits.length}</span>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
                   <button className="btn btn-primary btn-sm" onClick={() => navigate('/today')}>OPEN TODAY</button>
                   <button className="btn btn-ghost btn-sm" onClick={() => navigate('/tasks')}>OPEN TASKS</button>
                 </div>
@@ -228,7 +228,7 @@ export const CommandCenter: React.FC = () => {
 
         <div className="card">
           <PanelHeader title="SYSTEM HEALTH" />
-          <div className="card-body" style={{ display: 'grid', gap: 10 }}>
+          <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
               <span>Weekly reliability</span>
               <span>{weeklyReliability}</span>
@@ -254,7 +254,7 @@ export const CommandCenter: React.FC = () => {
                 ? 'Several systems are drifting. Review the watchlist and reset scope before adding more.'
                 : 'Nothing major is slipping. Keep the system quiet and protect consistency.'}
             </div>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
               <button className="btn btn-ghost btn-sm" onClick={() => navigate('/weekly-review')}>OPEN REVIEW</button>
               <button className="btn btn-ghost btn-sm" onClick={() => navigate('/calendar')}>OPEN CALENDAR</button>
             </div>
@@ -262,7 +262,7 @@ export const CommandCenter: React.FC = () => {
         </div>
       </div>
 
-      <div className="layout-grid-three" style={{ marginBottom: 12 }}>
+      <div className="layout-grid-three" style={{ marginBottom: 'var(--space-3)' }}>
         {domains.map((domain) => {
           const domainOpen = openTasks.filter((task) => task.domain_id === domain.id).length;
           const domainDone = tasks.filter((task) => {
@@ -278,9 +278,9 @@ export const CommandCenter: React.FC = () => {
               data-domain={domain.id}
               className="card"
               onClick={() => navigate(`/domain/${domain.id}`)}
-              style={{ textAlign: 'left', padding: 14 }}
+              style={{ textAlign: 'left', padding: 'var(--space-4)' }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
                 <div style={{ fontFamily: 'var(--font-sans)', fontSize: 20, color: 'var(--domain-primary)', letterSpacing: 2 }}>
                   {getDomainLabel(domain.id, domains).toUpperCase()}
                 </div>
@@ -302,18 +302,18 @@ export const CommandCenter: React.FC = () => {
       <div className="layout-grid-two">
         <div className="card">
           <PanelHeader title="WATCHLIST" />
-          <div className="card-body" style={{ display: 'grid', gap: 8 }}>
+          <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
             <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
               These are the places where the system needs review, not more ambition.
             </div>
             {overdueTasks.slice(0, 4).map((task) => (
-              <div key={task.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 13 }}>
+              <div key={task.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)', fontSize: 13 }}>
                 <span style={{ color: 'var(--color-danger)' }}>{task.title}</span>
                 <span style={{ color: 'var(--color-text-muted)' }}>{formatDateDisplay(task.due_date)}</span>
               </div>
             ))}
             {stalledGoals.slice(0, 3).map((goal) => (
-              <div key={goal.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 13 }}>
+              <div key={goal.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)', fontSize: 13 }}>
                 <span style={{ color: 'var(--color-warning)' }}>{goal.title}</span>
                 <span style={{ color: 'var(--color-text-muted)' }}>{getDomainLabel(goal.domain_id, domains)}</span>
               </div>
@@ -322,12 +322,12 @@ export const CommandCenter: React.FC = () => {
               <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>Nothing urgent is slipping right now.</div>
             )}
             {openHabits.length > 0 && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 13 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)', fontSize: 13 }}>
                 <span style={{ color: 'var(--color-accent)' }}>Open habits today</span>
                 <span style={{ color: 'var(--color-text-muted)' }}>{openHabits.length}</span>
               </div>
             )}
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
               <button className="btn btn-ghost btn-sm" onClick={() => navigate('/tasks')}>TASKS</button>
               <button className="btn btn-ghost btn-sm" onClick={() => navigate('/goals')}>GOALS</button>
               <button className="btn btn-ghost btn-sm" onClick={() => navigate('/habits')}>HABITS</button>
@@ -337,18 +337,18 @@ export const CommandCenter: React.FC = () => {
 
         <div className="card">
           <PanelHeader title="SUPPORT TOOLS" />
-          <div className="card-body" style={{ display: 'grid', gap: 8 }}>
+          <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
             <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
               Helpful utilities live here so the main navigation can stay focused on execution and review.
             </div>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
               {quickPresets.map((preset) => (
                 <button key={preset.id} className="btn btn-ghost btn-sm" disabled={!presetDomainId || launchingPresetId === preset.id} onClick={() => handleLaunchPreset(preset.id).catch(console.error)}>
                   {launchingPresetId === preset.id ? 'LAUNCHING...' : preset.title.toUpperCase()}
                 </button>
               ))}
             </div>
-            <div style={{ display: 'grid', gap: 8 }}>
+            <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
               <button className="btn btn-ghost btn-sm" onClick={() => navigate('/calendar')}>OPEN CALENDAR</button>
               <button className="btn btn-ghost btn-sm" onClick={() => navigate('/analytics')}>OPEN ANALYTICS</button>
               <button className="btn btn-ghost btn-sm" onClick={() => navigate('/settings')}>OPEN SETTINGS</button>
