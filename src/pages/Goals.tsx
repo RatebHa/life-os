@@ -113,13 +113,13 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
       {!parentGoalId && !isEditing && (
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
             Domain
           </label>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-2)' }}>
             {domains.map((entry) => (
               <button
                 key={entry.id}
@@ -127,7 +127,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
                 data-domain={entry.id}
                 onClick={() => setDomain(entry.id)}
                 className={clsx('btn', domain === entry.id ? 'btn-primary' : 'btn-ghost')}
-                style={{ ...getDomainThemeStyle(entry), padding: '4px 8px', fontSize: 12 }}
+                style={{ ...getDomainThemeStyle(entry), padding: 'var(--space-1) var(--space-2)', fontSize: 12 }}
               >
                 {getDomainLabel(entry.id, domains).toUpperCase()}
               </button>
@@ -137,35 +137,35 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
       )}
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
           Goal Title *
         </label>
         <input className="input" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="WHAT ARE YOU DRIVING TOWARD?" autoFocus required />
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
           Why It Matters
         </label>
         <textarea className="input" value={description} onChange={(event) => setDescription(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHY DOES THIS GOAL MATTER?" />
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
           Next Action
         </label>
         <input className="input" value={nextAction} onChange={(event) => setNextAction(event.target.value)} placeholder="WHAT IS THE VERY NEXT CONCRETE MOVE?" />
       </div>
 
-      <div className="grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+      <div className="grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
             Review Date
           </label>
           <input className="input" type="date" lang="en-GB" value={reviewDate} onChange={(event) => setReviewDate(event.target.value)} />
         </div>
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
             Target Date
           </label>
           <input className="input" type="date" lang="en-GB" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} />
@@ -173,24 +173,24 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
           Blocked / Stalled Reason
         </label>
         <textarea className="input" value={blockedBy} onChange={(event) => setBlockedBy(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHAT IS SLOWING THIS GOAL DOWN?" />
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 6 }}>
+        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
           Health
         </label>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-2)' }}>
           {(['on_track', 'at_risk', 'stalled'] as GoalHealth[]).map((value) => (
             <button
               key={value}
               type="button"
               className={clsx('btn', health === value ? 'btn-primary' : 'btn-ghost')}
               onClick={() => setHealth(value)}
-              style={{ padding: '4px 8px', fontSize: 12 }}
+              style={{ padding: 'var(--space-1) var(--space-2)', fontSize: 12 }}
             >
               {value.replace('_', ' ').toUpperCase()}
             </button>
@@ -198,7 +198,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, paddingTop: 10, borderTop: '1px solid var(--color-border)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 'var(--space-2)', paddingTop: 'var(--space-3)', borderTop: '1px solid var(--color-border)' }}>
         <button type="button" className="btn btn-ghost" onClick={onClose}>CANCEL</button>
         <button type="submit" className="btn btn-primary" disabled={!title.trim() || saving}>
           {saving ? (isEditing ? 'SAVING...' : 'CREATING...') : (isEditing ? 'SAVE GOAL' : 'CREATE GOAL')}
@@ -280,14 +280,14 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
   }
 
   return (
-    <div style={depth > 0 ? { marginLeft: 20, borderLeft: '1px solid var(--color-border)' } : undefined}>
+    <div style={depth > 0 ? { marginLeft: 'var(--space-6)', borderLeft: '1px solid var(--color-border)' } : undefined}>
       <div
         data-domain={goal.domain_id}
         style={{
           display: 'flex',
           alignItems: 'flex-start',
-          gap: 8,
-          padding: '10px 10px 12px',
+          gap: 'var(--space-2)',
+          padding: 'var(--space-3) var(--space-3) var(--space-3)',
           marginLeft: depth > 0 ? 8 : 0,
           borderLeft: goal.id === highlightedGoalId ? '2px solid var(--color-text)' : undefined,
           borderBottom: '1px solid var(--color-surface-hover)',
@@ -331,41 +331,41 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
         </button>
 
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
             <span style={{ fontSize: 15, color: isDone ? 'var(--color-text-muted)' : 'var(--color-accent)', textDecoration: isDone ? 'line-through' : 'none' }}>
               {goal.title}
             </span>
-            <span style={{ ...healthTone, borderWidth: 1, borderStyle: 'solid', padding: '1px 5px', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
+            <span style={{ ...healthTone, borderWidth: 1, borderStyle: 'solid', padding: '1px var(--space-1)', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
               {derivedHealth.replace('_', ' ')}
             </span>
             {warnings.map((warning) => (
-              <span key={`${goal.id}-${warning}`} style={{ border: '1px solid var(--color-warning)', color: 'var(--color-warning)', background: 'rgba(200,160,32,0.08)', padding: '1px 5px', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
+              <span key={`${goal.id}-${warning}`} style={{ border: '1px solid var(--color-warning)', color: 'var(--color-warning)', background: 'rgba(200,160,32,0.08)', padding: '1px var(--space-1)', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
                 {warning}
               </span>
             ))}
           </div>
 
           {goal.description && (
-            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 4 }}>
+            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 'var(--space-1)' }}>
               {goal.description}
             </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10, marginTop: 8 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 'var(--space-3)', marginTop: 'var(--space-2)' }}>
             <div className="card" style={{ margin: 0 }}>
               <div className="card-header">
                 <span className="card-title">NEXT ACTION</span>
               </div>
-              <div className="card-body" style={{ paddingTop: 8 }}>
+              <div className="card-body" style={{ paddingTop: 'var(--space-2)' }}>
                 <div style={{ fontSize: 13, color: goal.next_action ? 'var(--color-text)' : 'var(--color-danger)' }}>
                   {goal.next_action || 'NO NEXT ACTION DEFINED'}
                 </div>
                 {goal.blocked_by && (
-                  <div style={{ fontSize: 11, color: 'var(--color-warning)', marginTop: 6 }}>
+                  <div style={{ fontSize: 11, color: 'var(--color-warning)', marginTop: 'var(--space-2)' }}>
                     BLOCKED BY: {goal.blocked_by}
                   </div>
                 )}
-                <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: 'var(--space-2)', marginTop: 'var(--space-2)', flexWrap: 'wrap' }}>
                   <button className="btn btn-ghost btn-sm" onClick={() => setEditingGoal(true)}>
                     EDIT GOAL
                   </button>
@@ -384,14 +384,14 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
               <div className="card-header">
                 <span className="card-title">REVIEW</span>
               </div>
-              <div className="card-body" style={{ paddingTop: 8 }}>
+              <div className="card-body" style={{ paddingTop: 'var(--space-2)' }}>
                 <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
                   REVIEW DATE: {goal.review_date ? formatDateDisplay(goal.review_date) : 'NOT SET'}
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginTop: 4 }}>
+                <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginTop: 'var(--space-1)' }}>
                   TARGET DATE: {goal.target_date ? formatDateDisplay(goal.target_date) : 'OPEN'}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
                   <div style={{ flex: 1, maxWidth: 140, height: 4, background: 'var(--color-surface-hover)' }}>
                     <div style={{ height: '100%', width: `${computedProgress}%`, background: isDone ? 'var(--color-accent)' : 'var(--domain-primary, var(--color-accent))' }} />
                   </div>
@@ -401,18 +401,18 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10, marginTop: 8 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 'var(--space-3)', marginTop: 'var(--space-2)' }}>
             <div className="card" style={{ margin: 0 }}>
               <div className="card-header">
                 <span className="card-title">LINKED TASKS</span>
                 <span className="card-meta">{linkedTasks.length}</span>
               </div>
-              <div className="card-body" style={{ paddingTop: 8 }}>
+              <div className="card-body" style={{ paddingTop: 'var(--space-2)' }}>
                 {linkedTasks.length === 0 ? (
                   <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>NO TASKS LINKED TO THIS GOAL YET.</div>
                 ) : (
                   linkedTasks.slice(0, 4).map((task) => (
-                    <div key={task.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 6 }}>
+                    <div key={task.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)', marginBottom: 'var(--space-2)' }}>
                       <span style={{ fontSize: 12, color: task.status === 'done' ? 'var(--color-text-muted)' : 'var(--color-accent)' }}>
                         {task.title}
                       </span>
@@ -430,12 +430,12 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
                 <span className="card-title">LINKED NOTES</span>
                 <span className="card-meta">{linkedNotes.length}</span>
               </div>
-              <div className="card-body" style={{ paddingTop: 8 }}>
+              <div className="card-body" style={{ paddingTop: 'var(--space-2)' }}>
                 {linkedNotes.length === 0 ? (
                   <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>NO NOTES LINKED TO THIS GOAL YET.</div>
                 ) : (
                   linkedNotes.slice(0, 4).map((note) => (
-                    <div key={note.id} style={{ marginBottom: 6 }}>
+                    <div key={note.id} style={{ marginBottom: 'var(--space-2)' }}>
                       <div style={{ fontSize: 12, color: 'var(--color-accent)' }}>{note.title}</div>
                       <div style={{ fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
                         {formatDateDisplay(note.updated_at)}
@@ -448,9 +448,9 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 'var(--space-1)', flexShrink: 0 }}>
           {depth < 2 && (
-            <button className="btn btn-sm btn-ghost" title="Add sub-goal" style={{ padding: '2px 6px', minHeight: 'auto' }} onClick={() => setShowAddSub(true)}>
+            <button className="btn btn-sm btn-ghost" title="Add sub-goal" style={{ padding: '2px var(--space-2)', minHeight: 'auto' }} onClick={() => setShowAddSub(true)}>
               +
             </button>
           )}
@@ -467,12 +467,12 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
               }}
               className="btn btn-sm btn-ghost"
               title="Abandon goal"
-              style={{ padding: '2px 6px', minHeight: 'auto', color: 'var(--color-warning)', fontSize: 9 }}
+              style={{ padding: '2px var(--space-2)', minHeight: 'auto', color: 'var(--color-warning)', fontSize: 9 }}
             >
               ABANDON
             </button>
           )}
-          <button className="btn btn-sm btn-danger" title="Delete goal" style={{ padding: '2px 6px', minHeight: 'auto' }} onClick={handleDelete}>
+          <button className="btn btn-sm btn-danger" title="Delete goal" style={{ padding: '2px var(--space-2)', minHeight: 'auto' }} onClick={handleDelete}>
             ✕
           </button>
         </div>
@@ -529,7 +529,7 @@ export const GoalsPage: React.FC = () => {
 
       <hr className="page-sep" />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--space-3)' }}>
         {[
           { label: 'ACTIVE', value: activeCount },
           { label: 'COMPLETED', value: doneCount },
@@ -544,14 +544,14 @@ export const GoalsPage: React.FC = () => {
       </div>
 
       {missingNextActionCount > 0 && (
-        <div style={{ padding: '8px 12px', border: '1px solid var(--color-warning)', background: 'rgba(200,160,32,0.06)' }}>
+        <div style={{ padding: 'var(--space-2) var(--space-3)', border: '1px solid var(--color-warning)', background: 'rgba(200,160,32,0.06)' }}>
           <div style={{ fontSize: 12, color: 'var(--color-warning)', letterSpacing: 1, textTransform: 'uppercase' }}>
             {missingNextActionCount} active goal{missingNextActionCount !== 1 ? 's have' : ' has'} no next action. Those goals are at risk of becoming passive.
           </div>
         </div>
       )}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
         <button onClick={() => setFilterDomain('all')} className={clsx('btn btn-sm', filterDomain === 'all' ? 'btn-primary' : 'btn-ghost')}>
           ALL
         </button>
