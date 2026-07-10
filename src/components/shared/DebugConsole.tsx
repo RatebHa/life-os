@@ -49,7 +49,7 @@ export const DebugConsole: React.FC = () => {
     >
       <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span className="card-title">DEBUG CONSOLE</span>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => clear()}>CLEAR</button>
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => setOpen(false)}>HIDE</button>
         </div>
@@ -60,7 +60,7 @@ export const DebugConsole: React.FC = () => {
           overflowY: 'auto',
           display: 'flex',
           flexDirection: 'column',
-          gap: 8,
+          gap: 'var(--space-2)',
           fontSize: 11,
         }}
       >
@@ -73,20 +73,20 @@ export const DebugConsole: React.FC = () => {
               style={{
                 border: '1px solid var(--color-border)',
                 background: 'var(--color-surface-hover)',
-                padding: '8px 10px',
+                padding: 'var(--space-2) var(--space-3)',
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
                 <span style={{ color: levelColor(entry.level), textTransform: 'uppercase', letterSpacing: 1 }}>
                   {entry.level} :: {entry.scope}
                 </span>
                 <span style={{ color: 'var(--color-text-muted)' }}>{entry.created_at.slice(11, 19)}</span>
               </div>
-              <div style={{ marginTop: 4, color: 'var(--color-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+              <div style={{ marginTop: 'var(--space-1)', color: 'var(--color-text)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                 {entry.message}
               </div>
               {entry.detail ? (
-                <div style={{ marginTop: 4, color: 'var(--color-text-muted)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                <div style={{ marginTop: 'var(--space-1)', color: 'var(--color-text-muted)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                   {entry.detail}
                 </div>
               ) : null}
