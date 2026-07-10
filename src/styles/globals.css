@@ -223,7 +223,7 @@ a { cursor: pointer; }
   padding: var(--page-padding);
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: var(--space-4);
   animation: pageRise var(--motion-base) both;
 }
 
@@ -231,77 +231,77 @@ a { cursor: pointer; }
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-4);
   flex-wrap: wrap;
 }
 
 .page-header-copy {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
   min-width: 0;
 }
 
 .page-header-actions {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
 .layout-grid-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .layout-grid-split {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-  gap: 12px;
+  gap: var(--space-3);
   align-items: start;
 }
 
 .layout-grid-two {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .layout-grid-three {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .layout-grid-three-tight {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .layout-grid-pairs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .layout-grid-controls {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .layout-grid-domain-form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 8px;
+  gap: var(--space-2);
   align-items: end;
 }
 
 .layout-actions-end {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
