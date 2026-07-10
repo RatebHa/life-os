@@ -47,11 +47,11 @@ export const CalendarPage: React.FC = () => {
       </div>
       <hr className="page-sep" />
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 'var(--space-4)' }}>
         {/* Calendar Grid */}
         <div>
           {/* Month nav */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
             <button className="btn btn-ghost btn-sm" onClick={prevMonth}>{'<'}</button>
             <div style={{ fontFamily: 'var(--font-sans)', fontSize: 20, letterSpacing: 3, color: 'var(--color-text)', minWidth: 140, textAlign: 'center' }}>
               {MONTH_NAMES[month - 1]} {year}
@@ -60,7 +60,7 @@ export const CalendarPage: React.FC = () => {
           </div>
 
           {/* Day names row */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, marginBottom: 4 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, marginBottom: 'var(--space-1)' }}>
             {DAY_NAMES.map((d) => (
               <div key={d} style={{ textAlign: 'center', fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1, padding: '3px 0' }}>
                 {d}
@@ -91,7 +91,7 @@ export const CalendarPage: React.FC = () => {
                     style={{
                       border: isSelected ? '1px solid var(--color-text)' : isToday ? '1px solid var(--color-accent)' : '1px solid var(--color-surface-hover)',
                       background: isSelected ? 'rgba(124,108,255,0.08)' : isToday ? 'var(--color-surface-hover)' : 'transparent',
-                      padding: 4,
+                      padding: 'var(--space-1)',
                       minHeight: 64,
                       cursor: 'crosshair',
                       display: 'flex',
@@ -151,14 +151,14 @@ export const CalendarPage: React.FC = () => {
               <div className="card-body">
                 {/* Tasks */}
                 {selectedDay.tasks.length > 0 && (
-                  <div style={{ marginBottom: 12 }}>
-                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 2, marginBottom: 6, textTransform: 'uppercase' }}>
+                  <div style={{ marginBottom: 'var(--space-3)' }}>
+                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 2, marginBottom: 'var(--space-2)', textTransform: 'uppercase' }}>
                       TASKS ({selectedDay.tasks.length})
                     </div>
                     {selectedDay.tasks.map((st) => (
                       <div key={st.id} style={{
-                        display: 'flex', alignItems: 'center', gap: 8,
-                        padding: '5px 0', borderBottom: '1px solid var(--color-surface-hover)',
+                        display: 'flex', alignItems: 'center', gap: 'var(--space-2)',
+                        padding: 'var(--space-1) 0', borderBottom: '1px solid var(--color-surface-hover)',
                       }}>
                         <div style={{ width: 6, height: 6, background: priorityColor(st.priority), flexShrink: 0 }} />
                         <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: st.status === 'done' ? 'var(--color-text-muted)' : 'var(--color-accent)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textDecoration: st.status === 'done' ? 'line-through' : 'none' }}>
@@ -173,13 +173,13 @@ export const CalendarPage: React.FC = () => {
                 {/* Habits */}
                 {selectedDay.habits_logged.length > 0 && (
                   <div>
-                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 2, marginBottom: 6, textTransform: 'uppercase' }}>
+                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 2, marginBottom: 'var(--space-2)', textTransform: 'uppercase' }}>
                       HABITS ({selectedDay.habits_logged.length})
                     </div>
                     {selectedDay.habits_logged.map((h) => (
                       <div key={h.habit_id} style={{
-                        display: 'flex', alignItems: 'center', gap: 8,
-                        padding: '5px 0', borderBottom: '1px solid var(--color-surface-hover)',
+                        display: 'flex', alignItems: 'center', gap: 'var(--space-2)',
+                        padding: 'var(--space-1) 0', borderBottom: '1px solid var(--color-surface-hover)',
                       }}>
                         <div style={{ width: 6, height: 6, background: 'var(--color-accent)', flexShrink: 0 }} />
                         <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-accent)' }}>{h.title}</span>
@@ -189,7 +189,7 @@ export const CalendarPage: React.FC = () => {
                 )}
 
                 {selectedDay.tasks.length === 0 && selectedDay.habits_logged.length === 0 && (
-                  <div className="empty-state" style={{ padding: '20px 0' }}>
+                  <div className="empty-state" style={{ padding: 'var(--space-6) 0' }}>
                     <div className="empty-state-title" style={{ fontSize: 14 }}>NO ACTIVITY</div>
                   </div>
                 )}
@@ -200,7 +200,7 @@ export const CalendarPage: React.FC = () => {
               <div className="card-header">
                 <span className="card-title">DAY DETAIL</span>
               </div>
-              <div className="empty-state" style={{ padding: 30 }}>
+              <div className="empty-state" style={{ padding: 'var(--space-8)' }}>
                 <div className="empty-state-title" style={{ fontSize: 14 }}>SELECT A DATE</div>
                 <span className="boot-cursor" />
               </div>
