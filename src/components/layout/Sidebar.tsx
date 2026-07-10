@@ -26,7 +26,7 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside className="app-sidebar">
-      <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid var(--color-border)' }}>
+      <div style={{ padding: 'var(--space-3) var(--space-3) var(--space-2)', borderBottom: '1px solid var(--color-border)' }}>
         <div
           style={{
             fontFamily: 'var(--font-sans)',
@@ -51,8 +51,8 @@ export const Sidebar: React.FC = () => {
         </div>
         <div
           style={{
-            marginTop: 6,
-            padding: '2px 6px',
+            marginTop: 'var(--space-2)',
+            padding: '2px var(--space-2)',
             border: '1px solid var(--color-border)',
             fontSize: 9,
             fontFamily: 'var(--font-sans)',
@@ -68,10 +68,10 @@ export const Sidebar: React.FC = () => {
       </div>
 
       <div className="app-sidebar-scroll">
-        <nav style={{ padding: '6px 0', display: 'flex', flexDirection: 'column' }}>
+        <nav style={{ padding: 'var(--space-2) 0', display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
-              padding: '0 12px 3px',
+              padding: '0 var(--space-3) 3px',
               fontFamily: 'var(--font-sans)',
               fontSize: 9,
               letterSpacing: 2,
@@ -97,12 +97,12 @@ export const Sidebar: React.FC = () => {
           })}
         </nav>
 
-        <div style={{ margin: '3px 12px', borderTop: '1px solid var(--color-border)' }} />
+        <div style={{ margin: '3px var(--space-3)', borderTop: '1px solid var(--color-border)' }} />
 
         <div style={{ padding: '3px 0', display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
-              padding: '0 12px 3px',
+              padding: '0 var(--space-3) 3px',
               fontFamily: 'var(--font-sans)',
               fontSize: 9,
               letterSpacing: 2,
@@ -133,12 +133,12 @@ export const Sidebar: React.FC = () => {
           })}
         </div>
 
-        <div style={{ margin: '3px 12px', borderTop: '1px solid var(--color-border)' }} />
+        <div style={{ margin: '3px var(--space-3)', borderTop: '1px solid var(--color-border)' }} />
 
         <div style={{ padding: '3px 0', display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
-              padding: '0 12px 3px',
+              padding: '0 var(--space-3) 3px',
               fontFamily: 'var(--font-sans)',
               fontSize: 9,
               letterSpacing: 2,
@@ -150,7 +150,7 @@ export const Sidebar: React.FC = () => {
           </div>
 
           {domains.length === 0 ? (
-            <div style={{ padding: '8px 12px', fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+            <div style={{ padding: 'var(--space-2) var(--space-3)', fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               NO DOMAINS CONFIGURED. COMPLETE SETUP TO CREATE YOUR FIRST ONE.
             </div>
           ) : domains.map((domain) => {
@@ -179,11 +179,11 @@ export const Sidebar: React.FC = () => {
                   height: 'auto',
                   flexDirection: 'column',
                   alignItems: 'flex-start',
-                  gap: 4,
-                  padding: '6px 12px',
+                  gap: 'var(--space-1)',
+                  padding: 'var(--space-2) var(--space-3)',
                 }}
               >
-                <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: active ? 'var(--domain-primary)' : 'var(--color-text-muted)', letterSpacing: 1 }}>
                       {meta.icon}
@@ -202,7 +202,7 @@ export const Sidebar: React.FC = () => {
                       letterSpacing: 1,
                       display: 'grid',
                       gridTemplateColumns: '1fr 1fr',
-                      gap: 4,
+                      gap: 'var(--space-1)',
                     }}
                   >
                     <span>OPEN: {activeCommitments}</span>
