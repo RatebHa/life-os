@@ -642,13 +642,13 @@ export const WeeklyReviewPage: React.FC = () => {
   return (
     <div className="page-content fade-in">
       {data.warning ? (
-        <div className="card" style={{ marginBottom: 12, borderColor: 'var(--color-warning)' }}>
+        <div className="card" style={{ marginBottom: 'var(--space-3)', borderColor: 'var(--color-warning)' }}>
           <PanelHeader title={<span style={{ color: 'var(--color-warning)' }}>WEEKLY REVIEW SAFE MODE</span>} style={{ borderColor: 'var(--color-warning)' }} />
           <div className="card-body">
             <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
               The page stayed open using safe defaults because some saved records were malformed.
             </div>
-            <div style={{ marginTop: 8, fontSize: 11, color: 'var(--color-warning)' }}>{data.warning}</div>
+            <div style={{ marginTop: 'var(--space-2)', fontSize: 11, color: 'var(--color-warning)' }}>{data.warning}</div>
           </div>
         </div>
       ) : null}
@@ -669,13 +669,13 @@ export const WeeklyReviewPage: React.FC = () => {
         )}
       />
 
-      <div className="panel-note" style={{ marginBottom: 12 }}>
+      <div className="panel-note" style={{ marginBottom: 'var(--space-3)' }}>
         Primary outcome: commit next week&apos;s Top 3. Notes and inbox capture are optional, and habit adjustments only apply when you explicitly select them.
       </div>
 
       <hr className="page-sep" />
 
-      <div className="layout-grid-stats" style={{ marginBottom: 12 }}>
+      <div className="layout-grid-stats" style={{ marginBottom: 'var(--space-3)' }}>
         {[
           { label: 'TASKS DONE', value: data.completedTasks.length },
           { label: 'HABITS KEPT', value: data.effectiveLogs.length },
@@ -689,10 +689,10 @@ export const WeeklyReviewPage: React.FC = () => {
         ))}
       </div>
 
-      <div className="layout-grid-two" style={{ marginBottom: 12 }}>
+      <div className="layout-grid-two" style={{ marginBottom: 'var(--space-3)' }}>
         <div className="card">
           <PanelHeader title="NEXT-WEEK FOCUS THEME" meta={formatDateRangeDisplay(data.nextWeekStart, data.nextWeekEnd)} />
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
             <textarea className="input" style={{ width: '100%', minHeight: 90, resize: 'vertical' }} placeholder={data.focusSuggestion} value={focusTheme} onChange={(event) => setFocusTheme(event.target.value)} />
             <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>{focusThemeValue}</div>
           </div>
@@ -700,20 +700,20 @@ export const WeeklyReviewPage: React.FC = () => {
 
         <div className="card">
           <PanelHeader title="DOMAIN BALANCE" />
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {data.domainStats.map((domain) => (
-              <div key={domain.id} data-domain={domain.id} style={{ display: 'grid', gridTemplateColumns: '90px 1fr auto', gap: 8, alignItems: 'center' }}>
+              <div key={domain.id} data-domain={domain.id} style={{ display: 'grid', gridTemplateColumns: '90px 1fr auto', gap: 'var(--space-2)', alignItems: 'center' }}>
                 <div style={{ fontFamily: 'var(--font-sans)', fontSize: 18, color: 'var(--domain-primary)' }}>{domain.label.toUpperCase()}</div>
                 <div style={{ fontSize: 12, color: 'var(--color-accent)' }}>{domain.taskCount} tasks, {domain.habitDays} habit days</div>
                         <div style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-warning)' }}>{domain.commitmentLoad} LOAD</div>
               </div>
             ))}
-            <div style={{ marginTop: 4, fontSize: 12, color: 'var(--color-text-muted)' }}>{data.balanceSummary}</div>
+            <div style={{ marginTop: 'var(--space-1)', fontSize: 12, color: 'var(--color-text-muted)' }}>{data.balanceSummary}</div>
           </div>
         </div>
       </div>
 
-      <div className="layout-grid-two" style={{ marginBottom: 12 }}>
+      <div className="layout-grid-two" style={{ marginBottom: 'var(--space-3)' }}>
         <div className="card">
           <PanelHeader title="WHAT WORKED" />
           <div className="card-body">
@@ -723,29 +723,29 @@ export const WeeklyReviewPage: React.FC = () => {
 
         <div className="card">
           <PanelHeader title="TOP 3 FOR NEXT WEEK" meta="FIRST ITEM BECOMES MIT" />
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
           <textarea className="input" style={{ width: '100%', minHeight: 140, resize: 'vertical' }} placeholder={defaultTopThreeText || '1. [Domain] ...\n2. [Domain] ...\n3. [Domain] ...'} value={topThree} onChange={(event) => setTopThree(event.target.value)} />
             <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>{topThreeValue || 'Add the three most important outcomes you want next week to protect.'}</div>
           </div>
         </div>
       </div>
 
-      <div className="layout-grid-two" style={{ marginBottom: 12 }}>
+      <div className="layout-grid-two" style={{ marginBottom: 'var(--space-3)' }}>
         <div className="card">
           <PanelHeader title="WHAT SLIPPED AND WHY" meta={`${data.missedTasks.length} MISSED TASKS`} />
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
             <textarea className="input" style={{ width: '100%', minHeight: 90, resize: 'vertical' }} placeholder="What slipped this week?" value={whatSlipped} onChange={(event) => setWhatSlipped(event.target.value)} />
             <textarea className="input" style={{ width: '100%', minHeight: 90, resize: 'vertical' }} placeholder="Why did it slip?" value={whyItSlipped} onChange={(event) => setWhyItSlipped(event.target.value)} />
             {data.slipDrivers.length === 0 ? (
-              <div className="empty-state" style={{ padding: '12px 0' }}>
+              <div className="empty-state" style={{ padding: 'var(--space-3) 0' }}>
                 <div className="empty-state-title">NO STRONG FAILURE PATTERN</div>
                 <div>No scheduled tasks slipped inside the review window.</div>
               </div>
             ) : (
               data.slipDrivers.map((driver) => (
-                <div key={driver.id} style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: '8px 10px' }}>
+                <div key={driver.id} style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-2) var(--space-3)' }}>
                   <div style={{ fontSize: 13, color: 'var(--color-text)' }}>{driver.label} ({driver.count})</div>
-                  <div style={{ marginTop: 4, fontSize: 11, color: 'var(--color-text-muted)' }}>{driver.detail}</div>
+                  <div style={{ marginTop: 'var(--space-1)', fontSize: 11, color: 'var(--color-text-muted)' }}>{driver.detail}</div>
                 </div>
               ))
             )}
@@ -754,22 +754,22 @@ export const WeeklyReviewPage: React.FC = () => {
 
         <div className="card">
           <PanelHeader title="GOALS NEEDING ATTENTION" meta={`${data.stalledGoalsCount} STALLED`} />
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {data.attentionGoals.length === 0 ? (
-              <div className="empty-state" style={{ padding: '12px 0' }}>
+              <div className="empty-state" style={{ padding: 'var(--space-3) 0' }}>
                 <div className="empty-state-title">GOALS LOOK STABLE</div>
                 <div>No active goals are showing a strong warning sign right now.</div>
               </div>
             ) : (
               data.attentionGoals.map((goal) => (
-                <div key={goal.id} data-domain={goal.domainId} style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: '8px 10px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                <div key={goal.id} data-domain={goal.domainId} style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-2) var(--space-3)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
                     <div style={{ fontSize: 13, color: 'var(--color-accent)' }}>{goal.title}</div>
                     <div style={{ fontSize: 11, color: goal.health === 'stalled' ? 'var(--color-danger)' : goal.health === 'at_risk' ? 'var(--color-warning)' : 'var(--color-text-muted)' }}>
                       {getHealthLabel(goal.health)}
                     </div>
                   </div>
-                  <div style={{ marginTop: 4, fontSize: 11, color: 'var(--color-text-muted)' }}>{goal.nextAction || goal.blockedBy || 'No next action recorded yet.'}</div>
+                  <div style={{ marginTop: 'var(--space-1)', fontSize: 11, color: 'var(--color-text-muted)' }}>{goal.nextAction || goal.blockedBy || 'No next action recorded yet.'}</div>
                 </div>
               ))
             )}
@@ -780,20 +780,20 @@ export const WeeklyReviewPage: React.FC = () => {
       <div className="layout-grid-two">
         <div className="card">
           <PanelHeader title="MISSED WORK TO RECOVER" meta={data.missedTasks.length} />
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {data.missedTasks.length === 0 ? (
-              <div className="empty-state" style={{ padding: '12px 0' }}>
+              <div className="empty-state" style={{ padding: 'var(--space-3) 0' }}>
                 <div className="empty-state-title">CLEAN WEEK</div>
                 <div>No scheduled tasks slipped in the weekly window.</div>
               </div>
             ) : (
               data.missedTasks.slice(0, 6).map((task) => (
-                <div key={task.id} data-domain={normalizeDomainId(task.domain_id)} style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: '8px 10px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                <div key={task.id} data-domain={normalizeDomainId(task.domain_id)} style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-2) var(--space-3)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
                     <div style={{ fontSize: 13, color: 'var(--color-accent)' }}>{task.title}</div>
                     <div style={{ fontSize: 11, color: 'var(--color-danger)' }}>{formatDateDisplay(task.due_date)}</div>
                   </div>
-                  <div style={{ marginTop: 4, fontSize: 11, color: 'var(--color-text-muted)' }}>
+                  <div style={{ marginTop: 'var(--space-1)', fontSize: 11, color: 'var(--color-text-muted)' }}>
                     {task.goal_id ? 'Linked to a goal.' : 'Not linked to a goal.'}
                     {task.time_estimate_minutes ? ` Estimated at ${task.time_estimate_minutes}m.` : ' No estimate set.'}
                   </div>
@@ -805,12 +805,12 @@ export const WeeklyReviewPage: React.FC = () => {
 
         <div className="card">
           <PanelHeader title="HABIT ADJUSTMENTS" meta={`${selectedSuggestionLookup.size} SELECTED`} />
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
               Opt in only to the adjustments you want turned into next-week tasks.
             </div>
             {data.habitSuggestions.length === 0 ? (
-              <div className="empty-state" style={{ padding: '12px 0' }}>
+              <div className="empty-state" style={{ padding: 'var(--space-3) 0' }}>
                 <div className="empty-state-title">NO STRONG HABIT CHANGE SIGNAL</div>
                 <div>Your recent habit data does not suggest an obvious adjustment.</div>
               </div>
@@ -829,12 +829,12 @@ export const WeeklyReviewPage: React.FC = () => {
                       minHeight: 52,
                       justifyContent: 'flex-start',
                       textAlign: 'left',
-                      padding: '10px 12px',
+                      padding: 'var(--space-3) var(--space-3)',
                       borderColor: selected ? 'var(--color-warning)' : 'var(--color-border)',
                       color: selected ? 'var(--color-warning)' : 'var(--color-accent)',
                     }}
                   >
-                    <span style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <span style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
                       <span style={{ fontSize: 13 }}>{suggestion.habitTitle}: {suggestion.suggestion}</span>
                       <span style={{ fontSize: 11, color: selected ? 'var(--color-text)' : 'var(--color-text-muted)' }}>{suggestion.rationale}</span>
                     </span>
