@@ -19,8 +19,8 @@ export const FooterBar: React.FC = () => {
 
   return (
     <div className="footer">
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)' }}>
           <span
             style={{
               width: 6,
