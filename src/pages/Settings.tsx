@@ -633,31 +633,31 @@ export const SettingsPage: React.FC = () => {
 
       <hr className="page-sep" />
 
-      <div className="card" style={{ marginBottom: 12, borderColor: backupStatusColor }}>
+      <div className="card" style={{ marginBottom: 'var(--space-3)', borderColor: backupStatusColor }}>
         <PanelHeader
           title={<span style={{ color: backupStatusColor }}>SAFETY STATUS</span>}
           style={{ borderColor: backupStatusColor }}
           right={<span style={{ ...rowLabelStyle, color: backupStatusColor }}>{backupHealth?.status_label?.toUpperCase() ?? 'UNKNOWN'}</span>}
         />
-        <div className="card-body" style={{ display: 'grid', gap: 10 }}>
+        <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
           <div style={{ fontSize: 12, color: backupStatusColor }}>
             {backupStatusMessage}
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 8 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 'var(--space-2)' }}>
             <div className="card" style={{ margin: 0 }}>
-              <div className="card-body" style={{ display: 'grid', gap: 4 }}>
+              <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>LAST BACKUP</span>
                 <span style={{ fontSize: 12, color: 'var(--color-text)' }}>{formatTimestamp(appState?.last_backup_at)}</span>
               </div>
             </div>
             <div className="card" style={{ margin: 0 }}>
-              <div className="card-body" style={{ display: 'grid', gap: 4 }}>
+              <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>LATEST SNAPSHOT AGE</span>
                 <span style={{ fontSize: 12, color: 'var(--color-text)' }}>{formatAge(backupHealth?.latest_backup_age_hours)}</span>
               </div>
             </div>
             <div className="card" style={{ margin: 0 }}>
-              <div className="card-body" style={{ display: 'grid', gap: 4 }}>
+              <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>RECOVERY BIN</span>
                 <span style={{ fontSize: 12, color: recoveryBinCount > 0 ? 'var(--color-warning)' : 'var(--color-text)' }}>{recoveryBinCount} ITEM{recoveryBinCount === 1 ? '' : 'S'}</span>
               </div>
@@ -674,31 +674,31 @@ export const SettingsPage: React.FC = () => {
           title="SYNC ACCOUNT"
           right={<span style={{ ...rowLabelStyle, color: syncConnected ? 'var(--color-accent)' : 'var(--color-text-muted)' }}>{syncStateLabel}</span>}
         />
-        <div className="card-body" style={{ display: 'grid', gap: 12 }}>
+        <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
           <div style={{ fontSize: 12, color: syncConnected ? 'var(--color-text)' : 'var(--color-text-muted)' }}>
             Optional cross-device sync stays local-first. Sign in, compare this desktop with cloud, then choose a safe direction before you let both sides converge.
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-3)' }}>
+            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
               <span style={rowLabelStyle}>SUPABASE URL</span>
               <input className="input" value={syncUrlInput} onChange={(event) => setSyncUrlInput(event.target.value)} placeholder="https://project.supabase.co" />
             </label>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
               <span style={rowLabelStyle}>ANON KEY</span>
               <input className="input" value={syncAnonKeyInput} onChange={(event) => setSyncAnonKeyInput(event.target.value)} placeholder="eyJ..." />
             </label>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
               <span style={rowLabelStyle}>EMAIL</span>
               <input className="input" value={syncEmailInput} onChange={(event) => setSyncEmailInput(event.target.value)} placeholder="you@example.com" />
             </label>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
               <span style={rowLabelStyle}>PASSWORD</span>
               <input className="input" type="password" value={syncPasswordInput} onChange={(event) => setSyncPasswordInput(event.target.value)} placeholder="Required to connect" />
             </label>
           </div>
 
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
             <button className="btn btn-primary" onClick={() => void handleSyncSignIn()} disabled={Boolean(syncActionLabel)}>
               {syncActionLabel === 'CONNECTING' ? 'CONNECTING...' : syncConnected ? 'REFRESH SESSION' : 'CONNECT TO SYNC'}
             </button>
@@ -716,9 +716,9 @@ export const SettingsPage: React.FC = () => {
             </button>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 8 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 'var(--space-2)' }}>
             <div className="card" style={{ margin: 0 }}>
-              <div className="card-body" style={{ display: 'grid', gap: 4 }}>
+              <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>ACCOUNT</span>
                 <span style={{ fontSize: 12, color: syncConnected ? 'var(--color-text)' : 'var(--color-text-muted)' }}>
                   {appState?.sync_user_email ?? 'NOT CONNECTED'}
@@ -726,29 +726,29 @@ export const SettingsPage: React.FC = () => {
               </div>
             </div>
             <div className="card" style={{ margin: 0 }}>
-              <div className="card-body" style={{ display: 'grid', gap: 4 }}>
+              <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>LAST SYNC</span>
                 <span style={{ fontSize: 12, color: 'var(--color-text)' }}>{formatTimestamp(appState?.sync_last_sync_at)}</span>
               </div>
             </div>
             <div className="card" style={{ margin: 0 }}>
-              <div className="card-body" style={{ display: 'grid', gap: 4 }}>
+              <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>LOCAL RECORDS</span>
                 <span style={{ fontSize: 12, color: 'var(--color-text)' }}>{syncBootstrapStatus?.local_counts.total ?? 0}</span>
               </div>
             </div>
             <div className="card" style={{ margin: 0 }}>
-              <div className="card-body" style={{ display: 'grid', gap: 4 }}>
+              <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>CLOUD RECORDS</span>
                 <span style={{ fontSize: 12, color: 'var(--color-text)' }}>{syncBootstrapStatus?.remote_counts.total ?? 0}</span>
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-3)' }}>
             <div className="card" style={{ margin: 0 }}>
               <PanelHeader title="THIS DEVICE" right={<span style={rowLabelStyle}>{syncBootstrapStatus?.local_counts.total ?? 0}</span>} />
-              <div className="card-body" style={{ display: 'grid', gap: 4 }}>
+              <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>DOMAINS: {syncBootstrapStatus?.local_counts.domains ?? 0}</span>
                 <span style={rowLabelStyle}>TASKS: {syncBootstrapStatus?.local_counts.tasks ?? 0}</span>
                 <span style={rowLabelStyle}>HABITS: {syncBootstrapStatus?.local_counts.habits ?? 0}</span>
@@ -760,7 +760,7 @@ export const SettingsPage: React.FC = () => {
             </div>
             <div className="card" style={{ margin: 0 }}>
               <PanelHeader title="CLOUD" right={<span style={rowLabelStyle}>{syncBootstrapStatus?.remote_counts.total ?? 0}</span>} />
-              <div className="card-body" style={{ display: 'grid', gap: 4 }}>
+              <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>DOMAINS: {syncBootstrapStatus?.remote_counts.domains ?? 0}</span>
                 <span style={rowLabelStyle}>TASKS: {syncBootstrapStatus?.remote_counts.tasks ?? 0}</span>
                 <span style={rowLabelStyle}>HABITS: {syncBootstrapStatus?.remote_counts.habits ?? 0}</span>
@@ -772,7 +772,7 @@ export const SettingsPage: React.FC = () => {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gap: 4 }}>
+          <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
             <span style={rowLabelStyle}>FIRST-TIME RULE</span>
             <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
               If cloud is empty, upload this device after a safety backup. If local is empty, pull cloud down. If both sides already have data, choose intentionally. The app will not auto-merge first-time setup for you.
@@ -793,12 +793,12 @@ export const SettingsPage: React.FC = () => {
             </span>
           )}
         />
-        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           <p style={rowLabelStyle}>
             USE A NORMAL FOLDER ON YOUR COMPUTER OR A SYNCTHING-SYNCED FOLDER. LIFE OS WRITES JSON SNAPSHOTS THERE, SO YOU CAN RESTORE THEM ON ANY INSTALL WITHOUT SHARING THE LIVE SQLITE DATABASE.
           </p>
 
-          <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             <span style={rowLabelStyle}>BACKUP FOLDER PATH</span>
             <input
               className="input"
@@ -811,7 +811,7 @@ export const SettingsPage: React.FC = () => {
           <label style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 10,
+            gap: 'var(--space-3)',
             fontFamily: 'var(--font-sans)',
             fontSize: 10,
             color: 'var(--color-text)',
@@ -827,7 +827,7 @@ export const SettingsPage: React.FC = () => {
             CREATE ONE BACKUP AUTOMATICALLY PER DAY ON APP OPEN
           </label>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
             <button className="btn btn-primary" onClick={handleSaveSyncSettings}>
               {syncSaved ? 'SYNC SAVED' : 'SAVE SYNC SETTINGS'}
             </button>
@@ -845,7 +845,7 @@ export const SettingsPage: React.FC = () => {
             </button>
           </div>
 
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', alignItems: 'center' }}>
             <input
               className="input"
               value={snapshotName}
@@ -866,16 +866,16 @@ export const SettingsPage: React.FC = () => {
             style={{ display: 'none' }}
           />
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 'var(--space-3)' }}>
             <div className="card" style={{ margin: 0 }}>
-              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>CURRENT FOLDER: {backupHealth?.backup_directory ?? appState?.backup_directory ?? 'NOT SET'}</span>
                 <span style={rowLabelStyle}>LAST BACKUP: {appState?.last_backup_at ?? 'NONE YET'}</span>
                 <span style={rowLabelStyle}>LATEST SNAPSHOT AGE: {formatAge(backupHealth?.latest_backup_age_hours)}</span>
               </div>
             </div>
             <div className="card" style={{ margin: 0 }}>
-              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>LATEST FILE: {backupHealth?.latest_backup?.file_name ?? 'NONE YET'}</span>
                 <span style={rowLabelStyle}>LATEST VERSION: {backupHealth?.latest_backup?.version ?? 'UNKNOWN'}</span>
                 <span style={rowLabelStyle}>AUTO-BACKUP: {backupHealth?.auto_backup_enabled ? 'ACTIVE' : 'OFF'}</span>
@@ -885,7 +885,7 @@ export const SettingsPage: React.FC = () => {
 
           {backupHealth?.pending_warnings?.length ? (
             <div className="card" style={{ margin: 0, borderColor: 'var(--color-warning)' }}>
-              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                 {backupHealth.pending_warnings.map((warning) => (
                   <span key={warning} style={{ ...rowLabelStyle, color: 'var(--color-warning)' }}>
                     {warning}
@@ -905,9 +905,9 @@ export const SettingsPage: React.FC = () => {
 
       <div className="card">
         <PanelHeader title="RESTORE PREVIEW + HISTORY" />
-        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           {latestBackupSummary ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 8 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 'var(--space-2)' }}>
               <span style={rowLabelStyle}>PREVIEW FILE: {latestBackupSummary.file_name ?? latestBackupSummary.backup_name}</span>
               <span style={rowLabelStyle}>EXPORTED: {latestBackupSummary.exported_at ?? 'UNKNOWN'}</span>
               <span style={rowLabelStyle}>VERSION: {latestBackupSummary.version ?? 'UNKNOWN'}</span>
@@ -921,12 +921,12 @@ export const SettingsPage: React.FC = () => {
             <span style={rowLabelStyle}>NO BACKUP PREVIEW AVAILABLE YET.</span>
           )}
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 240, overflowY: 'auto', paddingRight: 4 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', maxHeight: 240, overflowY: 'auto', paddingRight: 'var(--space-1)' }}>
             {backupHistory.length === 0 ? (
               <span style={rowLabelStyle}>NO SNAPSHOTS OR RESTORE EVENTS YET.</span>
             ) : backupHistory.slice(0, 12).map((item) => (
-              <div key={`${item.last_action}-${item.file_path}-${item.modified_at ?? ''}`} className="task-row" style={{ padding: '10px 12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
+              <div key={`${item.last_action}-${item.file_path}-${item.modified_at ?? ''}`} className="task-row" style={{ padding: 'var(--space-3) var(--space-3)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text)', letterSpacing: 1 }}>
                     {item.backup_name.toUpperCase()}
                   </span>
@@ -934,7 +934,7 @@ export const SettingsPage: React.FC = () => {
                     {item.last_action.toUpperCase()}
                   </span>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 4 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 'var(--space-1)' }}>
                   <span style={rowLabelStyle}>{item.file_name}</span>
                   <span style={rowLabelStyle}>TIME: {item.modified_at ?? 'UNKNOWN'}</span>
                   <span style={rowLabelStyle}>VERSION: {item.version ?? 'UNKNOWN'} / COMPAT: {item.compatibility.toUpperCase()}</span>
@@ -947,7 +947,7 @@ export const SettingsPage: React.FC = () => {
 
       <div className="card">
         <PanelHeader title="RECOVERY BIN" right={<span style={rowLabelStyle}>{deletedNotes.length + deletedGoals.length + deletedInboxItems.length} ITEMS</span>} />
-        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           <p style={rowLabelStyle}>
             DELETES ARE NOW SOFT-REMOVED FIRST. IF YOU DELETE A NOTE, GOAL, OR INBOX ITEM BY ACCIDENT, YOU CAN RESTORE IT HERE LATER.
           </p>
@@ -956,18 +956,18 @@ export const SettingsPage: React.FC = () => {
             <span style={rowLabelStyle}>RECOVERY BIN IS EMPTY.</span>
           ) : null}
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-3)' }}>
             <div className="card" style={{ margin: 0 }}>
               <PanelHeader title="NOTES" right={<span style={rowLabelStyle}>{deletedNotes.length}</span>} />
-              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 240, overflowY: 'auto' }}>
+              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', maxHeight: 240, overflowY: 'auto' }}>
                 {deletedNotes.length === 0 ? (
                   <span style={rowLabelStyle}>NO DELETED NOTES.</span>
                 ) : deletedNotes.slice(0, 12).map((note) => (
-                  <div key={note.id} className="task-row" style={{ padding: '10px 12px' }}>
-                    <div style={{ fontSize: 12, color: 'var(--color-text)', marginBottom: 4 }}>{note.title}</div>
+                  <div key={note.id} className="task-row" style={{ padding: 'var(--space-3) var(--space-3)' }}>
+                    <div style={{ fontSize: 12, color: 'var(--color-text)', marginBottom: 'var(--space-1)' }}>{note.title}</div>
                     <div style={rowLabelStyle}>DELETED: {formatTimestamp(note.deleted_at)}</div>
                     <div style={rowLabelStyle}>DOMAIN: {note.domain_id?.toUpperCase() ?? 'GLOBAL'}</div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'var(--space-2)' }}>
                       <button className="btn btn-ghost btn-sm" onClick={() => void handleRestoreNote(note.id)}>
                         RESTORE
                       </button>
@@ -979,15 +979,15 @@ export const SettingsPage: React.FC = () => {
 
             <div className="card" style={{ margin: 0 }}>
               <PanelHeader title="GOALS" right={<span style={rowLabelStyle}>{deletedGoals.length}</span>} />
-              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 240, overflowY: 'auto' }}>
+              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', maxHeight: 240, overflowY: 'auto' }}>
                 {deletedGoals.length === 0 ? (
                   <span style={rowLabelStyle}>NO DELETED GOALS.</span>
                 ) : deletedGoals.slice(0, 12).map((goal) => (
-                  <div key={goal.id} className="task-row" style={{ padding: '10px 12px' }}>
-                    <div style={{ fontSize: 12, color: 'var(--color-text)', marginBottom: 4 }}>{goal.title}</div>
+                  <div key={goal.id} className="task-row" style={{ padding: 'var(--space-3) var(--space-3)' }}>
+                    <div style={{ fontSize: 12, color: 'var(--color-text)', marginBottom: 'var(--space-1)' }}>{goal.title}</div>
                     <div style={rowLabelStyle}>DELETED: {formatTimestamp(goal.deleted_at)}</div>
                     <div style={rowLabelStyle}>STATUS: {goal.status.toUpperCase().replace('_', ' ')}</div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'var(--space-2)' }}>
                       <button className="btn btn-ghost btn-sm" onClick={() => void handleRestoreGoal(goal.id)}>
                         RESTORE
                       </button>
@@ -999,15 +999,15 @@ export const SettingsPage: React.FC = () => {
 
             <div className="card" style={{ margin: 0 }}>
               <PanelHeader title="INBOX" right={<span style={rowLabelStyle}>{deletedInboxItems.length}</span>} />
-              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 240, overflowY: 'auto' }}>
+              <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', maxHeight: 240, overflowY: 'auto' }}>
                 {deletedInboxItems.length === 0 ? (
                   <span style={rowLabelStyle}>NO DELETED INBOX ITEMS.</span>
                 ) : deletedInboxItems.slice(0, 12).map((item) => (
-                  <div key={item.id} className="task-row" style={{ padding: '10px 12px' }}>
-                    <div style={{ fontSize: 12, color: 'var(--color-text)', marginBottom: 4, whiteSpace: 'pre-wrap' }}>{item.content}</div>
+                  <div key={item.id} className="task-row" style={{ padding: 'var(--space-3) var(--space-3)' }}>
+                    <div style={{ fontSize: 12, color: 'var(--color-text)', marginBottom: 'var(--space-1)', whiteSpace: 'pre-wrap' }}>{item.content}</div>
                     <div style={rowLabelStyle}>DELETED: {formatTimestamp(item.deleted_at)}</div>
                     <div style={rowLabelStyle}>STATUS: {item.status.toUpperCase()}</div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'var(--space-2)' }}>
                       <button className="btn btn-ghost btn-sm" onClick={() => void handleRestoreInboxItem(item.id)}>
                         RESTORE
                       </button>
@@ -1022,12 +1022,12 @@ export const SettingsPage: React.FC = () => {
 
       <div className="card">
         <PanelHeader title="DISPLAY TUNING" />
-        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           <p style={rowLabelStyle}>
             TUNE TEXT SCALE AND DENSITY PROFILE. THESE SETTINGS PERSIST IN YOUR DATABASE SO THE APP FEELS CONSISTENT AFTER RESTORE.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-3)' }}>
+            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
               <span style={rowLabelStyle}>TEXT SCALE</span>
               <select className="input" value={textScale} onChange={(e) => setTextScale(e.target.value as 'normal' | 'large' | 'xl')}>
                 <option value="normal">NORMAL</option>
@@ -1035,7 +1035,7 @@ export const SettingsPage: React.FC = () => {
                 <option value="xl">XL</option>
               </select>
             </label>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
               <span style={rowLabelStyle}>UI DENSITY</span>
               <select className="input" value={uiDensity} onChange={(e) => setUiDensity(e.target.value as 'compact' | 'comfortable')}>
                 <option value="compact">COMPACT</option>
@@ -1043,12 +1043,12 @@ export const SettingsPage: React.FC = () => {
               </select>
             </label>
           </div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
             <button className="btn btn-primary" onClick={handleSaveDisplaySettings}>
               {displaySaved ? 'DISPLAY SAVED' : 'SAVE DISPLAY PROFILE'}
             </button>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 8 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-2)' }}>
             <span style={rowLabelStyle}>CURRENT SCALE: {appState?.text_scale?.toUpperCase() ?? 'NORMAL'}</span>
             <span style={rowLabelStyle}>CURRENT DENSITY: {appState?.ui_density?.toUpperCase() ?? 'COMFORTABLE'}</span>
           </div>
@@ -1057,11 +1057,11 @@ export const SettingsPage: React.FC = () => {
 
       <div className="card">
         <PanelHeader title="DOMAIN PROFILES" />
-        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           <p style={rowLabelStyle}>
             DOMAINS POWER THE WHOLE APP. ADD AS MANY AS YOU WANT, CHANGE THEIR ICONS, AND TUNE THEIR COLORS SO THE SYSTEM FITS ANY USER WITHOUT BREAKING YOUR DATA OR FEATURES.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-3)' }}>
             {domainDrafts.map((domain) => (
               <div key={domain.id} className="card" style={{ ...getDomainThemeStyle(domain), margin: 0 }}>
                 <PanelHeader
@@ -1076,18 +1076,18 @@ export const SettingsPage: React.FC = () => {
                     </button>
                   )}
                 />
-                <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                     <span style={rowLabelStyle}>DISPLAY NAME</span>
                     <input className="input" value={domain.name} onChange={(event) => handleDomainDraftChange(domain.id, 'name', event.target.value)} />
                   </label>
-                  <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                     <span style={rowLabelStyle}>ICON</span>
                     <input className="input" value={domain.icon} onChange={(event) => handleDomainDraftChange(domain.id, 'icon', event.target.value)} placeholder="[A] or emoji" maxLength={8} />
                   </label>
-                  <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                     <span style={rowLabelStyle}>COLOR</span>
-                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
                       <input className="input" value={domain.color} onChange={(event) => handleDomainDraftChange(domain.id, 'color', event.target.value)} placeholder="#7C6CFF" style={{ flex: 1 }} />
                       <input type="color" value={isHexColor(domain.color) ? domain.color : '#7C6CFF'} onChange={(event) => handleDomainDraftChange(domain.id, 'color', event.target.value)} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
                     </div>
@@ -1099,17 +1099,17 @@ export const SettingsPage: React.FC = () => {
           <div className="card" style={{ margin: 0 }}>
             <PanelHeader title="ADD DOMAIN" />
             <div className="card-body layout-grid-domain-form">
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                 <span style={rowLabelStyle}>DISPLAY NAME</span>
                 <input className="input" value={newDomainDraft.name} onChange={(event) => setNewDomainDraft((current) => ({ ...current, name: event.target.value }))} placeholder="Work, Health, Study..." />
               </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                 <span style={rowLabelStyle}>ICON</span>
                 <input className="input" value={newDomainDraft.icon} onChange={(event) => setNewDomainDraft((current) => ({ ...current, icon: event.target.value }))} maxLength={8} placeholder="[D]" />
               </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                 <span style={rowLabelStyle}>COLOR</span>
-                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
                   <input className="input" value={newDomainDraft.color} onChange={(event) => setNewDomainDraft((current) => ({ ...current, color: event.target.value }))} placeholder="#7C6CFF" style={{ flex: 1 }} />
                   <input type="color" value={isHexColor(newDomainDraft.color) ? newDomainDraft.color : '#7C6CFF'} onChange={(event) => setNewDomainDraft((current) => ({ ...current, color: event.target.value }))} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
                 </div>
@@ -1119,7 +1119,7 @@ export const SettingsPage: React.FC = () => {
               </button>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
             <button className="btn btn-primary" onClick={handleSaveDomains}>
               {domainSaved ? 'DOMAINS SAVED' : 'SAVE DOMAIN PROFILES'}
             </button>
@@ -1134,8 +1134,8 @@ export const SettingsPage: React.FC = () => {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
-              padding: '2px 8px',
+              gap: 'var(--space-2)',
+              padding: '2px var(--space-2)',
               border: `1px solid ${appState?.api_key ? 'var(--color-accent)' : 'var(--color-border)'}`,
               fontFamily: 'var(--font-sans)',
               fontSize: 9,
@@ -1153,12 +1153,12 @@ export const SettingsPage: React.FC = () => {
             </div>
           )}
         />
-        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           <p style={rowLabelStyle}>
             ENTER YOUR ANTHROPIC API KEY TO ENABLE AI-ASSISTED ANALYSIS AND SMARTER SYSTEM GUIDANCE.
             WITHOUT A KEY, LIFE OS STAYS FULLY LOCAL AND CONTINUES TO WORK NORMALLY.
           </p>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
             <input
               className="input"
               type="password"
@@ -1201,7 +1201,7 @@ export const SettingsPage: React.FC = () => {
 
       <div className="card">
         <PanelHeader title="DATA EXPORT" />
-        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           <p style={rowLabelStyle}>
             EXPORT ALL YOUR DATA AS A JSON FILE. API KEYS STAY LOCAL TO THIS DEVICE, BUT YOUR TASKS, HABITS, GOALS, NOTES, HISTORY, AND APP STATE CAN MOVE CLEANLY TO ANOTHER INSTALL.
           </p>
@@ -1213,12 +1213,12 @@ export const SettingsPage: React.FC = () => {
 
       <div className="card" style={{ borderColor: 'var(--color-danger)' }}>
         <PanelHeader title={<span style={{ color: 'var(--color-danger)' }}>DANGER ZONE</span>} style={{ borderColor: 'var(--color-danger)' }} />
-        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           <p style={rowLabelStyle}>
             PERMANENTLY DELETE ALL TASKS, HABITS, GOALS, HISTORY, AND ACHIEVEMENT PROGRESS.
             BACKUP SETTINGS STAY IN PLACE, BUT YOUR LIVE DATA WILL BE GONE UNLESS YOU RESTORE FROM A SNAPSHOT.
           </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
             <button className="btn btn-ghost" onClick={() => void handleSafetyBackup('before-reset')}>
               CREATE SAFETY BACKUP
             </button>
@@ -1256,11 +1256,11 @@ export const SettingsPage: React.FC = () => {
         title={pendingAction?.mode === 'import' ? 'IMPORT PREVIEW' : 'RESTORE PREVIEW'}
       >
         {pendingAction && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
             <span style={{ ...rowLabelStyle, color: 'var(--color-text)' }}>
               FILE: {pendingAction.fileLabel}
             </span>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 8 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 'var(--space-2)' }}>
               <span style={rowLabelStyle}>BACKUP NAME: {pendingAction.preview.backup_name}</span>
               <span style={rowLabelStyle}>EXPORTED: {pendingAction.preview.exported_at ?? 'UNKNOWN'}</span>
               <span style={rowLabelStyle}>VERSION: {pendingAction.preview.version ?? 'UNKNOWN'}</span>
@@ -1272,7 +1272,7 @@ export const SettingsPage: React.FC = () => {
             </div>
             {modalWarnings.length > 0 ? (
               <div className="card" style={{ margin: 0, borderColor: 'var(--color-warning)' }}>
-                <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                   {modalWarnings.map((warning) => (
                     <span key={warning} style={{ ...rowLabelStyle, color: 'var(--color-warning)' }}>
                       {warning}
@@ -1284,7 +1284,7 @@ export const SettingsPage: React.FC = () => {
             <span style={rowLabelStyle}>
               LIFE OS WILL CREATE A SAFETY BACKUP AUTOMATICALLY BEFORE THIS ACTION CHANGES YOUR LIVE DATA.
             </span>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
               <button className="btn btn-primary" onClick={() => void handleConfirmBackupAction()} disabled={isImporting}>
                 {pendingAction.mode === 'import' ? 'IMPORT NOW' : 'RESTORE NOW'}
               </button>
