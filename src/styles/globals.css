@@ -342,14 +342,14 @@ a { cursor: pointer; }
 }
 .card-header {
   min-height: 40px;
-  padding: 10px 14px;
+  padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-border);
   background: var(--color-surface);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-3);
 }
 .card-title {
   font-family: var(--font-sans);
@@ -360,7 +360,7 @@ a { cursor: pointer; }
 .card-meta {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
   font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 500;
