@@ -152,7 +152,7 @@ export const TemplatesPage: React.FC = () => {
 
   return (
     <div className="page-content fade-in">
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
         <div>
           <div className="page-title">ROUTINES & TEMPLATES</div>
           <div className="page-subtitle">ONE-CLICK SYSTEMS FOR REPEATED BEHAVIOR</div>
@@ -168,9 +168,9 @@ export const TemplatesPage: React.FC = () => {
       <hr className="page-sep" />
 
       {!hasDomains && (
-        <div className="card" style={{ marginBottom: 12 }}>
+        <div className="card" style={{ marginBottom: 'var(--space-3)' }}>
           <div className="card-body">
-            <div className="empty-state" style={{ padding: '18px 0' }}>
+            <div className="empty-state" style={{ padding: 'var(--space-4) 0' }}>
               <div className="empty-state-title">NO DOMAINS YET</div>
               <div>CREATE A DOMAIN DURING SETUP OR IN SETTINGS BEFORE LAUNCHING ROUTINES OR SAVING TEMPLATES.</div>
             </div>
@@ -178,29 +178,29 @@ export const TemplatesPage: React.FC = () => {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 12, marginBottom: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 'var(--space-3)', marginBottom: 'var(--space-3)' }}>
         <div className="card">
           <div className="card-header">
             <span className="card-title">SAVED TASK TEMPLATES</span>
             <span className="card-meta">{filteredTemplates.length} STORED</span>
           </div>
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {filteredTemplates.length === 0 ? (
-              <div className="empty-state" style={{ padding: '14px 0' }}>
+              <div className="empty-state" style={{ padding: 'var(--space-4) 0' }}>
                 <div className="empty-state-title">NO SAVED TEMPLATES</div>
                 <div>Save a task as a template or create one from scratch here.</div>
               </div>
             ) : (
               filteredTemplates.map((template) => (
-                <div key={template.id} data-domain={template.domain_id} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                <div key={template.id} data-domain={template.domain_id} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
                     <div>
                       <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{template.title}</div>
                       <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 3 }}>
                         {getDomainLabel(template.domain_id, domains)} · {template.priority.toUpperCase()} · {template.energy_level.toUpperCase()} · {template.time_estimate_minutes ?? 0}M
                       </div>
                     </div>
-                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                    <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                       <button className="btn btn-ghost btn-sm" disabled={launchingId === template.id} onClick={() => launchTaskTemplate(template.id, today)}>TODAY</button>
                       <button className="btn btn-ghost btn-sm" disabled={launchingId === template.id} onClick={() => launchTaskTemplate(template.id, tomorrow)}>TOMORROW</button>
                       <button className="btn btn-danger btn-sm" disabled={launchingId === template.id} onClick={() => deleteTaskTemplate(template.id).catch(console.error)}>DELETE</button>
@@ -218,10 +218,10 @@ export const TemplatesPage: React.FC = () => {
             <span className="card-title">NEW TASK TEMPLATE</span>
           </div>
           <div className="card-body">
-            <form onSubmit={handleCreateTemplate} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <form onSubmit={handleCreateTemplate} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
               <input className="input" placeholder="Template title" value={title} onChange={(event) => setTitle(event.target.value)} disabled={!hasDomains} />
               <textarea className="input" placeholder="Description" rows={3} value={description} onChange={(event) => setDescription(event.target.value)} style={{ resize: 'none' }} disabled={!hasDomains} />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-2)' }}>
                 <select className="input" value={domainId} onChange={(event) => setDomainId(event.target.value as DomainId)} disabled={!hasDomains}>
                   {domains.map((domain) => (
                     <option key={domain.id} value={domain.id}>{getDomainLabel(domain.id, domains).toUpperCase()}</option>
@@ -234,7 +234,7 @@ export const TemplatesPage: React.FC = () => {
                   <option value="critical">CRITICAL</option>
                 </select>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-2)' }}>
                 <input className="input" type="number" min={0} value={timeEstimate} onChange={(event) => setTimeEstimate(event.target.value)} placeholder="Time estimate" disabled={!hasDomains} />
                 <select className="input" value={recurrence} onChange={(event) => setRecurrence(event.target.value)} disabled={!hasDomains}>
                   <option value="none">NO REPEAT</option>
@@ -259,16 +259,16 @@ export const TemplatesPage: React.FC = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
         <div className="card">
           <div className="card-header">
             <span className="card-title">ROUTINES & PLANNING PRESETS</span>
             <span className="card-meta">{filteredPresets.filter((preset) => preset.kind !== 'habit_bundle').length} READY</span>
           </div>
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {filteredPresets.filter((preset) => preset.kind !== 'habit_bundle').map((preset) => (
-              <div key={preset.id} data-domain={hasDomains ? targetDomainId : undefined} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+              <div key={preset.id} data-domain={hasDomains ? targetDomainId : undefined} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
                   <div>
                     <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{hasDomains ? (getPresetTitle(preset.id, targetDomainId, domains) || preset.title) : preset.title}</div>
                     <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 3 }}>{hasDomains ? (getPresetDescription(preset.id, targetDomainId, domains) || preset.description) : preset.description}</div>
@@ -287,10 +287,10 @@ export const TemplatesPage: React.FC = () => {
             <span className="card-title">HABIT STARTER PACKS</span>
             <span className="card-meta">{filteredPresets.filter((preset) => preset.kind === 'habit_bundle').length} READY</span>
           </div>
-          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {filteredPresets.filter((preset) => preset.kind === 'habit_bundle').map((preset) => (
-              <div key={preset.id} data-domain={hasDomains ? targetDomainId : undefined} style={{ border: '1px solid var(--color-border)', padding: '8px 10px', background: 'var(--color-surface-hover)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+              <div key={preset.id} data-domain={hasDomains ? targetDomainId : undefined} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
                   <div>
                     <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{hasDomains ? (getPresetTitle(preset.id, targetDomainId, domains) || preset.title) : preset.title}</div>
                     <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 3 }}>{hasDomains ? (getPresetDescription(preset.id, targetDomainId, domains) || preset.description) : preset.description}</div>
