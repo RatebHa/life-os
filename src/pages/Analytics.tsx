@@ -484,7 +484,7 @@ export const AnalyticsPage: React.FC = () => {
               <span style={{ color: frictionAnalytics.stalledTasks.length > 0 ? 'var(--color-danger)' : 'var(--color-text)' }}> {frictionAnalytics.stalledTasks.length} TASKS UNTOUCHED 14+D</span>
             </div>
             {frictionAnalytics.overloadWarnings.length > 0 && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', marginTop: 6 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
                 {frictionAnalytics.overloadWarnings.map((warning) => (
                   <div key={warning} style={{ fontSize: 11, color: 'var(--color-danger)', letterSpacing: 1 }}>
                     ALERT: {warning}
