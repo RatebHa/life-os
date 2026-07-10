@@ -387,8 +387,8 @@ a { cursor: pointer; }
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
   min-height: var(--row-height);
   color: var(--color-text-muted);
   font-family: var(--font-sans);
@@ -423,15 +423,15 @@ a { cursor: pointer; }
 
 .habit-domain-list {
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .habit-card {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 220px;
-  gap: 16px;
-  padding: 14px;
+  gap: var(--space-4);
+  padding: var(--space-4);
   border: 1px solid var(--color-border);
   background: var(--surface-gradient);
   border-radius: var(--radius-lg);
