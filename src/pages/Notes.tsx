@@ -166,13 +166,13 @@ export const NotesPage: React.FC = () => {
         overflow: 'hidden',
       }}>
         {/* Header */}
-        <div style={{ padding: '10px 12px 8px', borderBottom: '1px solid var(--color-border)' }}>
+        <div style={{ padding: 'var(--space-3) var(--space-4) var(--space-2)', borderBottom: '1px solid var(--color-border)' }}>
           <div className="page-title" style={{ fontSize: 22 }}>NOTES</div>
           <div className="page-subtitle">// FIELD ENTRIES — {notes.length} TOTAL</div>
         </div>
 
         {/* Search */}
-        <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--color-border)' }}>
+        <div style={{ padding: 'var(--space-2) var(--space-3)', borderBottom: '1px solid var(--color-border)' }}>
           <input
             className="input"
             placeholder="> SEARCH ENTRIES..."
@@ -185,7 +185,7 @@ export const NotesPage: React.FC = () => {
         {/* List */}
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {filtered.length === 0 ? (
-            <div className="empty-state" style={{ padding: '30px 10px' }}>
+            <div className="empty-state" style={{ padding: 'var(--space-8) var(--space-3)' }}>
               <div className="empty-state-title">NO ENTRIES</div>
               <span>FOUND<span className="boot-cursor" /></span>
             </div>
@@ -204,7 +204,7 @@ export const NotesPage: React.FC = () => {
                 style={{
                   width: '100%',
                   textAlign: 'left',
-                  padding: '8px 12px',
+                  padding: 'var(--space-2) var(--space-3)',
                   borderBottom: '1px solid var(--color-surface-hover)',
                   background: selectedNoteId === n.id ? 'var(--color-surface-hover)' : 'transparent',
                   borderLeft: selectedNoteId === n.id ? '2px solid var(--color-accent)' : '2px solid transparent',
@@ -214,7 +214,7 @@ export const NotesPage: React.FC = () => {
                   gap: 3,
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
                   {n.pinned && <span style={{ color: 'var(--color-warning)', fontSize: 9 }}>PIN</span>}
                   <span style={{
                     fontFamily: 'var(--font-sans)',
@@ -242,7 +242,7 @@ export const NotesPage: React.FC = () => {
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 6,
+                  gap: 'var(--space-2)',
                   fontFamily: 'var(--font-sans)',
                   fontSize: 9,
                   color: 'var(--color-text-muted)',
@@ -274,7 +274,7 @@ export const NotesPage: React.FC = () => {
         </div>
 
         {/* New Note Button */}
-        <div style={{ padding: '8px 10px', borderTop: '1px solid var(--color-border)' }}>
+        <div style={{ padding: 'var(--space-2) var(--space-3)', borderTop: '1px solid var(--color-border)' }}>
           <button className="btn btn-primary" style={{ width: '100%' }} onClick={handleNewNote}>
             [+ NEW ENTRY]
           </button>
@@ -286,7 +286,7 @@ export const NotesPage: React.FC = () => {
         {note ? (
           <>
             {/* Title input */}
-            <div style={{ padding: '12px 16px 8px', borderBottom: '1px solid var(--color-border)' }}>
+            <div style={{ padding: 'var(--space-3) var(--space-4) var(--space-2)', borderBottom: '1px solid var(--color-border)' }}>
               <input
                 value={titleDraft}
                 onChange={(e) => handleTitleChange(e.target.value)}
@@ -309,8 +309,8 @@ export const NotesPage: React.FC = () => {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 10,
-              padding: '5px 16px',
+              gap: 'var(--space-3)',
+              padding: 'var(--space-1) var(--space-4)',
               borderBottom: '1px solid var(--color-border)',
               background: 'var(--color-surface-hover)',
               flexWrap: 'wrap',
@@ -320,7 +320,7 @@ export const NotesPage: React.FC = () => {
                 className="input"
                 value={note.domain_id ?? ''}
                 onChange={(e) => updateNote({ id: note.id, domain_id: e.target.value as DomainId | '' })}
-                style={{ height: 24, fontSize: 9, width: 'auto', minWidth: 100, padding: '0 6px' }}
+                style={{ height: 24, fontSize: 9, width: 'auto', minWidth: 100, padding: '0 var(--space-2)' }}
               >
                 <option value="">ALL DOMAINS</option>
                 {domains.map((domain) => <option key={domain.id} value={domain.id}>{getDomainLabel(domain.id, domains).toUpperCase()}</option>)}
@@ -345,7 +345,7 @@ export const NotesPage: React.FC = () => {
                   const tags = tagInput.split(',').map((t) => t.trim()).filter(Boolean);
                   updateNote({ id: note.id, tags: JSON.stringify(tags) }).catch(console.error);
                 }}
-                style={{ height: 24, fontSize: 9, width: 150, padding: '0 6px' }}
+                style={{ height: 24, fontSize: 9, width: 150, padding: '0 var(--space-2)' }}
               />
 
               {/* Goal link */}
@@ -353,7 +353,7 @@ export const NotesPage: React.FC = () => {
                 className="input"
                 value={note.goal_id ?? ''}
                 onChange={(e) => updateNote({ id: note.id, goal_id: e.target.value || '' }).catch(console.error)}
-                style={{ height: 24, fontSize: 9, width: 'auto', minWidth: 100, padding: '0 6px' }}
+                style={{ height: 24, fontSize: 9, width: 'auto', minWidth: 100, padding: '0 var(--space-2)' }}
                 title="Link note to goal"
               >
                 <option value="">NO GOAL LINK</option>
@@ -393,7 +393,7 @@ export const NotesPage: React.FC = () => {
                 background: 'var(--color-bg)',
                 border: 'none',
                 outline: 'none',
-                padding: '14px 18px',
+                padding: 'var(--space-4) var(--space-4)',
                 fontFamily: 'var(--font-sans)',
                 fontSize: 12,
                 color: 'var(--color-accent)',
@@ -404,7 +404,7 @@ export const NotesPage: React.FC = () => {
 
             {/* Footer */}
             <div style={{
-              padding: '5px 16px',
+              padding: 'var(--space-1) var(--space-4)',
               borderTop: '1px solid var(--color-border)',
               background: 'var(--color-surface-hover)',
               display: 'flex',
