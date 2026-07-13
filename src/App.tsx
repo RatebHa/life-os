@@ -507,7 +507,7 @@ const AppInner: React.FC = () => {
     >
       <TitleBar />
       <TopBar />
-      <TabBar apiKey={appState?.api_key ?? undefined} />
+      <TabBar />
       <Sidebar />
       <main className="app-main">
         <Routes>

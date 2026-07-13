@@ -78,47 +78,40 @@ export const TopBar: React.FC = () => {
           </span>
         </div>
 
-        <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, var(--color-border), transparent)', opacity: 0.65 }} />
-
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: 'var(--space-4)',
             padding: 'var(--space-1) var(--space-3)',
-            border: '1px solid var(--color-border)',
-            background: 'var(--color-surface-hover)',
+            marginLeft: 'auto',
           }}
         >
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: mitTask ? 'var(--color-text)' : 'var(--color-warning)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
-            MIT: {mitTask ? 'SET' : 'MISSING'}
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: mitTask ? 'var(--color-text-muted)' : 'var(--color-warning)' }}>
+            {mitTask ? 'MIT set' : 'No MIT'}
           </span>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: topThreeCount > 0 ? 'var(--color-text)' : 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
-            TOP 3: {topThreeCount}/3
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
+            Top 3: {topThreeCount}/3
           </span>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: overdueCount > 0 ? 'var(--color-danger)' : 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
-            OVERDUE: {overdueCount}
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: overdueCount > 0 ? 'var(--color-danger)' : 'var(--color-text-muted)' }}>
+            {overdueCount > 0 ? `${overdueCount} overdue` : 'No overdue'}
           </span>
           <span
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
-              color: focusTask ? 'var(--color-text)' : 'var(--color-text-muted)',
-              letterSpacing: 1.5,
-              textTransform: 'uppercase',
+              fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)',
+              color: 'var(--color-text-muted)',
               maxWidth: 280,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
             }}
           >
-            {focusTask ? `FOCUS: ${focusTask.title} · ${elapsedMinutes}M` : 'FOCUS: IDLE'}
+            {focusTask ? `Focusing: ${focusTask.title} · ${elapsedMinutes}m` : 'No active focus'}
           </span>
         </div>
 
-        <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, var(--color-border), transparent)', opacity: 0.65 }} />
-
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1, marginLeft: 'var(--space-4)' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             {dateStr}
           </span>

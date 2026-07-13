@@ -1,16 +1,13 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { getNavigationMeta } from '../../lib/navigation';
 
-export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
-  const navigate = useNavigate();
+export const TabBar: React.FC = () => {
   const location = useLocation();
   const pageMeta = getNavigationMeta(location.pathname);
-  const onToday = location.pathname === '/' || location.pathname.startsWith('/today');
-  const onOverview = location.pathname.startsWith('/overview') || location.pathname.startsWith('/command-center');
 
   return (
-    <div className="tabbar" style={{ justifyContent: 'space-between', gap: 'var(--space-3)', padding: '0 var(--space-3)' }}>
+    <div className="tabbar" style={{ gap: 'var(--space-3)', padding: '0 var(--space-3)' }}>
       <div style={{ display: 'flex', alignItems: 'center', minWidth: 0, gap: 'var(--space-3)' }}>
         <div
           style={{
@@ -29,16 +26,14 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
           {pageMeta.sectionLabel}
         </div>
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-text)', letterSpacing: 2 }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-text)' }}>
             {pageMeta.label}
           </div>
           <div
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
+              fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)',
               color: 'var(--color-text-muted)',
-              letterSpacing: 1,
-              textTransform: 'uppercase',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -46,37 +41,6 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
           >
             {pageMeta.description}
           </div>
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexShrink: 0 }}>
-        {!onToday && (
-          <button className="btn btn-ghost btn-sm" onClick={() => navigate('/today')}>
-            OPEN TODAY
-          </button>
-        )}
-        {!onOverview && (
-          <button className="btn btn-ghost btn-sm" onClick={() => navigate('/overview')}>
-            OVERVIEW
-          </button>
-        )}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 'var(--space-2)',
-          fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
-          fontFamily: 'var(--font-sans)',
-          color: apiKey ? 'var(--color-accent)' : 'var(--color-text-muted)',
-          letterSpacing: 1,
-        }}>
-          <span style={{
-            width: 6,
-            height: 6,
-            background: apiKey ? 'var(--color-accent)' : 'var(--color-text-muted)',
-            boxShadow: apiKey ? 'var(--shadow-focus-ring)' : 'none',
-            display: 'inline-block',
-          }} />
-          {apiKey ? 'ASSIST READY' : 'LOCAL MODE'}
         </div>
       </div>
     </div>

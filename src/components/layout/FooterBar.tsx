@@ -6,8 +6,6 @@ import { formatDateDisplay } from '../../lib/date-format';
 export const FooterBar: React.FC = () => {
   const { appState } = useAppStore();
   const activeTaskId = useTimerStore((state) => state.activeTaskId);
-  const scaleLabel = (appState?.text_scale ?? 'normal').toUpperCase();
-  const densityLabel = (appState?.ui_density ?? 'comfortable').toUpperCase();
   const backupLabel = appState?.last_backup_at ? formatDateDisplay(appState.last_backup_at) : 'NONE';
   const backupDay = appState?.last_backup_at?.slice(0, 10) ?? null;
   const today = new Date().toISOString().slice(0, 10);
@@ -32,12 +30,6 @@ export const FooterBar: React.FC = () => {
           />
           SYSTEM ONLINE
         </span>
-        <span>|</span>
-        <span>DB: LOCAL</span>
-        <span>|</span>
-        <span>TEXT: {scaleLabel}</span>
-        <span>|</span>
-        <span>DENSITY: {densityLabel}</span>
       </div>
       <span>{activeTaskId ? 'FOCUS SESSION ACTIVE' : backupStatus}</span>
       <div>[ALT+1:TODAY] [ALT+7:REVIEW] [ALT+8:OVERVIEW] [CTRL+K:SEARCH]</div>
