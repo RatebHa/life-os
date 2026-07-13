@@ -68,7 +68,7 @@ export const TopBar: React.FC = () => {
           <span
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: 28,
+              fontSize: 'var(--text-xl)', fontWeight: 'var(--font-weight-bold)',
               color: 'var(--color-text)',
               letterSpacing: 3,
               lineHeight: 1,
@@ -90,19 +90,19 @@ export const TopBar: React.FC = () => {
             background: 'var(--color-surface-hover)',
           }}
         >
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: mitTask ? 'var(--color-text)' : 'var(--color-warning)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: mitTask ? 'var(--color-text)' : 'var(--color-warning)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
             MIT: {mitTask ? 'SET' : 'MISSING'}
           </span>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: topThreeCount > 0 ? 'var(--color-text)' : 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: topThreeCount > 0 ? 'var(--color-text)' : 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
             TOP 3: {topThreeCount}/3
           </span>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: overdueCount > 0 ? 'var(--color-danger)' : 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: overdueCount > 0 ? 'var(--color-danger)' : 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
             OVERDUE: {overdueCount}
           </span>
           <span
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: 10,
+              fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
               color: focusTask ? 'var(--color-text)' : 'var(--color-text-muted)',
               letterSpacing: 1.5,
               textTransform: 'uppercase',
@@ -119,10 +119,10 @@ export const TopBar: React.FC = () => {
         <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, var(--color-border), transparent)', opacity: 0.65 }} />
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             {dateStr}
           </span>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-text)', letterSpacing: 2, lineHeight: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-text)', letterSpacing: 2, lineHeight: 1 }}>
             {clock}
           </span>
         </div>
@@ -133,7 +133,7 @@ export const TopBar: React.FC = () => {
           style={{ minHeight: 30, padding: 'var(--space-1) var(--space-4)' }}
           disabled={domains.length === 0}
         >
-          <span style={{ fontSize: 14, letterSpacing: 2 }}>{domains.length === 0 ? 'SET UP DOMAINS' : '+ NEW TASK'}</span>
+          <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', letterSpacing: 2 }}>{domains.length === 0 ? 'SET UP DOMAINS' : '+ NEW TASK'}</span>
         </button>
       </header>
 

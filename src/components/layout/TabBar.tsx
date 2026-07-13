@@ -17,7 +17,7 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
             display: 'flex',
             alignItems: 'center',
             paddingRight: 'var(--space-3)',
-            fontSize: 9,
+            fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
             fontFamily: 'var(--font-sans)',
             color: 'var(--color-text-muted)',
             letterSpacing: 2,
@@ -29,13 +29,13 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
           {pageMeta.sectionLabel}
         </div>
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 18, color: 'var(--color-text)', letterSpacing: 2 }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-text)', letterSpacing: 2 }}>
             {pageMeta.label}
           </div>
           <div
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: 9,
+              fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
               color: 'var(--color-text-muted)',
               letterSpacing: 1,
               textTransform: 'uppercase',
@@ -64,7 +64,7 @@ export const TabBar: React.FC<{ apiKey?: string }> = ({ apiKey }) => {
           display: 'flex',
           alignItems: 'center',
           gap: 'var(--space-2)',
-          fontSize: 9,
+          fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
           fontFamily: 'var(--font-sans)',
           color: apiKey ? 'var(--color-accent)' : 'var(--color-text-muted)',
           letterSpacing: 1,

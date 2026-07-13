@@ -35,7 +35,7 @@ export const TitleBar: React.FC = () => {
     background: 'none',
     border: '1px solid transparent',
     fontFamily: 'var(--font-sans)',
-    fontSize: 10,
+    fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
     letterSpacing: 1,
     color: 'var(--color-text-muted)',
     cursor: 'crosshair',
@@ -47,7 +47,7 @@ export const TitleBar: React.FC = () => {
       {/* Brand label */}
       <span style={{
         fontFamily: 'var(--font-sans)',
-        fontSize: 13,
+        fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)',
         letterSpacing: 3,
         color: 'var(--color-text-faint)',
         lineHeight: 1,

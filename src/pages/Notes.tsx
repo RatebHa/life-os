@@ -167,7 +167,7 @@ export const NotesPage: React.FC = () => {
       }}>
         {/* Header */}
         <div style={{ padding: 'var(--space-3) var(--space-4) var(--space-2)', borderBottom: '1px solid var(--color-border)' }}>
-          <div className="page-title" style={{ fontSize: 22 }}>NOTES</div>
+          <div className="page-title" style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)' }}>NOTES</div>
           <div className="page-subtitle">// FIELD ENTRIES — {notes.length} TOTAL</div>
         </div>
 
@@ -178,7 +178,7 @@ export const NotesPage: React.FC = () => {
             placeholder="> SEARCH ENTRIES..."
             value={searchQuery}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ height: 28, fontSize: 11 }}
+            style={{ height: 28, fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)' }}
           />
         </div>
 
@@ -215,10 +215,10 @@ export const NotesPage: React.FC = () => {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-                  {n.pinned && <span style={{ color: 'var(--color-warning)', fontSize: 9 }}>PIN</span>}
+                  {n.pinned && <span style={{ color: 'var(--color-warning)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)' }}>PIN</span>}
                   <span style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: 14,
+                    fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)',
                     color: selectedNoteId === n.id ? 'var(--color-text)' : 'var(--color-accent)',
                     letterSpacing: 1,
                     overflow: 'hidden',
@@ -231,7 +231,7 @@ export const NotesPage: React.FC = () => {
                 </div>
                 <div style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: 10,
+                  fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
                   color: 'var(--color-text-muted)',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -244,7 +244,7 @@ export const NotesPage: React.FC = () => {
                   alignItems: 'center',
                   gap: 'var(--space-2)',
                   fontFamily: 'var(--font-sans)',
-                  fontSize: 9,
+                  fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
                   color: 'var(--color-text-muted)',
                   letterSpacing: 1,
                   flexWrap: 'wrap',
@@ -259,7 +259,7 @@ export const NotesPage: React.FC = () => {
                           background: 'var(--color-surface-hover)',
                           border: '1px solid var(--color-border)',
                           padding: '0 3px',
-                          fontSize: 8,
+                          fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
                           color: 'var(--color-text-muted)',
                         }}>
                           {t}
@@ -297,7 +297,7 @@ export const NotesPage: React.FC = () => {
                   border: 'none',
                   outline: 'none',
                   fontFamily: 'var(--font-sans)',
-                  fontSize: 24,
+                  fontSize: 'var(--text-xl)', fontWeight: 'var(--font-weight-bold)',
                   color: 'var(--color-text)',
                   letterSpacing: 3,
                   textTransform: 'uppercase',
@@ -320,7 +320,7 @@ export const NotesPage: React.FC = () => {
                 className="input"
                 value={note.domain_id ?? ''}
                 onChange={(e) => updateNote({ id: note.id, domain_id: e.target.value as DomainId | '' })}
-                style={{ height: 24, fontSize: 9, width: 'auto', minWidth: 100, padding: '0 var(--space-2)' }}
+                style={{ height: 24, fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', width: 'auto', minWidth: 100, padding: '0 var(--space-2)' }}
               >
                 <option value="">ALL DOMAINS</option>
                 {domains.map((domain) => <option key={domain.id} value={domain.id}>{getDomainLabel(domain.id, domains).toUpperCase()}</option>)}
@@ -345,7 +345,7 @@ export const NotesPage: React.FC = () => {
                   const tags = tagInput.split(',').map((t) => t.trim()).filter(Boolean);
                   updateNote({ id: note.id, tags: JSON.stringify(tags) }).catch(console.error);
                 }}
-                style={{ height: 24, fontSize: 9, width: 150, padding: '0 var(--space-2)' }}
+                style={{ height: 24, fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', width: 150, padding: '0 var(--space-2)' }}
               />
 
               {/* Goal link */}
@@ -353,7 +353,7 @@ export const NotesPage: React.FC = () => {
                 className="input"
                 value={note.goal_id ?? ''}
                 onChange={(e) => updateNote({ id: note.id, goal_id: e.target.value || '' }).catch(console.error)}
-                style={{ height: 24, fontSize: 9, width: 'auto', minWidth: 100, padding: '0 var(--space-2)' }}
+                style={{ height: 24, fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', width: 'auto', minWidth: 100, padding: '0 var(--space-2)' }}
                 title="Link note to goal"
               >
                 <option value="">NO GOAL LINK</option>
@@ -371,7 +371,7 @@ export const NotesPage: React.FC = () => {
               {/* Save status */}
               <span style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: 9,
+                fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
                 letterSpacing: 1.5,
                 color: saveStatus === 'modified' ? 'var(--color-warning)'
                      : saveStatus === 'saved'    ? 'var(--color-text-muted)'
@@ -395,7 +395,7 @@ export const NotesPage: React.FC = () => {
                 outline: 'none',
                 padding: 'var(--space-4) var(--space-4)',
                 fontFamily: 'var(--font-sans)',
-                fontSize: 12,
+                fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)',
                 color: 'var(--color-accent)',
                 resize: 'none',
                 lineHeight: 1.7,
@@ -410,7 +410,7 @@ export const NotesPage: React.FC = () => {
               display: 'flex',
               justifyContent: 'space-between',
               fontFamily: 'var(--font-sans)',
-              fontSize: 9,
+              fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
               color: 'var(--color-text-muted)',
               letterSpacing: 1,
               textTransform: 'uppercase',

@@ -28,18 +28,18 @@ describe('StreakFlame', () => {
   it('renders with sm size (default)', () => {
     const { container } = render(<StreakFlame count={3} />);
     const el = container.firstChild as HTMLElement;
-    expect(el.style.fontSize).toBe('14px');
+    expect(el.style.fontSize).toBe('var(--text-sm)');
   });
 
   it('renders with md size', () => {
     const { container } = render(<StreakFlame count={3} size="md" />);
     const el = container.firstChild as HTMLElement;
-    expect(el.style.fontSize).toBe('18px');
+    expect(el.style.fontSize).toBe('var(--text-lg)');
   });
 
   it('renders with lg size', () => {
     const { container } = render(<StreakFlame count={3} size="lg" />);
     const el = container.firstChild as HTMLElement;
-    expect(el.style.fontSize).toBe('22px');
+    expect(el.style.fontSize).toBe('var(--text-lg)');
   });
 });

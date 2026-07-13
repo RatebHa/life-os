@@ -52,10 +52,10 @@ type ReasonTone = 'default' | 'warning' | 'critical' | 'highlight';
 type TaskReason = { label: string; tone: ReasonTone };
 
 function chipStyle(tone: ReasonTone): React.CSSProperties {
-  if (tone === 'highlight') return { border: '1px solid var(--color-warning)', color: 'var(--color-warning)', background: 'rgba(200,160,32,0.08)', padding: '2px var(--space-2)', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' };
-  if (tone === 'warning') return { border: '1px solid var(--color-text)', color: 'var(--color-text)', background: 'rgba(124,108,255,0.08)', padding: '2px var(--space-2)', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' };
-  if (tone === 'critical') return { border: '1px solid var(--color-danger)', color: 'var(--color-danger)', background: 'rgba(255,64,64,0.08)', padding: '2px var(--space-2)', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' };
-  return { border: '1px solid var(--color-border)', color: 'var(--color-text-muted)', background: 'rgba(124,108,255,0.03)', padding: '2px var(--space-2)', fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' };
+  if (tone === 'highlight') return { border: '1px solid var(--color-warning)', color: 'var(--color-warning)', background: 'rgba(200,160,32,0.08)', padding: '2px var(--space-2)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', letterSpacing: 1, textTransform: 'uppercase' };
+  if (tone === 'warning') return { border: '1px solid var(--color-text)', color: 'var(--color-text)', background: 'rgba(124,108,255,0.08)', padding: '2px var(--space-2)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', letterSpacing: 1, textTransform: 'uppercase' };
+  if (tone === 'critical') return { border: '1px solid var(--color-danger)', color: 'var(--color-danger)', background: 'rgba(255,64,64,0.08)', padding: '2px var(--space-2)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', letterSpacing: 1, textTransform: 'uppercase' };
+  return { border: '1px solid var(--color-border)', color: 'var(--color-text-muted)', background: 'rgba(124,108,255,0.03)', padding: '2px var(--space-2)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', letterSpacing: 1, textTransform: 'uppercase' };
 }
 
 function taskReasons(task: Task, today: string): TaskReason[] {
@@ -374,9 +374,9 @@ export const TodayPage: React.FC = () => {
         <div className="card" style={{ marginBottom: 'var(--space-3)', borderColor: recoveryMode ? 'var(--color-warning)' : 'var(--color-border)' }}>
           <PanelHeader title={recoveryMode ? 'RECOVERY MODE' : 'LOAD CHECK'} meta={`RISK ${burnoutRiskScore}/5`} />
           <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
-            <div style={{ fontSize: 14, color: recoveryMode ? 'var(--color-warning)' : 'var(--color-text-muted)' }}>{recoveryPrompt}</div>
+            <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: recoveryMode ? 'var(--color-warning)' : 'var(--color-text-muted)' }}>{recoveryPrompt}</div>
             {neglectedDomains.length > 0 && (
-              <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+              <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                 Neglected: {neglectedDomains.map((domain) => getDomainLabel(domain.id, domains)).join(' / ')}
               </div>
             )}
@@ -394,17 +394,17 @@ export const TodayPage: React.FC = () => {
         <div className="card">
           <PanelHeader title="START TODAY" meta={recoveryMode ? 'RECOVERY FIRST' : '30 SECOND RESET'} />
           <div className="card-body" style={{ display: 'grid', gap: 'var(--space-4)' }}>
-            <div className="panel-note" style={{ fontSize: 13 }}>
+            <div className="panel-note" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)' }}>
               Confirm the day in this order: lock one MIT, keep the Top 3 realistic, then start the first focus block before the board gets noisy.
             </div>
 
             <div className="layout-grid-three">
               <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-3) var(--space-3)', display: 'grid', gap: 'var(--space-2)' }}>
-                <div style={{ fontSize: 11, color: 'var(--color-text-muted)', letterSpacing: 1, textTransform: 'uppercase' }}>1. Confirm MIT</div>
-                <div style={{ fontSize: 15, color: mitTask ? 'var(--color-text)' : 'var(--color-warning)' }}>
+                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', letterSpacing: 1, textTransform: 'uppercase' }}>1. Confirm MIT</div>
+                <div style={{ fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: mitTask ? 'var(--color-text)' : 'var(--color-warning)' }}>
                   {mitTask ? mitTask.title : 'No MIT locked yet.'}
                 </div>
-                <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
                   {mitTask ? 'One must-do is protecting the day.' : 'Pick the one task that makes the day feel real if it gets done.'}
                 </div>
                 {mitTask ? (
@@ -417,11 +417,11 @@ export const TodayPage: React.FC = () => {
               </div>
 
               <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-3) var(--space-3)', display: 'grid', gap: 'var(--space-2)' }}>
-                <div style={{ fontSize: 11, color: 'var(--color-text-muted)', letterSpacing: 1, textTransform: 'uppercase' }}>2. Confirm Top 3</div>
-                <div style={{ fontSize: 15, color: topThreeTasks.length > 0 ? 'var(--color-text)' : 'var(--color-warning)' }}>
+                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', letterSpacing: 1, textTransform: 'uppercase' }}>2. Confirm Top 3</div>
+                <div style={{ fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: topThreeTasks.length > 0 ? 'var(--color-text)' : 'var(--color-warning)' }}>
                   {topThreeTasks.length}/3 locked
                 </div>
-                <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
                   {topThreeTasks.length === 3 ? 'The day is scoped. Avoid adding more unless the board changes.' : 'Keep the success line short enough to trust.'}
                 </div>
                 {nextActionTask && !nextActionTask.is_top_three && topThreeTasks.length < 3 ? (
@@ -432,11 +432,11 @@ export const TodayPage: React.FC = () => {
               </div>
 
               <div style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-3) var(--space-3)', display: 'grid', gap: 'var(--space-2)' }}>
-                <div style={{ fontSize: 11, color: 'var(--color-text-muted)', letterSpacing: 1, textTransform: 'uppercase' }}>3. Start Focus</div>
-                <div style={{ fontSize: 15, color: primaryFocusTask ? 'var(--color-text)' : 'var(--color-warning)' }}>
+                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', letterSpacing: 1, textTransform: 'uppercase' }}>3. Start Focus</div>
+                <div style={{ fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: primaryFocusTask ? 'var(--color-text)' : 'var(--color-warning)' }}>
                   {primaryFocusTask ? formatMinutes(taskEstimatedMinutes(primaryFocusTask)) : 'Not ready yet'}
                 </div>
-                <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
                   {primaryFocusTask ? 'Start the first block before tuning the rest of the board.' : 'Choose a task first so focus has a target.'}
                 </div>
                 {primaryFocusTask ? (
@@ -463,8 +463,8 @@ export const TodayPage: React.FC = () => {
                 <>
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: 11, color: 'var(--color-text-muted)', letterSpacing: 1, textTransform: 'uppercase' }}>First Focus Block</div>
-                      <div style={{ fontSize: 18, color: 'var(--color-text)', marginTop: 'var(--space-1)' }}>{primaryFocusTask.title}</div>
+                      <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', letterSpacing: 1, textTransform: 'uppercase' }}>First Focus Block</div>
+                      <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-text)', marginTop: 'var(--space-1)' }}>{primaryFocusTask.title}</div>
                     </div>
                     <CompletionButton done={false} onComplete={async () => { await handleCompleteTask(primaryFocusTask); }} size={16} />
                   </div>
@@ -497,26 +497,26 @@ export const TodayPage: React.FC = () => {
           <div className="card">
             <PanelHeader title="TODAY LOAD" meta={`${boardTasks.length} ACTIVE`} />
             <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>
                 <span>Done today</span>
                 <span>{doneTodayCount}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>
                 <span>Top 3 locked</span>
                 <span>{topThreeTasks.length}/3</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>
                 <span>Habits still open</span>
                 <span>{openHabitsToday.length}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--color-accent)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>
                 <span>Focus this week</span>
                 <span>{formatMinutes(weeklyFocusMinutes)}</span>
               </div>
               <div className="progress-track" style={{ height: 8 }}>
                 <div className="progress-fill" style={{ width: `${capacityPct}%`, background: recoveryMode ? 'var(--color-warning)' : isOverCapacity ? 'var(--color-danger)' : 'var(--color-accent)' }} />
               </div>
-              <div style={{ fontSize: 12, color: recoveryMode ? 'var(--color-warning)' : isOverCapacity ? 'var(--color-danger)' : 'var(--color-text-muted)' }}>
+              <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: recoveryMode ? 'var(--color-warning)' : isOverCapacity ? 'var(--color-danger)' : 'var(--color-text-muted)' }}>
                 {recoveryMode
                   ? 'Recovery mode is active. A smaller honest board beats an ambitious fake one.'
                   : isOverCapacity
@@ -542,14 +542,14 @@ export const TodayPage: React.FC = () => {
                 ].filter((section) => section.items.length > 0).map((section) => (
                   <div key={section.title} style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-2) var(--space-3)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
-                      <span style={{ fontSize: 12, color: section.color, textTransform: 'uppercase', letterSpacing: 1 }}>{section.title}</span>
-                      <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>{section.items.length}</span>
+                      <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: section.color, textTransform: 'uppercase', letterSpacing: 1 }}>{section.title}</span>
+                      <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>{section.items.length}</span>
                     </div>
                     <div style={{ display: 'grid', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
                       {section.items.map((task) => (
                         <div key={task.id}>
-                          <div style={{ fontSize: 13, color: 'var(--color-accent)' }}>{task.title}</div>
-                          <div style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{section.detail(task)}</div>
+                          <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>{task.title}</div>
+                          <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{section.detail(task)}</div>
                         </div>
                       ))}
                     </div>
@@ -565,7 +565,7 @@ export const TodayPage: React.FC = () => {
         <div className="card">
             <PanelHeader title="FOCUS BOARD" meta={`${boardTasks.length} ACTIVE`} />
             <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)', padding: 0 }}>
-              <div style={{ padding: 'var(--space-3) var(--space-4) 0', fontSize: 12, color: 'var(--color-text-muted)' }}>
+              <div style={{ padding: 'var(--space-3) var(--space-4) 0', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
                 Keep this list small. If something does not belong in today, move it out or mark the friction honestly.
               </div>
               {boardTasks.length === 0 ? (
@@ -582,13 +582,13 @@ export const TodayPage: React.FC = () => {
                   <div key={task.id} data-domain={task.domain_id} className="task-row" style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-3)', borderTop: '1px solid var(--color-surface-hover)', minHeight: 56 }}>
                     <CompletionButton done={false} onComplete={async () => { await handleCompleteTask(task); }} size={15} />
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 15, color: 'var(--color-accent)' }}>{task.title}</div>
+                      <div style={{ fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-accent)' }}>{task.title}</div>
                       <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginTop: 'var(--space-2)' }}>
                         <span className={`priority-badge-${task.priority}`}>{task.priority}</span>
-                        <span style={{ fontSize: 11, color: task.energy_level === 'deep' ? 'var(--color-warning)' : task.energy_level === 'light' ? 'var(--color-info)' : 'var(--color-text-muted)', border: '1px solid var(--color-border)', padding: '1px var(--space-1)', letterSpacing: 1, textTransform: 'uppercase' }}>{task.energy_level}</span>
-                        <span style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{formatMinutes(taskEstimatedMinutes(task))}</span>
-                        {getTaskRecurrenceLabel(task) && <span style={{ fontSize: 11, color: 'var(--color-info)', textTransform: 'uppercase', letterSpacing: 1 }}>{getTaskRecurrenceLabel(task)}</span>}
-                        {goal && <span style={{ fontSize: 11, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>GOAL: {goal.title}</span>}
+                        <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: task.energy_level === 'deep' ? 'var(--color-warning)' : task.energy_level === 'light' ? 'var(--color-info)' : 'var(--color-text-muted)', border: '1px solid var(--color-border)', padding: '1px var(--space-1)', letterSpacing: 1, textTransform: 'uppercase' }}>{task.energy_level}</span>
+                        <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{formatMinutes(taskEstimatedMinutes(task))}</span>
+                        {getTaskRecurrenceLabel(task) && <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-info)', textTransform: 'uppercase', letterSpacing: 1 }}>{getTaskRecurrenceLabel(task)}</span>}
+                        {goal && <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>GOAL: {goal.title}</span>}
                       </div>
                       <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginTop: 'var(--space-2)' }}>
                         {taskReasons(task, today).map((reason) => (
@@ -615,7 +615,7 @@ export const TodayPage: React.FC = () => {
           <div className="card" style={{ order: 2 }}>
             <PanelHeader title="QUICK FOCUS FITS" meta={`${formatMinutes(availableFocusMinutes)} / ${preferredEnergy.toUpperCase()}`} />
             <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
-              <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+              <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
                 Use this when the board feels too heavy and you need a realistic next block that fits your current energy.
               </div>
               <div className="layout-grid-controls">
@@ -640,8 +640,8 @@ export const TodayPage: React.FC = () => {
                 </div>
               ) : suggestedFocusTasks.map((task) => (
                 <div key={`focus-${task.id}`} data-domain={task.domain_id} style={{ border: '1px solid var(--color-surface-hover)', padding: 'var(--space-2) var(--space-3)', background: 'rgba(124,108,255,0.03)' }}>
-                  <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{task.title}</div>
-                  <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 'var(--space-1)', textTransform: 'uppercase', letterSpacing: 1 }}>{task.energy_level} / {formatMinutes(taskEstimatedMinutes(task))}</div>
+                  <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)' }}>{task.title}</div>
+                  <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', marginTop: 'var(--space-1)', textTransform: 'uppercase', letterSpacing: 1 }}>{task.energy_level} / {formatMinutes(taskEstimatedMinutes(task))}</div>
                   <button className="btn btn-ghost btn-sm" style={{ marginTop: 'var(--space-2)' }} onClick={() => handleFocus(task).catch(console.error)}>FOCUS</button>
                 </div>
               ))}
@@ -651,7 +651,7 @@ export const TodayPage: React.FC = () => {
           <div className="card" style={{ order: 1 }}>
             <PanelHeader title="DAILY HABITS" meta={`${completedHabitsToday}/${dueHabitsToday.length} LOGGED`} />
             <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)', padding: 0 }}>
-              <div style={{ padding: 'var(--space-3) var(--space-4) 0', fontSize: 12, color: 'var(--color-text-muted)' }}>
+              <div style={{ padding: 'var(--space-3) var(--space-4) 0', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
                 Log what is real. Minimum counts, skips stay honest, and undo is always available.
               </div>
               {dueHabitsToday.length === 0 ? (
@@ -669,13 +669,13 @@ export const TodayPage: React.FC = () => {
                   <div key={habit.id} data-domain={habit.domain_id} className="habit-row" style={{ padding: 'var(--space-3) var(--space-3)', borderTop: '1px solid var(--color-surface-hover)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
                       <div style={{ minWidth: 0 }}>
-                        <div style={{ fontSize: 15, color: 'var(--color-accent)' }}>{habit.title}</div>
-                        <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 'var(--space-1)', textTransform: 'uppercase', letterSpacing: 1 }}>{getHabitCadenceLabel(habit)} / {getHabitTargetLabel(habit)} / STREAK {habit.streak_current}D</div>
-                        {habit.minimum_version && <div style={{ fontSize: 12, color: 'var(--color-warning)', marginTop: 'var(--space-1)' }}>Minimum: {habit.minimum_version}</div>}
+                        <div style={{ fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-accent)' }}>{habit.title}</div>
+                        <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', marginTop: 'var(--space-1)', textTransform: 'uppercase', letterSpacing: 1 }}>{getHabitCadenceLabel(habit)} / {getHabitTargetLabel(habit)} / STREAK {habit.streak_current}D</div>
+                        {habit.minimum_version && <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-warning)', marginTop: 'var(--space-1)' }}>Minimum: {habit.minimum_version}</div>}
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontSize: 18, color: progress.isComplete ? 'var(--color-text)' : 'var(--color-accent)' }}>{progress.current}/{progress.target}</div>
-                        {latestLog && <div style={{ fontSize: 11, color: latestLog.status === 'skipped' ? 'var(--color-danger)' : latestLog.status === 'minimum' ? 'var(--color-warning)' : 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{latestLog.status}</div>}
+                        <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: progress.isComplete ? 'var(--color-text)' : 'var(--color-accent)' }}>{progress.current}/{progress.target}</div>
+                        {latestLog && <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: latestLog.status === 'skipped' ? 'var(--color-danger)' : latestLog.status === 'minimum' ? 'var(--color-warning)' : 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{latestLog.status}</div>}
                       </div>
                     </div>
                     <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginTop: 'var(--space-2)' }}>
@@ -709,7 +709,7 @@ export const TodayPage: React.FC = () => {
 
       <Modal open={showShrinkToday} onClose={() => setShowShrinkToday(false)} title="Shrink Today">
         <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
-          <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+          <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
             This keeps one real focus task and moves the rest of the board to tomorrow. It is for overload recovery, not for hiding work.
           </div>
           <div className="card">
@@ -718,9 +718,9 @@ export const TodayPage: React.FC = () => {
             </div>
             <div className="card-body">
               {shrinkKeepTask ? (
-                <div style={{ fontSize: 15, color: 'var(--color-text)' }}>{shrinkKeepTask.title}</div>
+                <div style={{ fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-text)' }}>{shrinkKeepTask.title}</div>
               ) : (
-                <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>No clear primary task yet.</div>
+                <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>No clear primary task yet.</div>
               )}
             </div>
           </div>
@@ -731,9 +731,9 @@ export const TodayPage: React.FC = () => {
             </div>
             <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
               {shrinkMoveTasks.length === 0 ? (
-                <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>The board is already lean.</div>
+                <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>The board is already lean.</div>
               ) : shrinkMoveTasks.map((task) => (
-                <div key={task.id} style={{ fontSize: 13, color: 'var(--color-accent)' }}>{task.title}</div>
+                <div key={task.id} style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>{task.title}</div>
               ))}
             </div>
           </div>
@@ -746,7 +746,7 @@ export const TodayPage: React.FC = () => {
 
       <Modal open={showPlanning} onClose={() => setShowPlanning(false)} title="Plan Today">
         <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
-          <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+          <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
             Suggestions never apply silently. Review them, then lock the board if they make sense.
           </div>
           <div className="layout-grid-two">
@@ -755,28 +755,28 @@ export const TodayPage: React.FC = () => {
               <div className="card-body">
                 {nextActionTask ? (
                   <>
-                    <div style={{ fontSize: 15, color: 'var(--color-text)' }}>{nextActionTask.title}</div>
+                    <div style={{ fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-text)' }}>{nextActionTask.title}</div>
                     <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginTop: 'var(--space-2)' }}>
                       {taskReasons(nextActionTask, today).map((reason) => <span key={`mit-${reason.label}`} style={chipStyle(reason.tone)}>{reason.label}</span>)}
                     </div>
                   </>
-                ) : <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>No candidate yet.</div>}
+                ) : <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>No candidate yet.</div>}
               </div>
             </div>
             <div className="card">
               <div className="card-header"><span className="card-title">Capacity Check</span></div>
               <div className="card-body">
-                <div style={{ fontSize: 15, color: isOverCapacity ? 'var(--color-danger)' : 'var(--color-text)' }}>{formatMinutes(focusLoadMinutes)} / {formatMinutes(DAILY_CAPACITY_MINUTES)}</div>
-                <div style={{ fontSize: 12, color: isOverCapacity ? 'var(--color-danger)' : 'var(--color-text-muted)', marginTop: 'var(--space-2)' }}>{isOverCapacity ? 'This is too much for one day.' : 'This fits a realistic day.'}</div>
+                <div style={{ fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: isOverCapacity ? 'var(--color-danger)' : 'var(--color-text)' }}>{formatMinutes(focusLoadMinutes)} / {formatMinutes(DAILY_CAPACITY_MINUTES)}</div>
+                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: isOverCapacity ? 'var(--color-danger)' : 'var(--color-text-muted)', marginTop: 'var(--space-2)' }}>{isOverCapacity ? 'This is too much for one day.' : 'This fits a realistic day.'}</div>
               </div>
             </div>
             <div className="card" style={{ gridColumn: '1 / -1' }}>
               <div className="card-header"><span className="card-title">Suggested Top 3</span></div>
               <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
-                {suggestedPlanTasks.length === 0 ? <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>No open tasks to plan yet.</div> : suggestedPlanTasks.map((task, index) => (
+                {suggestedPlanTasks.length === 0 ? <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>No open tasks to plan yet.</div> : suggestedPlanTasks.map((task, index) => (
                   <div key={task.id} data-domain={task.domain_id} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
-                    <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>Slot {index + 1}</div>
-                    <div style={{ fontSize: 14, color: 'var(--color-text)', marginTop: 3 }}>{task.title}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>Slot {index + 1}</div>
+                    <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', marginTop: 3 }}>{task.title}</div>
                   </div>
                 ))}
               </div>
@@ -791,13 +791,13 @@ export const TodayPage: React.FC = () => {
 
       <Modal open={showTomorrow} onClose={() => setShowTomorrow(false)} title="Prep Tomorrow">
         <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
-          <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+          <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
             Stage one carry-forward task or create one fresh task for tomorrow. It will start tomorrow without hijacking today&apos;s board.
           </div>
           <div className="card">
             <div className="card-header"><span className="card-title">Carry Forward</span></div>
             <div className="card-body" style={{ display: 'grid', gap: 'var(--space-2)' }}>
-              {boardTasks.length === 0 ? <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>No active tasks to carry forward.</div> : boardTasks.slice(0, 5).map((task) => (
+              {boardTasks.length === 0 ? <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>No active tasks to carry forward.</div> : boardTasks.slice(0, 5).map((task) => (
                 <button key={task.id} className="btn btn-ghost" style={tomorrowCarryTaskId === task.id ? { color: 'var(--color-warning)', borderColor: 'var(--color-warning)' } : undefined} onClick={() => { setTomorrowCarryTaskId((current) => current === task.id ? null : task.id); setTomorrowTaskTitle(''); }}>
                   {task.title}
                 </button>
@@ -824,7 +824,7 @@ export const TodayPage: React.FC = () => {
       <Modal open={Boolean(frictionTarget)} onClose={() => setFrictionTarget(null)} title={frictionTarget?.actionType === 'blocked' ? 'Task Blocked' : 'Set Start Date'}>
         {frictionTarget && (
           <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
-            <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{frictionTarget.task.title}</div>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{frictionTarget.task.title}</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
               {TASK_FRICTION_OPTIONS.map((option) => (
                 <button key={option.value} className="btn btn-ghost btn-sm" style={frictionReason === option.value ? { color: 'var(--color-warning)', borderColor: 'var(--color-warning)' } : undefined} onClick={() => setFrictionReason(option.value)}>
@@ -856,7 +856,7 @@ export const TodayPage: React.FC = () => {
             }}
             style={{ display: 'grid', gap: 'var(--space-3)' }}
           >
-            <div style={{ fontSize: 12, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>Why are you skipping "{skipTarget.habit.title}" for {skipTarget.date}?</div>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>Why are you skipping "{skipTarget.habit.title}" for {skipTarget.date}?</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
               {HABIT_SKIP_SUGGESTIONS.map((reason) => (
                 <button key={reason} type="button" className="btn btn-ghost btn-sm" onClick={() => setSkipReason(reason)} style={skipReason === reason ? { color: 'var(--color-warning)', borderColor: 'var(--color-warning)' } : undefined}>

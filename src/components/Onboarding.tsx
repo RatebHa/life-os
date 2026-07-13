@@ -163,10 +163,10 @@ export const Onboarding: React.FC = () => {
       >
         {step === 0 && (
           <>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 40, color: 'var(--color-text)', letterSpacing: 5 }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-text)', letterSpacing: 5 }}>
               DEFINE YOUR DOMAINS
             </div>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-text-muted)', lineHeight: 1.8, letterSpacing: 1 }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', lineHeight: 1.8, letterSpacing: 1 }}>
               START WITH THE AREAS OF LIFE YOU ACTUALLY WANT TO TRACK. YOU CAN CREATE ONE DOMAIN OR MANY, AND EVERYTHING ELSE IN LIFE OS WILL USE THEM.
             </div>
 
@@ -174,7 +174,7 @@ export const Onboarding: React.FC = () => {
               <div className="card" style={{ margin: 0 }}>
                 <div className="card-header">
                   <span className="card-title">YOUR DOMAINS</span>
-                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)' }}>{orderedDomains.length}</span>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)' }}>{orderedDomains.length}</span>
                 </div>
                 <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', minHeight: 220 }}>
                   {!hasDomains ? (
@@ -199,10 +199,10 @@ export const Onboarding: React.FC = () => {
                         }}
                       >
                         <div>
-                          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 20, color: 'var(--domain-primary)', letterSpacing: 3 }}>
+                          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--domain-primary)', letterSpacing: 3 }}>
                             {domain.icon} {getDomainLabel(domain.id, orderedDomains).toUpperCase()}
                           </div>
-                          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+                          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
                             {getDomainSummary(getDomainLabel(domain.id, orderedDomains))}
                           </div>
                         </div>
@@ -234,7 +234,7 @@ export const Onboarding: React.FC = () => {
                   <button className="btn btn-primary" type="button" onClick={() => void handleAddDomain()} disabled={creatingDomain}>
                     {creatingDomain ? 'ADDING...' : 'ADD DOMAIN'}
                   </button>
-                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1, lineHeight: 1.6 }}>
+                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1, lineHeight: 1.6 }}>
                     EXAMPLES: WORK, HEALTH, STUDY, FAMILY, BUSINESS, FITNESS, LANGUAGE, ADMIN.
                   </div>
                 </div>
@@ -245,7 +245,7 @@ export const Onboarding: React.FC = () => {
 
         {step === 1 && (
           <>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 22, color: 'var(--color-text)', letterSpacing: 3 }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-text)', letterSpacing: 3 }}>
               HOW THE SYSTEM WORKS
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
@@ -265,10 +265,10 @@ export const Onboarding: React.FC = () => {
                     background: 'var(--color-surface-hover)',
                   }}
                 >
-                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 20, color: 'var(--color-accent)', minWidth: 24 }}>{item.icon}</span>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-accent)', minWidth: 24 }}>{item.icon}</span>
                   <div>
-                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-text)', letterSpacing: 2 }}>{item.title}</div>
-                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1, marginTop: 2 }}>{item.desc}</div>
+                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-text)', letterSpacing: 2 }}>{item.title}</div>
+                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1, marginTop: 2 }}>{item.desc}</div>
                   </div>
                 </div>
               ))}
@@ -278,19 +278,19 @@ export const Onboarding: React.FC = () => {
 
         {step === 2 && (
           <>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 22, color: 'var(--color-text)', letterSpacing: 3 }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-text)', letterSpacing: 3 }}>
               CREATE YOUR FIRST HABIT
             </div>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               START SMALL. PICK ONE REPEATED BEHAVIOR YOU WANT THIS SYSTEM TO HELP YOU MAINTAIN.
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
               <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Habit Name</label>
+                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Habit Name</label>
                 <input className="input" placeholder="E.G. REVIEW PRIORITIES, WALK, TRAIN, STUDY..." value={habitTitle} onChange={(event) => setHabitTitle(event.target.value)} autoFocus />
               </div>
               <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Area</label>
+                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Area</label>
                 <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.max(1, orderedDomains.length)}, minmax(0, 1fr))`, gap: 'var(--space-2)' }}>
                   {orderedDomains.map((domain) => (
                     <button
@@ -299,7 +299,7 @@ export const Onboarding: React.FC = () => {
                       data-domain={domain.id}
                       onClick={() => setHabitDomain(domain.id)}
                       className={habitDomain === domain.id ? 'btn btn-primary' : 'btn btn-ghost'}
-                      style={{ ...getDomainThemeStyle(domain), fontSize: 11 }}
+                      style={{ ...getDomainThemeStyle(domain), fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)' }}
                     >
                       {getDomainLabel(domain.id, orderedDomains).toUpperCase()}
                     </button>
@@ -312,19 +312,19 @@ export const Onboarding: React.FC = () => {
 
         {step === 3 && (
           <>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 22, color: 'var(--color-text)', letterSpacing: 3 }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-text)', letterSpacing: 3 }}>
               SET YOUR FIRST MIT
             </div>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               YOUR MOST IMPORTANT TASK IS THE ONE THING THAT MAKES TODAY FEEL REAL IF IT GETS DONE.
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
               <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Task Title</label>
+                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Task Title</label>
                 <input className="input" placeholder="WHAT MUST MOVE FORWARD?" value={taskTitle} onChange={(event) => setTaskTitle(event.target.value)} autoFocus />
               </div>
               <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Area</label>
+                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Area</label>
                 <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.max(1, orderedDomains.length)}, minmax(0, 1fr))`, gap: 'var(--space-2)' }}>
                   {orderedDomains.map((domain) => (
                     <button
@@ -333,7 +333,7 @@ export const Onboarding: React.FC = () => {
                       data-domain={domain.id}
                       onClick={() => setTaskDomain(domain.id)}
                       className={taskDomain === domain.id ? 'btn btn-primary' : 'btn btn-ghost'}
-                      style={{ ...getDomainThemeStyle(domain), fontSize: 11 }}
+                      style={{ ...getDomainThemeStyle(domain), fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)' }}
                     >
                       {getDomainLabel(domain.id, orderedDomains).toUpperCase()}
                     </button>
@@ -346,10 +346,10 @@ export const Onboarding: React.FC = () => {
 
         {step === 4 && (
           <>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 36, color: 'var(--color-text)', letterSpacing: 4 }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-text)', letterSpacing: 4 }}>
               SYSTEM READY
             </div>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-text-muted)', lineHeight: 1.8, letterSpacing: 1 }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', lineHeight: 1.8, letterSpacing: 1 }}>
               YOUR SYSTEM IS LIVE. START IN TODAY, GET ONE HONEST WIN, AND LET THE WORKSPACE LEARN FROM REAL USE OVER TIME.
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
@@ -366,7 +366,7 @@ export const Onboarding: React.FC = () => {
                     border: '1px solid var(--color-border)',
                     background: 'var(--color-surface-hover)',
                     fontFamily: 'var(--font-sans)',
-                    fontSize: 10,
+                    fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
                     color: 'var(--color-text-muted)',
                     letterSpacing: 1,
                     display: 'flex',
@@ -382,7 +382,7 @@ export const Onboarding: React.FC = () => {
         )}
 
         {domainError && (
-          <div style={{ padding: 'var(--space-2) var(--space-3)', border: '1px solid var(--color-danger)', color: 'var(--color-danger)', fontFamily: 'var(--font-sans)', fontSize: 10, letterSpacing: 1 }}>
+          <div style={{ padding: 'var(--space-2) var(--space-3)', border: '1px solid var(--color-danger)', color: 'var(--color-danger)', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', letterSpacing: 1 }}>
             {domainError.toUpperCase()}
           </div>
         )}

@@ -47,10 +47,10 @@ export class RouteErrorBoundary extends React.Component<Props, State> {
               </span>
             </div>
             <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-              <div style={{ color: 'var(--color-text-muted)', fontSize: 12 }}>
+              <div style={{ color: 'var(--color-text-muted)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)' }}>
                 This screen hit a runtime error. Open the debug console to inspect the exact failure.
               </div>
-              <div style={{ color: 'var(--color-danger)', fontSize: 11, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+              <div style={{ color: 'var(--color-danger)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                 {this.state.message}
               </div>
             </div>

@@ -116,7 +116,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
       {!parentGoalId && !isEditing && (
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
+          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
             Domain
           </label>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-2)' }}>
@@ -127,7 +127,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
                 data-domain={entry.id}
                 onClick={() => setDomain(entry.id)}
                 className={clsx('btn', domain === entry.id ? 'btn-primary' : 'btn-ghost')}
-                style={{ ...getDomainThemeStyle(entry), padding: 'var(--space-1) var(--space-2)', fontSize: 12 }}
+                style={{ ...getDomainThemeStyle(entry), padding: 'var(--space-1) var(--space-2)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)' }}
               >
                 {getDomainLabel(entry.id, domains).toUpperCase()}
               </button>
@@ -137,21 +137,21 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
       )}
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
+        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
           Goal Title *
         </label>
         <input className="input" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="WHAT ARE YOU DRIVING TOWARD?" autoFocus required />
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
+        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
           Why It Matters
         </label>
         <textarea className="input" value={description} onChange={(event) => setDescription(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHY DOES THIS GOAL MATTER?" />
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
+        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
           Next Action
         </label>
         <input className="input" value={nextAction} onChange={(event) => setNextAction(event.target.value)} placeholder="WHAT IS THE VERY NEXT CONCRETE MOVE?" />
@@ -159,13 +159,13 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
 
       <div className="grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
+          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
             Review Date
           </label>
           <input className="input" type="date" lang="en-GB" value={reviewDate} onChange={(event) => setReviewDate(event.target.value)} />
         </div>
         <div>
-          <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
+          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
             Target Date
           </label>
           <input className="input" type="date" lang="en-GB" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} />
@@ -173,14 +173,14 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
+        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
           Blocked / Stalled Reason
         </label>
         <textarea className="input" value={blockedBy} onChange={(event) => setBlockedBy(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHAT IS SLOWING THIS GOAL DOWN?" />
       </div>
 
       <div>
-        <label style={{ display: 'block', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
+        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
           Health
         </label>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-2)' }}>
@@ -190,7 +190,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
               type="button"
               className={clsx('btn', health === value ? 'btn-primary' : 'btn-ghost')}
               onClick={() => setHealth(value)}
-              style={{ padding: 'var(--space-1) var(--space-2)', fontSize: 12 }}
+              style={{ padding: 'var(--space-1) var(--space-2)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)' }}
             >
               {value.replace('_', ' ').toUpperCase()}
             </button>
@@ -299,7 +299,7 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
             flexShrink: 0,
             marginTop: 2,
             fontFamily: 'var(--font-sans)',
-            fontSize: 12,
+            fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)',
             color: 'var(--color-text-muted)',
             background: 'none',
             border: 'none',
@@ -318,7 +318,7 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
             flexShrink: 0,
             marginTop: 2,
             fontFamily: 'var(--font-sans)',
-            fontSize: 14,
+            fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)',
             color: isDone ? 'var(--color-accent)' : 'var(--domain-primary, var(--color-text-muted))',
             background: 'none',
             border: 'none',
@@ -332,21 +332,21 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
 
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 15, color: isDone ? 'var(--color-text-muted)' : 'var(--color-accent)', textDecoration: isDone ? 'line-through' : 'none' }}>
+            <span style={{ fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: isDone ? 'var(--color-text-muted)' : 'var(--color-accent)', textDecoration: isDone ? 'line-through' : 'none' }}>
               {goal.title}
             </span>
-            <span style={{ ...healthTone, borderWidth: 1, borderStyle: 'solid', padding: '1px var(--space-1)', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
+            <span style={{ ...healthTone, borderWidth: 1, borderStyle: 'solid', padding: '1px var(--space-1)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', letterSpacing: 1, textTransform: 'uppercase' }}>
               {derivedHealth.replace('_', ' ')}
             </span>
             {warnings.map((warning) => (
-              <span key={`${goal.id}-${warning}`} style={{ border: '1px solid var(--color-warning)', color: 'var(--color-warning)', background: 'rgba(200,160,32,0.08)', padding: '1px var(--space-1)', fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>
+              <span key={`${goal.id}-${warning}`} style={{ border: '1px solid var(--color-warning)', color: 'var(--color-warning)', background: 'rgba(200,160,32,0.08)', padding: '1px var(--space-1)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', letterSpacing: 1, textTransform: 'uppercase' }}>
                 {warning}
               </span>
             ))}
           </div>
 
           {goal.description && (
-            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 'var(--space-1)' }}>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', marginTop: 'var(--space-1)' }}>
               {goal.description}
             </div>
           )}
@@ -357,11 +357,11 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
                 <span className="card-title">NEXT ACTION</span>
               </div>
               <div className="card-body" style={{ paddingTop: 'var(--space-2)' }}>
-                <div style={{ fontSize: 13, color: goal.next_action ? 'var(--color-text)' : 'var(--color-danger)' }}>
+                <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: goal.next_action ? 'var(--color-text)' : 'var(--color-danger)' }}>
                   {goal.next_action || 'NO NEXT ACTION DEFINED'}
                 </div>
                 {goal.blocked_by && (
-                  <div style={{ fontSize: 11, color: 'var(--color-warning)', marginTop: 'var(--space-2)' }}>
+                  <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-warning)', marginTop: 'var(--space-2)' }}>
                     BLOCKED BY: {goal.blocked_by}
                   </div>
                 )}
@@ -385,17 +385,17 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
                 <span className="card-title">REVIEW</span>
               </div>
               <div className="card-body" style={{ paddingTop: 'var(--space-2)' }}>
-                <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
                   REVIEW DATE: {goal.review_date ? formatDateDisplay(goal.review_date) : 'NOT SET'}
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginTop: 'var(--space-1)' }}>
+                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', marginTop: 'var(--space-1)' }}>
                   TARGET DATE: {goal.target_date ? formatDateDisplay(goal.target_date) : 'OPEN'}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
                   <div style={{ flex: 1, maxWidth: 140, height: 4, background: 'var(--color-surface-hover)' }}>
                     <div style={{ height: '100%', width: `${computedProgress}%`, background: isDone ? 'var(--color-accent)' : 'var(--domain-primary, var(--color-accent))' }} />
                   </div>
-                  <span style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>{computedProgress}%</span>
+                  <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)' }}>{computedProgress}%</span>
                 </div>
               </div>
             </div>
@@ -409,14 +409,14 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
               </div>
               <div className="card-body" style={{ paddingTop: 'var(--space-2)' }}>
                 {linkedTasks.length === 0 ? (
-                  <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>NO TASKS LINKED TO THIS GOAL YET.</div>
+                  <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>NO TASKS LINKED TO THIS GOAL YET.</div>
                 ) : (
                   linkedTasks.slice(0, 4).map((task) => (
                     <div key={task.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)', marginBottom: 'var(--space-2)' }}>
-                      <span style={{ fontSize: 12, color: task.status === 'done' ? 'var(--color-text-muted)' : 'var(--color-accent)' }}>
+                      <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: task.status === 'done' ? 'var(--color-text-muted)' : 'var(--color-accent)' }}>
                         {task.title}
                       </span>
-                      <span style={{ fontSize: 9, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
                         {task.status.replace('_', ' ')}
                       </span>
                     </div>
@@ -432,12 +432,12 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
               </div>
               <div className="card-body" style={{ paddingTop: 'var(--space-2)' }}>
                 {linkedNotes.length === 0 ? (
-                  <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>NO NOTES LINKED TO THIS GOAL YET.</div>
+                  <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>NO NOTES LINKED TO THIS GOAL YET.</div>
                 ) : (
                   linkedNotes.slice(0, 4).map((note) => (
                     <div key={note.id} style={{ marginBottom: 'var(--space-2)' }}>
-                      <div style={{ fontSize: 12, color: 'var(--color-accent)' }}>{note.title}</div>
-                      <div style={{ fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+                      <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>{note.title}</div>
+                      <div style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
                         {formatDateDisplay(note.updated_at)}
                       </div>
                     </div>
@@ -467,7 +467,7 @@ const GoalNode: React.FC<GoalNodeProps> = ({ goal, depth, highlightedGoalId }) =
               }}
               className="btn btn-sm btn-ghost"
               title="Abandon goal"
-              style={{ padding: '2px var(--space-2)', minHeight: 'auto', color: 'var(--color-warning)', fontSize: 9 }}
+              style={{ padding: '2px var(--space-2)', minHeight: 'auto', color: 'var(--color-warning)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)' }}
             >
               ABANDON
             </button>
@@ -545,7 +545,7 @@ export const GoalsPage: React.FC = () => {
 
       {missingNextActionCount > 0 && (
         <div style={{ padding: 'var(--space-2) var(--space-3)', border: '1px solid var(--color-warning)', background: 'rgba(200,160,32,0.06)' }}>
-          <div style={{ fontSize: 12, color: 'var(--color-warning)', letterSpacing: 1, textTransform: 'uppercase' }}>
+          <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-warning)', letterSpacing: 1, textTransform: 'uppercase' }}>
             {missingNextActionCount} active goal{missingNextActionCount !== 1 ? 's have' : ' has'} no next action. Those goals are at risk of becoming passive.
           </div>
         </div>

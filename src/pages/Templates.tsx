@@ -195,8 +195,8 @@ export const TemplatesPage: React.FC = () => {
                 <div key={template.id} data-domain={template.domain_id} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
                     <div>
-                      <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{template.title}</div>
-                      <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 3 }}>
+                      <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)' }}>{template.title}</div>
+                      <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', marginTop: 3 }}>
                         {getDomainLabel(template.domain_id, domains)} · {template.priority.toUpperCase()} · {template.energy_level.toUpperCase()} · {template.time_estimate_minutes ?? 0}M
                       </div>
                     </div>
@@ -206,7 +206,7 @@ export const TemplatesPage: React.FC = () => {
                       <button className="btn btn-danger btn-sm" disabled={launchingId === template.id} onClick={() => deleteTaskTemplate(template.id).catch(console.error)}>DELETE</button>
                     </div>
                   </div>
-                  {template.description && <div style={{ fontSize: 11, color: 'var(--color-accent)', marginTop: 'var(--space-2)' }}>{template.description}</div>}
+                  {template.description && <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)', marginTop: 'var(--space-2)' }}>{template.description}</div>}
                 </div>
               ))
             )}
@@ -270,8 +270,8 @@ export const TemplatesPage: React.FC = () => {
               <div key={preset.id} data-domain={hasDomains ? targetDomainId : undefined} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
                   <div>
-                    <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{hasDomains ? (getPresetTitle(preset.id, targetDomainId, domains) || preset.title) : preset.title}</div>
-                    <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 3 }}>{hasDomains ? (getPresetDescription(preset.id, targetDomainId, domains) || preset.description) : preset.description}</div>
+                    <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)' }}>{hasDomains ? (getPresetTitle(preset.id, targetDomainId, domains) || preset.title) : preset.title}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', marginTop: 3 }}>{hasDomains ? (getPresetDescription(preset.id, targetDomainId, domains) || preset.description) : preset.description}</div>
                   </div>
                   <button className="btn btn-ghost btn-sm" disabled={!hasDomains || launchingId === preset.id} onClick={() => launchPreset(preset.id)}>
                     {launchingId === preset.id ? 'LAUNCHING...' : 'LAUNCH'}
@@ -292,8 +292,8 @@ export const TemplatesPage: React.FC = () => {
               <div key={preset.id} data-domain={hasDomains ? targetDomainId : undefined} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
                   <div>
-                    <div style={{ fontSize: 14, color: 'var(--color-text)' }}>{hasDomains ? (getPresetTitle(preset.id, targetDomainId, domains) || preset.title) : preset.title}</div>
-                    <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 3 }}>{hasDomains ? (getPresetDescription(preset.id, targetDomainId, domains) || preset.description) : preset.description}</div>
+                    <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)' }}>{hasDomains ? (getPresetTitle(preset.id, targetDomainId, domains) || preset.title) : preset.title}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', marginTop: 3 }}>{hasDomains ? (getPresetDescription(preset.id, targetDomainId, domains) || preset.description) : preset.description}</div>
                   </div>
                   <button className="btn btn-ghost btn-sm" disabled={!hasDomains || launchingId === preset.id} onClick={() => launchPreset(preset.id)}>
                     {launchingId === preset.id ? 'INSTALLING...' : 'ADD PACK'}

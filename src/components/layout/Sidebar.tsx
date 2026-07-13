@@ -30,8 +30,7 @@ export const Sidebar: React.FC = () => {
         <div
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: 16,
-            fontWeight: 700,
+            fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-bold)',
             letterSpacing: '-0.01em',
             color: 'var(--color-text)',
           }}
@@ -41,7 +40,7 @@ export const Sidebar: React.FC = () => {
         <div
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: 9,
+            fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
             letterSpacing: 2,
             color: 'var(--color-text-muted)',
             marginTop: 2,
@@ -54,7 +53,7 @@ export const Sidebar: React.FC = () => {
             marginTop: 'var(--space-2)',
             padding: '2px var(--space-2)',
             border: '1px solid var(--color-border)',
-            fontSize: 9,
+            fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
             fontFamily: 'var(--font-sans)',
             color: 'var(--color-text-muted)',
             letterSpacing: 1,
@@ -73,7 +72,7 @@ export const Sidebar: React.FC = () => {
             style={{
               padding: '0 var(--space-3) 3px',
               fontFamily: 'var(--font-sans)',
-              fontSize: 9,
+              fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
               letterSpacing: 2,
               color: 'var(--color-text-muted)',
               textTransform: 'uppercase',
@@ -104,7 +103,7 @@ export const Sidebar: React.FC = () => {
             style={{
               padding: '0 var(--space-3) 3px',
               fontFamily: 'var(--font-sans)',
-              fontSize: 9,
+              fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
               letterSpacing: 2,
               color: 'var(--color-text-muted)',
               textTransform: 'uppercase',
@@ -122,7 +121,7 @@ export const Sidebar: React.FC = () => {
                 onClick={() => navigate(item.path)}
                 title={item.description}
                 style={{
-                  fontSize: 11,
+                  fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)',
                   color: active ? 'var(--color-text)' : 'var(--color-text-muted)',
                   opacity: active ? 1 : 0.82,
                 }}
@@ -140,7 +139,7 @@ export const Sidebar: React.FC = () => {
             style={{
               padding: '0 var(--space-3) 3px',
               fontFamily: 'var(--font-sans)',
-              fontSize: 9,
+              fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
               letterSpacing: 2,
               color: 'var(--color-text-muted)',
               textTransform: 'uppercase',
@@ -150,7 +149,7 @@ export const Sidebar: React.FC = () => {
           </div>
 
           {domains.length === 0 ? (
-            <div style={{ padding: 'var(--space-2) var(--space-3)', fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+            <div style={{ padding: 'var(--space-2) var(--space-3)', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               NO DOMAINS CONFIGURED. COMPLETE SETUP TO CREATE YOUR FIRST ONE.
             </div>
           ) : domains.map((domain) => {
@@ -185,10 +184,10 @@ export const Sidebar: React.FC = () => {
               >
                 <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: active ? 'var(--domain-primary)' : 'var(--color-text-muted)', letterSpacing: 1 }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: active ? 'var(--domain-primary)' : 'var(--color-text-muted)', letterSpacing: 1 }}>
                       {meta.icon}
                     </span>
-                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 600, color: active ? 'var(--color-text)' : 'var(--color-text-muted)' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semibold)', color: active ? 'var(--color-text)' : 'var(--color-text-muted)' }}>
                       {meta.label}
                     </span>
                     <StreakFlame count={domain.streak_current} size="sm" />
@@ -197,7 +196,7 @@ export const Sidebar: React.FC = () => {
                   <div
                     style={{
                       fontFamily: 'var(--font-sans)',
-                      fontSize: 9,
+                      fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
                       color: 'var(--color-text-muted)',
                       letterSpacing: 1,
                       display: 'grid',
@@ -228,7 +227,7 @@ export const Sidebar: React.FC = () => {
           title="Search (Ctrl+K)"
         >
           <span>SEARCH</span>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 8, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             CTRL+K
           </span>
         </button>
@@ -240,7 +239,7 @@ export const Sidebar: React.FC = () => {
           title="Quick Capture (Ctrl+N)"
         >
           <span>CAPTURE</span>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 8, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             CTRL+N
           </span>
         </button>

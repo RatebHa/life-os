@@ -46,7 +46,7 @@ function isHexColor(value: string): boolean {
 
 const rowLabelStyle: React.CSSProperties = {
   fontFamily: 'var(--font-sans)',
-  fontSize: 10,
+  fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
   color: 'var(--color-text-muted)',
   letterSpacing: 1,
   lineHeight: 1.6,
@@ -640,30 +640,30 @@ export const SettingsPage: React.FC = () => {
           right={<span style={{ ...rowLabelStyle, color: backupStatusColor }}>{backupHealth?.status_label?.toUpperCase() ?? 'UNKNOWN'}</span>}
         />
         <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
-          <div style={{ fontSize: 12, color: backupStatusColor }}>
+          <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: backupStatusColor }}>
             {backupStatusMessage}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 'var(--space-2)' }}>
             <div className="card" style={{ margin: 0 }}>
               <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>LAST BACKUP</span>
-                <span style={{ fontSize: 12, color: 'var(--color-text)' }}>{formatTimestamp(appState?.last_backup_at)}</span>
+                <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)' }}>{formatTimestamp(appState?.last_backup_at)}</span>
               </div>
             </div>
             <div className="card" style={{ margin: 0 }}>
               <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>LATEST SNAPSHOT AGE</span>
-                <span style={{ fontSize: 12, color: 'var(--color-text)' }}>{formatAge(backupHealth?.latest_backup_age_hours)}</span>
+                <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)' }}>{formatAge(backupHealth?.latest_backup_age_hours)}</span>
               </div>
             </div>
             <div className="card" style={{ margin: 0 }}>
               <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>RECOVERY BIN</span>
-                <span style={{ fontSize: 12, color: recoveryBinCount > 0 ? 'var(--color-warning)' : 'var(--color-text)' }}>{recoveryBinCount} ITEM{recoveryBinCount === 1 ? '' : 'S'}</span>
+                <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: recoveryBinCount > 0 ? 'var(--color-warning)' : 'var(--color-text)' }}>{recoveryBinCount} ITEM{recoveryBinCount === 1 ? '' : 'S'}</span>
               </div>
             </div>
           </div>
-          <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+          <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
             Before restore, import, domain deletion, or reset, create a safety backup if the latest snapshot does not feel current enough.
           </div>
         </div>
@@ -675,7 +675,7 @@ export const SettingsPage: React.FC = () => {
           right={<span style={{ ...rowLabelStyle, color: syncConnected ? 'var(--color-accent)' : 'var(--color-text-muted)' }}>{syncStateLabel}</span>}
         />
         <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
-          <div style={{ fontSize: 12, color: syncConnected ? 'var(--color-text)' : 'var(--color-text-muted)' }}>
+          <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: syncConnected ? 'var(--color-text)' : 'var(--color-text-muted)' }}>
             Optional cross-device sync stays local-first. Sign in, compare this desktop with cloud, then choose a safe direction before you let both sides converge.
           </div>
 
@@ -720,7 +720,7 @@ export const SettingsPage: React.FC = () => {
             <div className="card" style={{ margin: 0 }}>
               <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>ACCOUNT</span>
-                <span style={{ fontSize: 12, color: syncConnected ? 'var(--color-text)' : 'var(--color-text-muted)' }}>
+                <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: syncConnected ? 'var(--color-text)' : 'var(--color-text-muted)' }}>
                   {appState?.sync_user_email ?? 'NOT CONNECTED'}
                 </span>
               </div>
@@ -728,19 +728,19 @@ export const SettingsPage: React.FC = () => {
             <div className="card" style={{ margin: 0 }}>
               <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>LAST SYNC</span>
-                <span style={{ fontSize: 12, color: 'var(--color-text)' }}>{formatTimestamp(appState?.sync_last_sync_at)}</span>
+                <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)' }}>{formatTimestamp(appState?.sync_last_sync_at)}</span>
               </div>
             </div>
             <div className="card" style={{ margin: 0 }}>
               <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>LOCAL RECORDS</span>
-                <span style={{ fontSize: 12, color: 'var(--color-text)' }}>{syncBootstrapStatus?.local_counts.total ?? 0}</span>
+                <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)' }}>{syncBootstrapStatus?.local_counts.total ?? 0}</span>
               </div>
             </div>
             <div className="card" style={{ margin: 0 }}>
               <div className="card-body" style={{ display: 'grid', gap: 'var(--space-1)' }}>
                 <span style={rowLabelStyle}>CLOUD RECORDS</span>
-                <span style={{ fontSize: 12, color: 'var(--color-text)' }}>{syncBootstrapStatus?.remote_counts.total ?? 0}</span>
+                <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)' }}>{syncBootstrapStatus?.remote_counts.total ?? 0}</span>
               </div>
             </div>
           </div>
@@ -774,7 +774,7 @@ export const SettingsPage: React.FC = () => {
 
           <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
             <span style={rowLabelStyle}>FIRST-TIME RULE</span>
-            <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+            <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
               If cloud is empty, upload this device after a safety backup. If local is empty, pull cloud down. If both sides already have data, choose intentionally. The app will not auto-merge first-time setup for you.
             </span>
             {appState?.sync_last_sync_error ? (
@@ -813,7 +813,7 @@ export const SettingsPage: React.FC = () => {
             alignItems: 'center',
             gap: 'var(--space-3)',
             fontFamily: 'var(--font-sans)',
-            fontSize: 10,
+            fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
             color: 'var(--color-text)',
             letterSpacing: 1,
             minHeight: 40,
@@ -927,7 +927,7 @@ export const SettingsPage: React.FC = () => {
             ) : backupHistory.slice(0, 12).map((item) => (
               <div key={`${item.last_action}-${item.file_path}-${item.modified_at ?? ''}`} className="task-row" style={{ padding: 'var(--space-3) var(--space-3)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
-                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text)', letterSpacing: 1 }}>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text)', letterSpacing: 1 }}>
                     {item.backup_name.toUpperCase()}
                   </span>
                   <span style={{ ...rowLabelStyle, color: item.last_action === 'restore' ? 'var(--color-info)' : item.last_action === 'snapshot' ? 'var(--color-warning)' : 'var(--color-accent)' }}>
@@ -964,7 +964,7 @@ export const SettingsPage: React.FC = () => {
                   <span style={rowLabelStyle}>NO DELETED NOTES.</span>
                 ) : deletedNotes.slice(0, 12).map((note) => (
                   <div key={note.id} className="task-row" style={{ padding: 'var(--space-3) var(--space-3)' }}>
-                    <div style={{ fontSize: 12, color: 'var(--color-text)', marginBottom: 'var(--space-1)' }}>{note.title}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', marginBottom: 'var(--space-1)' }}>{note.title}</div>
                     <div style={rowLabelStyle}>DELETED: {formatTimestamp(note.deleted_at)}</div>
                     <div style={rowLabelStyle}>DOMAIN: {note.domain_id?.toUpperCase() ?? 'GLOBAL'}</div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'var(--space-2)' }}>
@@ -984,7 +984,7 @@ export const SettingsPage: React.FC = () => {
                   <span style={rowLabelStyle}>NO DELETED GOALS.</span>
                 ) : deletedGoals.slice(0, 12).map((goal) => (
                   <div key={goal.id} className="task-row" style={{ padding: 'var(--space-3) var(--space-3)' }}>
-                    <div style={{ fontSize: 12, color: 'var(--color-text)', marginBottom: 'var(--space-1)' }}>{goal.title}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', marginBottom: 'var(--space-1)' }}>{goal.title}</div>
                     <div style={rowLabelStyle}>DELETED: {formatTimestamp(goal.deleted_at)}</div>
                     <div style={rowLabelStyle}>STATUS: {goal.status.toUpperCase().replace('_', ' ')}</div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'var(--space-2)' }}>
@@ -1004,7 +1004,7 @@ export const SettingsPage: React.FC = () => {
                   <span style={rowLabelStyle}>NO DELETED INBOX ITEMS.</span>
                 ) : deletedInboxItems.slice(0, 12).map((item) => (
                   <div key={item.id} className="task-row" style={{ padding: 'var(--space-3) var(--space-3)' }}>
-                    <div style={{ fontSize: 12, color: 'var(--color-text)', marginBottom: 'var(--space-1)', whiteSpace: 'pre-wrap' }}>{item.content}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', marginBottom: 'var(--space-1)', whiteSpace: 'pre-wrap' }}>{item.content}</div>
                     <div style={rowLabelStyle}>DELETED: {formatTimestamp(item.deleted_at)}</div>
                     <div style={rowLabelStyle}>STATUS: {item.status.toUpperCase()}</div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'var(--space-2)' }}>
@@ -1138,7 +1138,7 @@ export const SettingsPage: React.FC = () => {
               padding: '2px var(--space-2)',
               border: `1px solid ${appState?.api_key ? 'var(--color-accent)' : 'var(--color-border)'}`,
               fontFamily: 'var(--font-sans)',
-              fontSize: 9,
+              fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
               color: appState?.api_key ? 'var(--color-accent)' : 'var(--color-text-muted)',
               letterSpacing: 1,
             }}>
@@ -1181,7 +1181,7 @@ export const SettingsPage: React.FC = () => {
                 background: 'none',
                 border: 'none',
                 fontFamily: 'var(--font-sans)',
-                fontSize: 10,
+                fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
                 color: 'var(--color-danger)',
                 cursor: 'crosshair',
                 textAlign: 'left',
@@ -1228,7 +1228,7 @@ export const SettingsPage: React.FC = () => {
               </button>
             ) : (
               <>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-danger)', letterSpacing: 1 }}>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-danger)', letterSpacing: 1 }}>
                   ARE YOU SURE? THIS ERASES LIVE DATA UNTIL YOU RESTORE A BACKUP.
                 </span>
                 <button className="btn btn-danger" onClick={handleReset}>YES, RESET</button>
@@ -1241,10 +1241,10 @@ export const SettingsPage: React.FC = () => {
 
       <div className="card">
         <div className="card-body" style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             LIFE OS v0.6.0
           </span>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             SQLITE / LOCAL-FIRST / SYNC-READY BACKUPS
           </span>
         </div>

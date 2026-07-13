@@ -207,11 +207,11 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-4)', borderBottom: '1px solid var(--color-border)' }}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-text-muted)' }}>?</span>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-text-muted)' }}>?</span>
           <input
             ref={inputRef}
             className="input"
-            style={{ flex: 1, border: 'none', background: 'transparent', fontSize: 13, padding: 0 }}
+            style={{ flex: 1, border: 'none', background: 'transparent', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', padding: 0 }}
             placeholder="SEARCH TASKS, GOALS, NOTES, HABITS..."
             value={query}
             onChange={(event) => {
@@ -219,7 +219,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
               setSelected(0);
             }}
           />
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>ESC</span>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>ESC</span>
         </div>
 
         {results.length > 0 ? (
@@ -245,7 +245,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
                 <span
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: 9,
+                    fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
                     color: typeColors[result.type],
                     letterSpacing: 1,
                     textTransform: 'uppercase',
@@ -255,32 +255,32 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
                   {result.type}
                 </span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-accent)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {result.title}
                   </div>
-                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1, marginTop: 1 }}>
+                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1, marginTop: 1 }}>
                     {result.subtitle}
                   </div>
                 </div>
                 {index === selected && (
-                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)' }}>ENTER</span>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)' }}>ENTER</span>
                 )}
               </button>
             ))}
           </div>
         ) : query.trim() ? (
-          <div style={{ padding: 'var(--space-6) var(--space-4)', fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-text-muted)', textAlign: 'center', letterSpacing: 1 }}>
+          <div style={{ padding: 'var(--space-6) var(--space-4)', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textAlign: 'center', letterSpacing: 1 }}>
             NO RESULTS FOR "{query.toUpperCase()}"
           </div>
         ) : (
-          <div style={{ padding: 'var(--space-6) var(--space-4)', fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', textAlign: 'center', letterSpacing: 1 }}>
+          <div style={{ padding: 'var(--space-6) var(--space-4)', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', textAlign: 'center', letterSpacing: 1 }}>
             TYPE TO SEARCH ACROSS ALL ENTRIES
           </div>
         )}
 
         <div style={{ padding: 'var(--space-1) var(--space-4)', borderTop: '1px solid var(--color-border)', display: 'flex', gap: 'var(--space-4)' }}>
           {[['UP/DOWN', 'navigate'], ['ENTER', 'open'], ['ESC', 'close']].map(([key, label]) => (
-            <span key={key} style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+            <span key={key} style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               {key} · {label.toUpperCase()}
             </span>
           ))}

@@ -147,10 +147,10 @@ const ShortcutsOverlay: React.FC<{ open: boolean; onClose: () => void }> = ({ op
       {SHORTCUT_ITEMS.map((shortcut) => (
         <div key={shortcut.keys} className="card" style={{ margin: 0 }}>
           <div className="card-body" style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-text)', letterSpacing: 2 }}>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-text)', letterSpacing: 2 }}>
               {shortcut.keys}
             </span>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
               {shortcut.label}
             </span>
           </div>

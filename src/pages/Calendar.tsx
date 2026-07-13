@@ -53,7 +53,7 @@ export const CalendarPage: React.FC = () => {
           {/* Month nav */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
             <button className="btn btn-ghost btn-sm" onClick={prevMonth}>{'<'}</button>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 20, letterSpacing: 3, color: 'var(--color-text)', minWidth: 140, textAlign: 'center' }}>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', letterSpacing: 3, color: 'var(--color-text)', minWidth: 140, textAlign: 'center' }}>
               {MONTH_NAMES[month - 1]} {year}
             </div>
             <button className="btn btn-ghost btn-sm" onClick={nextMonth}>{'>'}</button>
@@ -62,7 +62,7 @@ export const CalendarPage: React.FC = () => {
           {/* Day names row */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, marginBottom: 'var(--space-1)' }}>
             {DAY_NAMES.map((d) => (
-              <div key={d} style={{ textAlign: 'center', fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1, padding: '3px 0' }}>
+              <div key={d} style={{ textAlign: 'center', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1, padding: '3px 0' }}>
                 {d}
               </div>
             ))}
@@ -101,7 +101,7 @@ export const CalendarPage: React.FC = () => {
                     }}
                   >
                     {/* Day number */}
-                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: isToday ? 'var(--color-text)' : 'var(--color-accent)', lineHeight: 1 }}>
+                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: isToday ? 'var(--color-text)' : 'var(--color-accent)', lineHeight: 1 }}>
                       {parseInt(day.date.slice(8))}
                     </div>
 
@@ -112,14 +112,14 @@ export const CalendarPage: React.FC = () => {
                           <div key={t.id} style={{ width: 6, height: 6, background: priorityColor(t.priority) }} title={t.title} />
                         ))}
                         {day.tasks.length > 3 && (
-                          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)' }}>+{day.tasks.length - 3}</span>
+                          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)' }}>+{day.tasks.length - 3}</span>
                         )}
                       </div>
                     )}
 
                     {/* Habit indicator */}
                     {hasHabits && (
-                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 0.5 }}>
+                      <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 0.5 }}>
                         {day.habits_logged.length}H
                       </div>
                     )}
@@ -128,7 +128,7 @@ export const CalendarPage: React.FC = () => {
                     {(day.tasks.length + day.habits_logged.length) > 0 && (
                       <div style={{
                         position: 'absolute', bottom: 3, right: 3,
-                        fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)',
+                        fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)',
                       }}>
                         {day.tasks.length + day.habits_logged.length}
                       </div>
@@ -152,7 +152,7 @@ export const CalendarPage: React.FC = () => {
                 {/* Tasks */}
                 {selectedDay.tasks.length > 0 && (
                   <div style={{ marginBottom: 'var(--space-3)' }}>
-                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 2, marginBottom: 'var(--space-2)', textTransform: 'uppercase' }}>
+                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, marginBottom: 'var(--space-2)', textTransform: 'uppercase' }}>
                       TASKS ({selectedDay.tasks.length})
                     </div>
                     {selectedDay.tasks.map((st) => (
@@ -161,7 +161,7 @@ export const CalendarPage: React.FC = () => {
                         padding: 'var(--space-1) 0', borderBottom: '1px solid var(--color-surface-hover)',
                       }}>
                         <div style={{ width: 6, height: 6, background: priorityColor(st.priority), flexShrink: 0 }} />
-                        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: st.status === 'done' ? 'var(--color-text-muted)' : 'var(--color-accent)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textDecoration: st.status === 'done' ? 'line-through' : 'none' }}>
+                        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: st.status === 'done' ? 'var(--color-text-muted)' : 'var(--color-accent)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textDecoration: st.status === 'done' ? 'line-through' : 'none' }}>
                           {st.title}
                         </span>
                         <span className={`priority-badge-${st.priority}`}>{st.priority.toUpperCase().slice(0,4)}</span>
@@ -173,7 +173,7 @@ export const CalendarPage: React.FC = () => {
                 {/* Habits */}
                 {selectedDay.habits_logged.length > 0 && (
                   <div>
-                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 2, marginBottom: 'var(--space-2)', textTransform: 'uppercase' }}>
+                    <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, marginBottom: 'var(--space-2)', textTransform: 'uppercase' }}>
                       HABITS ({selectedDay.habits_logged.length})
                     </div>
                     {selectedDay.habits_logged.map((h) => (
@@ -182,7 +182,7 @@ export const CalendarPage: React.FC = () => {
                         padding: 'var(--space-1) 0', borderBottom: '1px solid var(--color-surface-hover)',
                       }}>
                         <div style={{ width: 6, height: 6, background: 'var(--color-accent)', flexShrink: 0 }} />
-                        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--color-accent)' }}>{h.title}</span>
+                        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>{h.title}</span>
                       </div>
                     ))}
                   </div>
@@ -190,7 +190,7 @@ export const CalendarPage: React.FC = () => {
 
                 {selectedDay.tasks.length === 0 && selectedDay.habits_logged.length === 0 && (
                   <div className="empty-state" style={{ padding: 'var(--space-6) 0' }}>
-                    <div className="empty-state-title" style={{ fontSize: 14 }}>NO ACTIVITY</div>
+                    <div className="empty-state-title" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)' }}>NO ACTIVITY</div>
                   </div>
                 )}
               </div>
@@ -201,7 +201,7 @@ export const CalendarPage: React.FC = () => {
                 <span className="card-title">DAY DETAIL</span>
               </div>
               <div className="empty-state" style={{ padding: 'var(--space-8)' }}>
-                <div className="empty-state-title" style={{ fontSize: 14 }}>SELECT A DATE</div>
+                <div className="empty-state-title" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)' }}>SELECT A DATE</div>
                 <span className="boot-cursor" />
               </div>
             </div>

@@ -219,7 +219,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
         </div>
       </div>
 
-      <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+      <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
         Start date means the task will begin showing up in Today on that date and stay active there until it is done.
       </div>
 
@@ -273,7 +273,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
               </div>
             )}
 
-            <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
               MIT and Top 3 usually belong to Today. Set them here only if this task should already land in the daily plan.
             </div>
 

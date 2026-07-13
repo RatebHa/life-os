@@ -61,7 +61,7 @@ export const DebugConsole: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: 'var(--space-2)',
-          fontSize: 11,
+          fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)',
         }}
       >
         {entries.length === 0 ? (

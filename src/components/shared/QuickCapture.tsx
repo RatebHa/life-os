@@ -98,13 +98,13 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
                 type="button"
                 className={mode === value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-ghost'}
                 onClick={() => setMode(value)}
-                style={{ padding: '2px var(--space-3)', fontSize: 10 }}
+                style={{ padding: '2px var(--space-3)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)' }}
               >
                 {value.toUpperCase()}
               </button>
             ))}
           </div>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
             TAB TO SWITCH · ESC TO CANCEL
           </span>
         </div>
@@ -118,7 +118,7 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
                 placeholder={mode === 'task' ? 'WHAT NEEDS TO BE DONE?' : 'NOTE TITLE...'}
                 value={text}
                 onChange={(event) => setText(event.target.value)}
-                style={{ fontSize: 13, width: '100%' }}
+                style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', width: '100%' }}
               />
 
               <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
@@ -129,7 +129,7 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
                     data-domain={entry.id}
                     className={domain === entry.id ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-ghost'}
                     onClick={() => setDomain(entry.id)}
-                    style={{ ...getDomainThemeStyle(entry), flex: 1, minWidth: 120, padding: '3px var(--space-2)', fontSize: 10 }}
+                    style={{ ...getDomainThemeStyle(entry), flex: 1, minWidth: 120, padding: '3px var(--space-2)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)' }}
                   >
                     {entry.icon} {getDomainLabel(entry.id, domains).toUpperCase()}
                   </button>
@@ -144,10 +144,10 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
           )}
 
           <div style={{ display: 'flex', gap: 'var(--space-2)', justifyContent: 'flex-end' }}>
-            <button type="button" className="btn btn-ghost" onClick={onClose} style={{ fontSize: 10 }}>
+            <button type="button" className="btn btn-ghost" onClick={onClose} style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)' }}>
               CANCEL
             </button>
-            <button type="submit" className="btn btn-primary" disabled={!hasDomains || !text.trim() || saving} style={{ fontSize: 10 }}>
+            <button type="submit" className="btn btn-primary" disabled={!hasDomains || !text.trim() || saving} style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)' }}>
               {saving ? 'CAPTURING...' : 'SEND TO INBOX'}
             </button>
           </div>

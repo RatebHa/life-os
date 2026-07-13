@@ -121,18 +121,18 @@ export const InboxPage: React.FC = () => {
                 <div key={item.id} data-domain={domainId} style={{ ...getDomainThemeStyle(domainId, domains), border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-3) var(--space-3)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
-                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'var(--domain-primary)', letterSpacing: 1 }}>
+                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--domain-primary)', letterSpacing: 1 }}>
                         {item.domain_id ? getDomainLabel(item.domain_id, domains).toUpperCase() : 'UNSORTED'}
                       </span>
-                      <span style={{ fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+                      <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
                         {SOURCE_LABELS[item.source_label]} · {getKindLabel(item)}
                       </span>
                     </div>
-                    <span style={{ fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>
+                    <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
                       {relativeTime(item.created_at)}
                     </span>
                   </div>
-                  <div style={{ fontSize: 15, color: 'var(--color-text)', marginBottom: 'var(--space-3)', whiteSpace: 'pre-wrap' }}>
+                  <div style={{ fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-text)', marginBottom: 'var(--space-3)', whiteSpace: 'pre-wrap' }}>
                     {item.content}
                   </div>
                   <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
@@ -156,15 +156,15 @@ export const InboxPage: React.FC = () => {
         </div>
         <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
           {someday.length === 0 ? (
-            <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
               No parked ideas right now.
             </div>
           ) : (
             someday.map((item) => (
               <div key={item.id} data-domain={item.domain_id ?? undefined} style={{ border: '1px solid var(--color-border)', padding: 'var(--space-2) var(--space-3)', background: 'var(--color-surface-hover)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)' }}>
-                  <div style={{ fontSize: 13, color: 'var(--color-accent)' }}>{item.content}</div>
-                  <div style={{ fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: 1 }}>{SOURCE_LABELS[item.source_label]}</div>
+                  <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>{item.content}</div>
+                  <div style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>{SOURCE_LABELS[item.source_label]}</div>
                 </div>
                 <div style={{ display: 'flex', gap: 'var(--space-2)', marginTop: 'var(--space-2)', flexWrap: 'wrap' }}>
                   <button className="btn btn-ghost btn-sm" disabled={workingId === item.id} onClick={() => handleTriage(item, 'task')}>MAKE TASK</button>

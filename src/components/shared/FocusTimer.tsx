@@ -87,13 +87,13 @@ export const FocusTimer: React.FC = () => {
         }}
       >
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', letterSpacing: 1.5, textTransform: 'uppercase' }}>
             Focus Draft
           </div>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 24, lineHeight: 1, color: 'var(--color-text)', letterSpacing: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xl)', fontWeight: 'var(--font-weight-bold)', lineHeight: 1, color: 'var(--color-text)', letterSpacing: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {trayLabel}
           </div>
-          <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', marginTop: 'var(--space-1)', fontSize: 13, color: 'var(--color-text)', letterSpacing: 1.1, textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', marginTop: 'var(--space-1)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', letterSpacing: 1.1, textTransform: 'uppercase' }}>
             <span>{display}</span>
             <span>Plan {activeDraft.planned_minutes}m</span>
             <span>{plannedDelta === 0 ? 'On Plan' : plannedDelta > 0 ? `+${plannedDelta}m` : `${plannedDelta}m`}</span>
@@ -126,7 +126,7 @@ export const FocusTimer: React.FC = () => {
                 { label: 'Distractions', value: String(activeDraft.distraction_count) },
               ].map((stat) => (
                 <div key={stat.label} className="stat-card">
-                  <div className="stat-value" style={{ fontSize: 18 }}>{stat.value}</div>
+                  <div className="stat-value" style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)' }}>{stat.value}</div>
                   <div className="stat-label">{stat.label}</div>
                 </div>
               ))}
@@ -135,7 +135,7 @@ export const FocusTimer: React.FC = () => {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-3)' }}>
             <div>
-              <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Planned Minutes</label>
+              <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Planned Minutes</label>
               <input
                 className="input"
                 type="number"
@@ -146,7 +146,7 @@ export const FocusTimer: React.FC = () => {
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Interruption Notes</label>
+              <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Interruption Notes</label>
               <input
                 className="input"
                 value={activeDraft.interruption_notes ?? ''}
@@ -157,7 +157,7 @@ export const FocusTimer: React.FC = () => {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: 13, color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Reflection</label>
+            <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Reflection</label>
             <textarea
               className="input"
               rows={4}

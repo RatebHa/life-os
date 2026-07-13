@@ -645,10 +645,10 @@ export const WeeklyReviewPage: React.FC = () => {
         <div className="card" style={{ marginBottom: 'var(--space-3)', borderColor: 'var(--color-warning)' }}>
           <PanelHeader title={<span style={{ color: 'var(--color-warning)' }}>WEEKLY REVIEW SAFE MODE</span>} style={{ borderColor: 'var(--color-warning)' }} />
           <div className="card-body">
-            <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
               The page stayed open using safe defaults because some saved records were malformed.
             </div>
-            <div style={{ marginTop: 'var(--space-2)', fontSize: 11, color: 'var(--color-warning)' }}>{data.warning}</div>
+            <div style={{ marginTop: 'var(--space-2)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-warning)' }}>{data.warning}</div>
           </div>
         </div>
       ) : null}
@@ -694,7 +694,7 @@ export const WeeklyReviewPage: React.FC = () => {
           <PanelHeader title="NEXT-WEEK FOCUS THEME" meta={formatDateRangeDisplay(data.nextWeekStart, data.nextWeekEnd)} />
           <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
             <textarea className="input" style={{ width: '100%', minHeight: 90, resize: 'vertical' }} placeholder={data.focusSuggestion} value={focusTheme} onChange={(event) => setFocusTheme(event.target.value)} />
-            <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>{focusThemeValue}</div>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>{focusThemeValue}</div>
           </div>
         </div>
 
@@ -703,12 +703,12 @@ export const WeeklyReviewPage: React.FC = () => {
           <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
             {data.domainStats.map((domain) => (
               <div key={domain.id} data-domain={domain.id} style={{ display: 'grid', gridTemplateColumns: '90px 1fr auto', gap: 'var(--space-2)', alignItems: 'center' }}>
-                <div style={{ fontFamily: 'var(--font-sans)', fontSize: 18, color: 'var(--domain-primary)' }}>{domain.label.toUpperCase()}</div>
-                <div style={{ fontSize: 12, color: 'var(--color-accent)' }}>{domain.taskCount} tasks, {domain.habitDays} habit days</div>
-                        <div style={{ fontFamily: 'var(--font-sans)', fontSize: 16, color: 'var(--color-warning)' }}>{domain.commitmentLoad} LOAD</div>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--domain-primary)' }}>{domain.label.toUpperCase()}</div>
+                <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>{domain.taskCount} tasks, {domain.habitDays} habit days</div>
+                        <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-warning)' }}>{domain.commitmentLoad} LOAD</div>
               </div>
             ))}
-            <div style={{ marginTop: 'var(--space-1)', fontSize: 12, color: 'var(--color-text-muted)' }}>{data.balanceSummary}</div>
+            <div style={{ marginTop: 'var(--space-1)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>{data.balanceSummary}</div>
           </div>
         </div>
       </div>
@@ -725,7 +725,7 @@ export const WeeklyReviewPage: React.FC = () => {
           <PanelHeader title="TOP 3 FOR NEXT WEEK" meta="FIRST ITEM BECOMES MIT" />
           <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
           <textarea className="input" style={{ width: '100%', minHeight: 140, resize: 'vertical' }} placeholder={defaultTopThreeText || '1. [Domain] ...\n2. [Domain] ...\n3. [Domain] ...'} value={topThree} onChange={(event) => setTopThree(event.target.value)} />
-            <div style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>{topThreeValue || 'Add the three most important outcomes you want next week to protect.'}</div>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>{topThreeValue || 'Add the three most important outcomes you want next week to protect.'}</div>
           </div>
         </div>
       </div>
@@ -744,8 +744,8 @@ export const WeeklyReviewPage: React.FC = () => {
             ) : (
               data.slipDrivers.map((driver) => (
                 <div key={driver.id} style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-2) var(--space-3)' }}>
-                  <div style={{ fontSize: 13, color: 'var(--color-text)' }}>{driver.label} ({driver.count})</div>
-                  <div style={{ marginTop: 'var(--space-1)', fontSize: 11, color: 'var(--color-text-muted)' }}>{driver.detail}</div>
+                  <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)' }}>{driver.label} ({driver.count})</div>
+                  <div style={{ marginTop: 'var(--space-1)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>{driver.detail}</div>
                 </div>
               ))
             )}
@@ -764,12 +764,12 @@ export const WeeklyReviewPage: React.FC = () => {
               data.attentionGoals.map((goal) => (
                 <div key={goal.id} data-domain={goal.domainId} style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-2) var(--space-3)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
-                    <div style={{ fontSize: 13, color: 'var(--color-accent)' }}>{goal.title}</div>
-                    <div style={{ fontSize: 11, color: goal.health === 'stalled' ? 'var(--color-danger)' : goal.health === 'at_risk' ? 'var(--color-warning)' : 'var(--color-text-muted)' }}>
+                    <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>{goal.title}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: goal.health === 'stalled' ? 'var(--color-danger)' : goal.health === 'at_risk' ? 'var(--color-warning)' : 'var(--color-text-muted)' }}>
                       {getHealthLabel(goal.health)}
                     </div>
                   </div>
-                  <div style={{ marginTop: 'var(--space-1)', fontSize: 11, color: 'var(--color-text-muted)' }}>{goal.nextAction || goal.blockedBy || 'No next action recorded yet.'}</div>
+                  <div style={{ marginTop: 'var(--space-1)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>{goal.nextAction || goal.blockedBy || 'No next action recorded yet.'}</div>
                 </div>
               ))
             )}
@@ -790,10 +790,10 @@ export const WeeklyReviewPage: React.FC = () => {
               data.missedTasks.slice(0, 6).map((task) => (
                 <div key={task.id} data-domain={normalizeDomainId(task.domain_id)} style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)', padding: 'var(--space-2) var(--space-3)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
-                    <div style={{ fontSize: 13, color: 'var(--color-accent)' }}>{task.title}</div>
-                    <div style={{ fontSize: 11, color: 'var(--color-danger)' }}>{formatDateDisplay(task.due_date)}</div>
+                    <div style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-accent)' }}>{task.title}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-danger)' }}>{formatDateDisplay(task.due_date)}</div>
                   </div>
-                  <div style={{ marginTop: 'var(--space-1)', fontSize: 11, color: 'var(--color-text-muted)' }}>
+                  <div style={{ marginTop: 'var(--space-1)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
                     {task.goal_id ? 'Linked to a goal.' : 'Not linked to a goal.'}
                     {task.time_estimate_minutes ? ` Estimated at ${task.time_estimate_minutes}m.` : ' No estimate set.'}
                   </div>
@@ -806,7 +806,7 @@ export const WeeklyReviewPage: React.FC = () => {
         <div className="card">
           <PanelHeader title="HABIT ADJUSTMENTS" meta={`${selectedSuggestionLookup.size} SELECTED`} />
           <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-            <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
               Opt in only to the adjustments you want turned into next-week tasks.
             </div>
             {data.habitSuggestions.length === 0 ? (
@@ -835,8 +835,8 @@ export const WeeklyReviewPage: React.FC = () => {
                     }}
                   >
                     <span style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
-                      <span style={{ fontSize: 13 }}>{suggestion.habitTitle}: {suggestion.suggestion}</span>
-                      <span style={{ fontSize: 11, color: selected ? 'var(--color-text)' : 'var(--color-text-muted)' }}>{suggestion.rationale}</span>
+                      <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)' }}>{suggestion.habitTitle}: {suggestion.suggestion}</span>
+                      <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: selected ? 'var(--color-text)' : 'var(--color-text-muted)' }}>{suggestion.rationale}</span>
                     </span>
                   </button>
                 );

@@ -30,6 +30,26 @@
   --font-sans:   'Satoshi', system-ui, -apple-system, sans-serif;
   --font-arabic: 'Noto Naskh Arabic', 'Amiri', 'Segoe UI', Tahoma, sans-serif;
 
+  /* Font weights — paired defaults for the --text-N scale below. Not the only
+     weights ever used (active/emphasized states may still override), but the
+     baseline every size step should render at unless a component says otherwise. */
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  /* Type scale — 7 steps, each with a paired default weight. Replaces 17
+     scattered raw px values that had no discernible hierarchy. Existing
+     values snap to the nearest step (ties round up), same discipline as the
+     --space-N scale above. */
+  --text-2xs: 10px; /* micro/meta — footer strip, keyboard hints, badges */
+  --text-xs:  12px; /* secondary labels — nav items, dividers, muted meta */
+  --text-sm:  14px; /* body text — paragraphs, list items, form inputs */
+  --text-md:  16px; /* emphasized text — card titles, active nav state */
+  --text-lg:  20px; /* section headings */
+  --text-xl:  28px; /* page headers */
+  --text-2xl: 40px; /* dashboard display numbers */
+
   /* Spacing — 4/8/12/16/24/32px, numbered to match Tailwind v4's own default
      spacing scale (Tailwind's utility N = N * 4px), so --space-4 and
      Tailwind's `p-4` both mean 16px. The gap in numbering (no --space-5 or
