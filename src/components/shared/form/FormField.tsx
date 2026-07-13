@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface FormFieldProps {
+export interface FormFieldProps {
   label: string;
   required?: boolean;
   help?: string;
@@ -12,10 +12,12 @@ export const FormField: React.FC<FormFieldProps> = ({ label, required, help, err
   return (
     <div className="form-field" data-invalid={error ? 'true' : undefined}>
       <label className="form-field-label">
-        {label}
-        {required && <span className="form-field-required">*</span>}
+        <span className="form-field-label-text">
+          {label}
+          {required && <span className="form-field-required">*</span>}
+        </span>
+        {children}
       </label>
-      {children}
       {error ? (
         <div className="form-field-error">{error}</div>
       ) : help ? (

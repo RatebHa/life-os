@@ -1,7 +1,7 @@
 import React from 'react';
 import { clsx } from 'clsx';
 
-interface ToggleChipProps {
+export interface ToggleChipProps {
   active: boolean;
   onClick: () => void;
   domain?: string;
@@ -17,6 +17,7 @@ export const ToggleChip: React.FC<ToggleChipProps> = ({ active, onClick, domain,
       data-domain={domain}
       onClick={onClick}
       disabled={disabled}
+      aria-pressed={active}
       className={clsx('toggle-chip', active && 'active')}
       style={style}
     >
