@@ -49,4 +49,18 @@ describe('FormField', () => {
     );
     expect(container.querySelector('.form-field')?.getAttribute('data-invalid')).toBe('true');
   });
+
+  it('uses role="group" with aria-labelledby instead of a native label wrapping the input', () => {
+    const { container } = render(
+      <FormField label="Domain">
+        <button type="button">Option A</button>
+        <button type="button">Option B</button>
+      </FormField>,
+    );
+    const group = container.querySelector('[role="group"]');
+    expect(group).toBeTruthy();
+    const labelledBy = group?.getAttribute('aria-labelledby');
+    expect(labelledBy).toBeTruthy();
+    expect(document.getElementById(labelledBy!)?.textContent).toContain('Domain');
+  });
 });

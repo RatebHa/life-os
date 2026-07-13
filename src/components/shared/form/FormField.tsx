@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 export interface FormFieldProps {
   label: string;
@@ -9,15 +9,14 @@ export interface FormFieldProps {
 }
 
 export const FormField: React.FC<FormFieldProps> = ({ label, required, help, error, children }) => {
+  const labelId = useId();
   return (
-    <div className="form-field" data-invalid={error ? 'true' : undefined}>
-      <label className="form-field-label">
-        <span className="form-field-label-text">
-          {label}
-          {required && <span className="form-field-required">*</span>}
-        </span>
-        {children}
-      </label>
+    <div className="form-field" data-invalid={error ? 'true' : undefined} role="group" aria-labelledby={labelId}>
+      <span id={labelId} className="form-field-label-text">
+        {label}
+        {required && <span className="form-field-required">*</span>}
+      </span>
+      {children}
       {error ? (
         <div className="form-field-error">{error}</div>
       ) : help ? (
