@@ -17,6 +17,7 @@ import { PanelHeader } from '../components/shared/PanelHeader';
 import { getDomainThemeStyle } from '../lib/domain-utils';
 import { formatDateTimeDisplay } from '../lib/date-format';
 import { syncService } from '../lib/sync/service';
+import { FormField, TextInput, Select } from '../components/shared/form';
 
 type BackupActionMode = 'import' | 'restore-latest';
 
@@ -680,22 +681,18 @@ export const SettingsPage: React.FC = () => {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-3)' }}>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-              <span style={rowLabelStyle}>SUPABASE URL</span>
-              <input className="input" value={syncUrlInput} onChange={(event) => setSyncUrlInput(event.target.value)} placeholder="https://project.supabase.co" />
-            </label>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-              <span style={rowLabelStyle}>ANON KEY</span>
-              <input className="input" value={syncAnonKeyInput} onChange={(event) => setSyncAnonKeyInput(event.target.value)} placeholder="eyJ..." />
-            </label>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-              <span style={rowLabelStyle}>EMAIL</span>
-              <input className="input" value={syncEmailInput} onChange={(event) => setSyncEmailInput(event.target.value)} placeholder="you@example.com" />
-            </label>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-              <span style={rowLabelStyle}>PASSWORD</span>
-              <input className="input" type="password" value={syncPasswordInput} onChange={(event) => setSyncPasswordInput(event.target.value)} placeholder="Required to connect" />
-            </label>
+            <FormField label="Supabase URL">
+              <TextInput value={syncUrlInput} onChange={(event) => setSyncUrlInput(event.target.value)} placeholder="https://project.supabase.co" />
+            </FormField>
+            <FormField label="Anon Key">
+              <TextInput value={syncAnonKeyInput} onChange={(event) => setSyncAnonKeyInput(event.target.value)} placeholder="eyJ..." />
+            </FormField>
+            <FormField label="Email">
+              <TextInput value={syncEmailInput} onChange={(event) => setSyncEmailInput(event.target.value)} placeholder="you@example.com" />
+            </FormField>
+            <FormField label="Password">
+              <TextInput type="password" value={syncPasswordInput} onChange={(event) => setSyncPasswordInput(event.target.value)} placeholder="Required to connect" />
+            </FormField>
           </div>
 
           <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
