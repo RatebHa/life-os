@@ -44,7 +44,14 @@ No frontend changes: the Tauri command signatures and the `AppStateRow` JSON sha
 
 Add the `flutter_secure_storage` package (iOS Keychain, Android Keystore/EncryptedSharedPreferences, Windows Credential Manager, macOS Keychain, Linux libsecret — the direct Flutter analog of the `keyring` crate).
 
-`lib/data/sync/sync_repository.dart` (or wherever the Drift `access_token`/`refresh_token` columns are currently read/written — confirm exact call sites during implementation) switches those two fields to secure-storage reads/writes. Same migrate-once-then-null approach: on first read after this ships, if the Drift columns hold non-null values, write them to secure storage, then null the columns only after the write succeeds.
+All three read/write points live in `lib/data/local/app_database.dart` on `AppDatabase`, confirmed by reading the current implementation:
+- `saveSyncSession({accessToken, refreshToken, userId, userEmail})` currently writes all four into the `SyncSettingsCompanion` for the `sync_settings` Drift table. It changes to write `accessToken`/`refreshToken` to secure storage instead; `userId`/`userEmail` keep writing to Drift exactly as before.
+- `clearSyncSession()` currently nulls `accessToken`/`refreshToken`/`userId`/`userEmail`/`lastSyncError` in Drift. It changes to delete the two tokens from secure storage instead of nulling them in Drift; the other three fields keep nulling in Drift as before.
+- `getSyncSetting()` currently does a single Drift `getSingleOrNull()` and returns the row. It changes to read `accessToken`/`refreshToken` from secure storage after the Drift read and return a `copyWith`'d row with those two fields overlaid (Drift's generated row class supports `copyWith`).
+
+Because every consumer — `SyncRepository` (`signIn`, `signOut`, `hasSession`, `getBootstrapStatus`, `uploadThisDevice`, `replaceLocalWithCloud`, `syncNow`, `runAutoSyncIfReady`) and `SupabaseSyncClient` (which reads `settings.refreshToken` to call `client.auth.setSession(refreshToken)`) — only ever goes through these three `AppDatabase` methods, **zero changes are needed in `sync_repository.dart` or `supabase_sync_client.dart`**, mirroring the zero-frontend-changes property on desktop.
+
+Same migrate-once-then-null approach: inside `getSyncSetting()`, if the Drift row still holds non-null `accessToken`/`refreshToken` values, write them to secure storage, then null them in Drift only after the write succeeds.
 
 ## Error handling
 
