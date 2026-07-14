@@ -3,6 +3,7 @@ import { useInboxStore } from '../../store/useInboxStore';
 import { useDomainStore } from '../../store/useDomainStore';
 import type { DomainId } from '../../lib/types';
 import { getDefaultDomainId, getDomainLabel, getDomainThemeStyle } from '../../lib/domain-utils';
+import { TextInput, ToggleChip } from './form';
 
 interface QuickCaptureProps {
   open: boolean;
@@ -93,15 +94,14 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-4)' }}>
           <div style={{ display: 'flex', gap: 'var(--space-1)' }}>
             {(['task', 'note'] as Mode[]).map((value) => (
-              <button
+              <ToggleChip
                 key={value}
-                type="button"
-                className={mode === value ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-ghost'}
+                active={mode === value}
                 onClick={() => setMode(value)}
                 style={{ padding: '2px var(--space-3)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)' }}
               >
                 {value.toUpperCase()}
-              </button>
+              </ToggleChip>
             ))}
           </div>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 1 }}>
@@ -112,9 +112,8 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
           {hasDomains ? (
             <>
-              <input
+              <TextInput
                 ref={inputRef}
-                className="input"
                 placeholder={mode === 'task' ? 'WHAT NEEDS TO BE DONE?' : 'NOTE TITLE...'}
                 value={text}
                 onChange={(event) => setText(event.target.value)}
@@ -123,16 +122,15 @@ export const QuickCapture: React.FC<QuickCaptureProps> = ({ open, onClose }) => 
 
               <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
                 {domains.map((entry) => (
-                  <button
+                  <ToggleChip
                     key={entry.id}
-                    type="button"
-                    data-domain={entry.id}
-                    className={domain === entry.id ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-ghost'}
+                    active={domain === entry.id}
                     onClick={() => setDomain(entry.id)}
+                    domain={entry.id}
                     style={{ ...getDomainThemeStyle(entry), flex: 1, minWidth: 120, padding: '3px var(--space-2)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)' }}
                   >
                     {entry.icon} {getDomainLabel(entry.id, domains).toUpperCase()}
-                  </button>
+                  </ToggleChip>
                 ))}
               </div>
             </>
