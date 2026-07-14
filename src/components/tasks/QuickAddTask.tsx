@@ -4,6 +4,7 @@ import { useTaskStore } from '../../store/useTaskStore';
 import { useDomainStore } from '../../store/useDomainStore';
 import type { DomainId, Priority } from '../../lib/types';
 import { getDefaultDomainId, getDomainLabel } from '../../lib/domain-utils';
+import { FormField, TextInput, Select } from '../shared/form';
 
 interface QuickAddTaskProps {
   onClose: () => void;
@@ -46,53 +47,59 @@ export const QuickAddTask: React.FC<QuickAddTaskProps> = ({ onClose, defaultDoma
 
   return (
     <Modal open onClose={onClose} title="New Task">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          className="input"
-          placeholder="What needs to be done?"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-          autoFocus
-        />
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+        <FormField label="Title">
+          <TextInput
+            placeholder="What needs to be done?"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            autoFocus
+          />
+        </FormField>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-[11px] text-[var(--color-text-muted)] mb-1.5 tracking-wider uppercase">Domain</label>
-            <select className="input" value={domainId} onChange={(event) => setDomainId(event.target.value as DomainId)}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+          <FormField label="Domain">
+            <Select value={domainId} onChange={(event) => setDomainId(event.target.value as DomainId)}>
               {domains.map((domain) => (
                 <option key={domain.id} value={domain.id}>
                   {domain.icon} {getDomainLabel(domain.id, domains)}
                 </option>
               ))}
-            </select>
-          </div>
+            </Select>
+          </FormField>
 
-          <div>
-            <label className="block text-[11px] text-[var(--color-text-muted)] mb-1.5 tracking-wider uppercase">Priority</label>
-            <select className="input" value={priority} onChange={(event) => setPriority(event.target.value as Priority)}>
+          <FormField label="Priority">
+            <Select value={priority} onChange={(event) => setPriority(event.target.value as Priority)}>
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
               <option value="critical">Critical</option>
-            </select>
-          </div>
+            </Select>
+          </FormField>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-[11px] text-[var(--color-text-muted)] mb-1.5 tracking-wider uppercase">Time (minutes)</label>
-            <input className="input" type="number" placeholder="e.g. 30" value={timeEst} onChange={(event) => setTimeEst(event.target.value)} min="1" />
-          </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+          <FormField label="Time (minutes)">
+            <TextInput type="number" placeholder="e.g. 30" value={timeEst} onChange={(event) => setTimeEst(event.target.value)} min="1" />
+          </FormField>
 
-          <div>
-            <label className="block text-[11px] text-[var(--color-text-muted)] mb-1.5 tracking-wider uppercase">Most Important</label>
+          <FormField label="Most Important">
             <button type="button" className={`btn w-full ${isMIT ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setIsMIT((value) => !value)}>
               {isMIT ? '★ MIT' : '☆ Set as MIT'}
             </button>
-          </div>
+          </FormField>
         </div>
 
-        <div className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] text-[12px] text-[var(--color-text-muted)]">
+        <div
+          className="border"
+          style={{
+            padding: 'var(--space-2) var(--space-3)',
+            background: 'var(--color-bg)',
+            borderColor: 'var(--color-border)',
+            fontSize: 'var(--text-xs)',
+            color: 'var(--color-text-muted)',
+          }}
+        >
           Quick add creates a clean commitment entry. You can add planning, recurrence, and richer details later from the full task editor.
         </div>
 
