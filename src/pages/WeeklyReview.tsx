@@ -13,6 +13,7 @@ import { getLastNDaysWindow, iterateLocalDates, shiftLocalDate } from '../lib/we
 import type { Domain, DomainId, Goal, Habit, HabitLog, Priority, Task } from '../lib/types';
 import { getDefaultDomainId, getDomainLabel } from '../lib/domain-utils';
 import { formatDateDisplay, formatDateRangeDisplay } from '../lib/date-format';
+import { Textarea } from '../components/shared/form';
 
 type DomainReviewStat = {
   id: DomainId;
@@ -693,7 +694,7 @@ export const WeeklyReviewPage: React.FC = () => {
         <div className="card">
           <PanelHeader title="NEXT-WEEK FOCUS THEME" meta={formatDateRangeDisplay(data.nextWeekStart, data.nextWeekEnd)} />
           <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-            <textarea className="input" style={{ width: '100%', minHeight: 90, resize: 'vertical' }} placeholder={data.focusSuggestion} value={focusTheme} onChange={(event) => setFocusTheme(event.target.value)} />
+            <Textarea style={{ width: '100%', minHeight: 90, resize: 'vertical' }} placeholder={data.focusSuggestion} value={focusTheme} onChange={(event) => setFocusTheme(event.target.value)} />
             <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>{focusThemeValue}</div>
           </div>
         </div>
@@ -717,14 +718,14 @@ export const WeeklyReviewPage: React.FC = () => {
         <div className="card">
           <PanelHeader title="WHAT WORKED" />
           <div className="card-body">
-            <textarea className="input" style={{ width: '100%', minHeight: 120, resize: 'vertical' }} placeholder="Capture what actually helped this week." value={whatWorked} onChange={(event) => setWhatWorked(event.target.value)} />
+            <Textarea style={{ width: '100%', minHeight: 120, resize: 'vertical' }} placeholder="Capture what actually helped this week." value={whatWorked} onChange={(event) => setWhatWorked(event.target.value)} />
           </div>
         </div>
 
         <div className="card">
           <PanelHeader title="TOP 3 FOR NEXT WEEK" meta="FIRST ITEM BECOMES MIT" />
           <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-          <textarea className="input" style={{ width: '100%', minHeight: 140, resize: 'vertical' }} placeholder={defaultTopThreeText || '1. [Domain] ...\n2. [Domain] ...\n3. [Domain] ...'} value={topThree} onChange={(event) => setTopThree(event.target.value)} />
+          <Textarea style={{ width: '100%', minHeight: 140, resize: 'vertical' }} placeholder={defaultTopThreeText || '1. [Domain] ...\n2. [Domain] ...\n3. [Domain] ...'} value={topThree} onChange={(event) => setTopThree(event.target.value)} />
             <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>{topThreeValue || 'Add the three most important outcomes you want next week to protect.'}</div>
           </div>
         </div>
@@ -734,8 +735,8 @@ export const WeeklyReviewPage: React.FC = () => {
         <div className="card">
           <PanelHeader title="WHAT SLIPPED AND WHY" meta={`${data.missedTasks.length} MISSED TASKS`} />
           <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-            <textarea className="input" style={{ width: '100%', minHeight: 90, resize: 'vertical' }} placeholder="What slipped this week?" value={whatSlipped} onChange={(event) => setWhatSlipped(event.target.value)} />
-            <textarea className="input" style={{ width: '100%', minHeight: 90, resize: 'vertical' }} placeholder="Why did it slip?" value={whyItSlipped} onChange={(event) => setWhyItSlipped(event.target.value)} />
+            <Textarea style={{ width: '100%', minHeight: 90, resize: 'vertical' }} placeholder="What slipped this week?" value={whatSlipped} onChange={(event) => setWhatSlipped(event.target.value)} />
+            <Textarea style={{ width: '100%', minHeight: 90, resize: 'vertical' }} placeholder="Why did it slip?" value={whyItSlipped} onChange={(event) => setWhyItSlipped(event.target.value)} />
             {data.slipDrivers.length === 0 ? (
               <div className="empty-state" style={{ padding: 'var(--space-3) 0' }}>
                 <div className="empty-state-title">NO STRONG FAILURE PATTERN</div>

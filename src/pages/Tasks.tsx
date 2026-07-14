@@ -15,6 +15,7 @@ import { containsArabic } from '../lib/text-utils';
 import type { DomainId, Priority, Task, TaskFrictionReason, TaskStatus } from '../lib/types';
 import { getDomainLabel } from '../lib/domain-utils';
 import { formatDateDisplay } from '../lib/date-format';
+import { TextInput, Select, Textarea } from '../components/shared/form';
 import {
   formatMinutes,
   getTaskRecurrenceLabel,
@@ -435,8 +436,7 @@ export const TasksPage: React.FC = () => {
 
       <div className="card" style={{ padding: 'var(--space-3) var(--space-3)', display: 'grid', gap: 'var(--space-3)', marginBottom: 'var(--space-3)' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-          <input
-            className="input"
+          <TextInput
             style={{ flex: 1, minWidth: 180 }}
             placeholder="SEARCH TASKS..."
             value={search}
@@ -451,19 +451,19 @@ export const TasksPage: React.FC = () => {
               });
             }}
           />
-          <select className="input" style={{ width: 'auto' }} value={filterDomain} onChange={(event) => setFilterDomain(event.target.value as FilterDomain)}>
+          <Select style={{ width: 'auto' }} value={filterDomain} onChange={(event) => setFilterDomain(event.target.value as FilterDomain)}>
             <option value="all">ALL DOMAINS</option>
             {domains.map((domain) => (
               <option key={domain.id} value={domain.id}>
                 {getDomainLabel(domain.id, domains).toUpperCase()}
               </option>
             ))}
-          </select>
-          <select className="input" style={{ width: 'auto' }} value={filterStatus} onChange={(event) => setFilterStatus(event.target.value as FilterStatus)}>
+          </Select>
+          <Select style={{ width: 'auto' }} value={filterStatus} onChange={(event) => setFilterStatus(event.target.value as FilterStatus)}>
             <option value="open">OPEN WORK</option>
             <option value="todo">TODO</option>
             <option value="in_progress">IN PROGRESS</option>
-          </select>
+          </Select>
           <button className="btn btn-ghost btn-sm" onClick={() => setShowAdvancedFilters((value) => !value)}>
             {showAdvancedFilters ? 'HIDE FILTERS' : 'MORE FILTERS'}
           </button>
@@ -471,19 +471,19 @@ export const TasksPage: React.FC = () => {
 
         {showAdvancedFilters && (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-            <select className="input" style={{ width: 'auto' }} value={filterPriority} onChange={(event) => setFilterPriority(event.target.value as FilterPriority)}>
+            <Select style={{ width: 'auto' }} value={filterPriority} onChange={(event) => setFilterPriority(event.target.value as FilterPriority)}>
               <option value="all">ALL PRIORITY</option>
               <option value="critical">CRITICAL</option>
               <option value="high">HIGH</option>
               <option value="medium">MEDIUM</option>
               <option value="low">LOW</option>
-            </select>
-            <select className="input" style={{ width: 'auto' }} value={sortBy} onChange={(event) => setSortBy(event.target.value as SortBy)}>
+            </Select>
+            <Select style={{ width: 'auto' }} value={sortBy} onChange={(event) => setSortBy(event.target.value as SortBy)}>
               <option value="priority">SORT: PRIORITY</option>
               <option value="due_date">SORT: DUE</option>
               <option value="planned">SORT: START DATE</option>
               <option value="created">SORT: NEWEST</option>
-            </select>
+            </Select>
             <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', padding: '0 var(--space-2)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
               <input type="checkbox" checked={showCompleted} onChange={(event) => setShowCompleted(event.target.checked)} />
               Show Done ({completedRootTasks.length})
@@ -567,7 +567,7 @@ export const TasksPage: React.FC = () => {
                     <button className="btn btn-ghost btn-sm" onClick={() => handleSetStartDate(activeActionTask, null).catch(console.error)}>CLEAR START DATE</button>
                   </div>
                   <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-                    <input className="input" type="date" lang="en-GB" value={customStartDate} onChange={(event) => setCustomStartDate(event.target.value)} />
+                    <TextInput type="date" lang="en-GB" value={customStartDate} onChange={(event) => setCustomStartDate(event.target.value)} />
                     <button className="btn btn-primary" disabled={!customStartDate} onClick={() => handleSetStartDate(activeActionTask, customStartDate).catch(console.error)}>
                       APPLY
                     </button>
@@ -619,7 +619,7 @@ export const TasksPage: React.FC = () => {
                 </button>
               ))}
             </div>
-            <textarea className="input" rows={3} value={frictionDetails} onChange={(event) => setFrictionDetails(event.target.value)} placeholder="What got in the way?" style={{ resize: 'none' }} />
+            <Textarea rows={3} value={frictionDetails} onChange={(event) => setFrictionDetails(event.target.value)} placeholder="What got in the way?" style={{ resize: 'none' }} />
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--space-2)' }}>
               <button className="btn btn-ghost" onClick={() => setFrictionTask(null)}>CANCEL</button>
               <button className="btn btn-primary" onClick={() => handleSaveFriction().catch(console.error)}>SAVE</button>

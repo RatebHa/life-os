@@ -7,6 +7,7 @@ import { useTimerStore } from '../store/useTimerStore';
 import { useFocusStore } from '../store/useFocusStore';
 import { useFrictionStore } from '../store/useFrictionStore';
 import { useAppStore } from '../store/useAppStore';
+import { TextInput, Select, Textarea } from '../components/shared/form';
 import type { DomainId, EnergyLevel, Habit, Priority, Task, TaskFrictionReason } from '../lib/types';
 import { getHabitCadenceLabel, getHabitProgressForDate, getHabitTargetLabel, isHabitDueOnDate } from '../lib/habit-schedule';
 import {
@@ -619,19 +620,19 @@ export const TodayPage: React.FC = () => {
                 Use this when the board feels too heavy and you need a realistic next block that fits your current energy.
               </div>
               <div className="layout-grid-controls">
-                <select className="input" value={String(availableFocusMinutes)} onChange={(event) => setAvailableFocusMinutes(parseInt(event.target.value, 10) || 60)}>
+                <Select value={String(availableFocusMinutes)} onChange={(event) => setAvailableFocusMinutes(parseInt(event.target.value, 10) || 60)}>
                   <option value="15">15 MIN WINDOW</option>
                   <option value="30">30 MIN WINDOW</option>
                   <option value="45">45 MIN WINDOW</option>
                   <option value="60">60 MIN WINDOW</option>
                   <option value="90">90 MIN WINDOW</option>
                   <option value="120">120 MIN WINDOW</option>
-                </select>
-                <select className="input" value={preferredEnergy} onChange={(event) => setPreferredEnergy(event.target.value as EnergyLevel)}>
+                </Select>
+                <Select value={preferredEnergy} onChange={(event) => setPreferredEnergy(event.target.value as EnergyLevel)}>
                   <option value="deep">DEEP ENERGY</option>
                   <option value="medium">MEDIUM ENERGY</option>
                   <option value="light">LIGHT ENERGY</option>
-                </select>
+                </Select>
               </div>
               {suggestedFocusTasks.length === 0 ? (
                 <div className="empty-state">
@@ -807,7 +808,7 @@ export const TodayPage: React.FC = () => {
           <div className="card">
             <div className="card-header"><span className="card-title">New Tomorrow Task</span></div>
             <div className="card-body">
-              <input className="input" value={tomorrowTaskTitle} onChange={(event) => { setTomorrowTaskTitle(event.target.value); if (event.target.value.trim()) setTomorrowCarryTaskId(null); }} placeholder="What must happen tomorrow?" />
+              <TextInput value={tomorrowTaskTitle} onChange={(event) => { setTomorrowTaskTitle(event.target.value); if (event.target.value.trim()) setTomorrowCarryTaskId(null); }} placeholder="What must happen tomorrow?" />
             </div>
           </div>
           <div className="layout-actions-end">
@@ -832,7 +833,7 @@ export const TodayPage: React.FC = () => {
                 </button>
               ))}
             </div>
-            <textarea className="input" rows={3} value={frictionDetails} onChange={(event) => setFrictionDetails(event.target.value)} placeholder="What got in the way?" style={{ resize: 'none' }} />
+            <Textarea rows={3} value={frictionDetails} onChange={(event) => setFrictionDetails(event.target.value)} placeholder="What got in the way?" style={{ resize: 'none' }} />
             <div className="layout-actions-end">
               <button className="btn btn-ghost" onClick={() => setFrictionTarget(null)}>CANCEL</button>
               <button className="btn btn-primary" onClick={() => handleSaveTaskFriction().catch(console.error)}>{frictionTarget.actionType === 'blocked' ? 'SAVE BLOCK' : 'SAVE START DATE'}</button>
@@ -864,7 +865,7 @@ export const TodayPage: React.FC = () => {
                 </button>
               ))}
             </div>
-            <textarea className="input" value={skipReason} onChange={(event) => setSkipReason(event.target.value)} rows={3} placeholder="Low energy, travel, sick, overloaded..." style={{ resize: 'none' }} />
+            <Textarea value={skipReason} onChange={(event) => setSkipReason(event.target.value)} rows={3} placeholder="Low energy, travel, sick, overloaded..." style={{ resize: 'none' }} />
             <div className="layout-actions-end">
               <button type="button" className="btn btn-ghost" onClick={() => setSkipTarget(null)}>CANCEL</button>
               <button type="submit" className="btn btn-primary" disabled={!skipReason.trim()}>SAVE SKIP</button>
