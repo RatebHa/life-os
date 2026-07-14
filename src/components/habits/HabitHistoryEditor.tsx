@@ -3,6 +3,7 @@ import { containsArabic } from '../../lib/text-utils';
 import { getHabitMissedDates, getHabitProgressForDate, isHabitDueOnDate } from '../../lib/habit-schedule';
 import { getHabitActivationDate, getHabitMinimumAmount, getHabitRemainingAmount } from '../../lib/habit-log-utils';
 import { HABIT_STATUS_LABELS } from './HabitCard';
+import { FormField, TextInput } from '../shared/form';
 import type { Habit, HabitLog } from '../../lib/types';
 
 type HabitActionMode = 'progress' | 'minimum' | 'complete';
@@ -67,17 +68,17 @@ export const HabitHistoryEditor: React.FC<HabitHistoryEditorProps> = ({
 
       <div className="habit-history-grid">
         <div className="habit-history-panel">
-          <label className="meta-label" htmlFor="habit-history-date">Date To Adjust</label>
-          <input
-            id="habit-history-date"
-            className="input"
-            type="date"
-            lang="en-GB"
-            min={activationDate}
-            max={today}
-            value={selectedDate}
-            onChange={(event) => onSelectDate(event.target.value)}
-          />
+          <FormField label="Date To Adjust">
+            <TextInput
+              id="habit-history-date"
+              type="date"
+              lang="en-GB"
+              min={activationDate}
+              max={today}
+              value={selectedDate}
+              onChange={(event) => onSelectDate(event.target.value)}
+            />
+          </FormField>
 
           <div className="habit-history-state">
             <div className="habit-history-state-row">

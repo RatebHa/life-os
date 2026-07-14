@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useTaskStore } from '../../store/useTaskStore';
 import { useTimerStore } from '../../store/useTimerStore';
 import { Modal } from './Modal';
+import { FormField, TextInput, Textarea } from './form';
 
 function formatDuration(totalSeconds: number): string {
   const hrs = Math.floor(totalSeconds / 3600);
@@ -134,39 +135,33 @@ export const FocusTimer: React.FC = () => {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-3)' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Planned Minutes</label>
-              <input
-                className="input"
+            <FormField label="Planned Minutes">
+              <TextInput
                 type="number"
                 min={5}
                 step={5}
                 value={activeDraft.planned_minutes}
                 onChange={(event) => { void setPlannedMinutes(parseInt(event.target.value, 10) || 25); }}
               />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Interruption Notes</label>
-              <input
-                className="input"
+            </FormField>
+            <FormField label="Interruption Notes">
+              <TextInput
                 value={activeDraft.interruption_notes ?? ''}
                 onChange={(event) => { void setInterruptionNotes(event.target.value); }}
                 placeholder="What pulled you away?"
               />
-            </div>
+            </FormField>
           </div>
 
-          <div>
-            <label style={{ display: 'block', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: 1 }}>Reflection</label>
-            <textarea
-              className="input"
+          <FormField label="Reflection">
+            <Textarea
               rows={4}
               value={activeDraft.reflection ?? ''}
               onChange={(event) => { void setReflection(event.target.value); }}
               placeholder="What moved forward, and what should change next time?"
               style={{ resize: 'none' }}
             />
-          </div>
+          </FormField>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--space-2)' }}>
             <button className="btn btn-danger" onClick={() => { void stopTimer(); }}>
