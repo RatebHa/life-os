@@ -6,6 +6,7 @@ import { useTaskStore } from '../store/useTaskStore';
 import { useHabitStore } from '../store/useHabitStore';
 import { useDomainStore } from '../store/useDomainStore';
 import { getDefaultDomainId, getDomainLabel } from '../lib/domain-utils';
+import { FormField, TextInput, Textarea, Select } from '../components/shared/form';
 
 type DomainFilter = DomainId | 'all';
 
@@ -157,12 +158,12 @@ export const TemplatesPage: React.FC = () => {
           <div className="page-title">ROUTINES & TEMPLATES</div>
           <div className="page-subtitle">ONE-CLICK SYSTEMS FOR REPEATED BEHAVIOR</div>
         </div>
-        <select className="input" style={{ width: 180 }} value={domainFilter} onChange={(event) => setDomainFilter(event.target.value as DomainFilter)}>
+        <Select style={{ width: 180 }} value={domainFilter} onChange={(event) => setDomainFilter(event.target.value as DomainFilter)}>
           <option value="all">ALL DOMAINS</option>
           {domains.map((domain) => (
             <option key={domain.id} value={domain.id}>{getDomainLabel(domain.id, domains).toUpperCase()}</option>
           ))}
-        </select>
+        </Select>
       </div>
 
       <hr className="page-sep" />
@@ -219,35 +220,49 @@ export const TemplatesPage: React.FC = () => {
           </div>
           <div className="card-body">
             <form onSubmit={handleCreateTemplate} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              <input className="input" placeholder="Template title" value={title} onChange={(event) => setTitle(event.target.value)} disabled={!hasDomains} />
-              <textarea className="input" placeholder="Description" rows={3} value={description} onChange={(event) => setDescription(event.target.value)} style={{ resize: 'none' }} disabled={!hasDomains} />
+              <FormField label="Title">
+                <TextInput placeholder="Template title" value={title} onChange={(event) => setTitle(event.target.value)} disabled={!hasDomains} />
+              </FormField>
+              <FormField label="Description">
+                <Textarea placeholder="Description" rows={3} value={description} onChange={(event) => setDescription(event.target.value)} style={{ resize: 'none' }} disabled={!hasDomains} />
+              </FormField>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-2)' }}>
-                <select className="input" value={domainId} onChange={(event) => setDomainId(event.target.value as DomainId)} disabled={!hasDomains}>
-                  {domains.map((domain) => (
-                    <option key={domain.id} value={domain.id}>{getDomainLabel(domain.id, domains).toUpperCase()}</option>
-                  ))}
-                </select>
-                <select className="input" value={priority} onChange={(event) => setPriority(event.target.value as Priority)}>
-                  <option value="low">LOW</option>
-                  <option value="medium">MEDIUM</option>
-                  <option value="high">HIGH</option>
-                  <option value="critical">CRITICAL</option>
-                </select>
+                <FormField label="Domain">
+                  <Select value={domainId} onChange={(event) => setDomainId(event.target.value as DomainId)} disabled={!hasDomains}>
+                    {domains.map((domain) => (
+                      <option key={domain.id} value={domain.id}>{getDomainLabel(domain.id, domains).toUpperCase()}</option>
+                    ))}
+                  </Select>
+                </FormField>
+                <FormField label="Priority">
+                  <Select value={priority} onChange={(event) => setPriority(event.target.value as Priority)}>
+                    <option value="low">LOW</option>
+                    <option value="medium">MEDIUM</option>
+                    <option value="high">HIGH</option>
+                    <option value="critical">CRITICAL</option>
+                  </Select>
+                </FormField>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-2)' }}>
-                <input className="input" type="number" min={0} value={timeEstimate} onChange={(event) => setTimeEstimate(event.target.value)} placeholder="Time estimate" disabled={!hasDomains} />
-                <select className="input" value={recurrence} onChange={(event) => setRecurrence(event.target.value)} disabled={!hasDomains}>
-                  <option value="none">NO REPEAT</option>
-                  <option value="daily">DAILY</option>
-                  <option value="weekly">WEEKLY</option>
-                  <option value="monthly">MONTHLY</option>
-                </select>
+                <FormField label="Time Estimate">
+                  <TextInput type="number" min={0} value={timeEstimate} onChange={(event) => setTimeEstimate(event.target.value)} placeholder="Time estimate" disabled={!hasDomains} />
+                </FormField>
+                <FormField label="Recurrence">
+                  <Select value={recurrence} onChange={(event) => setRecurrence(event.target.value)} disabled={!hasDomains}>
+                    <option value="none">NO REPEAT</option>
+                    <option value="daily">DAILY</option>
+                    <option value="weekly">WEEKLY</option>
+                    <option value="monthly">MONTHLY</option>
+                  </Select>
+                </FormField>
               </div>
-              <select className="input" value={energyLevel} onChange={(event) => setEnergyLevel(event.target.value as EnergyLevel)} disabled={!hasDomains}>
-                <option value="deep">DEEP ENERGY</option>
-                <option value="medium">MEDIUM ENERGY</option>
-                <option value="light">LIGHT ENERGY</option>
-              </select>
+              <FormField label="Energy">
+                <Select value={energyLevel} onChange={(event) => setEnergyLevel(event.target.value as EnergyLevel)} disabled={!hasDomains}>
+                  <option value="deep">DEEP ENERGY</option>
+                  <option value="medium">MEDIUM ENERGY</option>
+                  <option value="light">LIGHT ENERGY</option>
+                </Select>
+              </FormField>
               <button type="button" className={`btn ${isMit ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setIsMit((value) => !value)} disabled={!hasDomains}>
                 {isMit ? 'MIT TEMPLATE' : 'MARK AS MIT TEMPLATE'}
               </button>
