@@ -24,7 +24,7 @@ import type {
   UpdateHabitPayload,
 } from '../lib/types';
 import { getDefaultDomainId, getDomainLabel, getDomainThemeStyle } from '../lib/domain-utils';
-import { FormField, FormSection, TextInput, Textarea, Select, ToggleChip } from '../components/shared/form';
+import { FormField, TextInput, Textarea, Select, ToggleChip } from '../components/shared/form';
 
 const HABIT_SKIP_SUGGESTIONS = ['LOW ENERGY', 'OVERBOOKED', 'SICK', 'TRAVEL', 'DISRUPTED ROUTINE', 'FORGOT'];
 const WEEKDAY_NAMES = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
