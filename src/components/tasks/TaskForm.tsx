@@ -266,7 +266,15 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
-              <ToggleChip active={isMit} onClick={() => setIsMit((value) => !value)}>
+              <ToggleChip
+                active={isMit}
+                onClick={() => setIsMit((value) => !value)}
+                style={isMit ? {
+                  borderColor: 'color-mix(in srgb, var(--color-warning) 55%, var(--color-border))',
+                  background: 'color-mix(in srgb, var(--color-warning) 12%, transparent)',
+                  color: 'var(--color-warning)',
+                } : undefined}
+              >
                 <span>{isMit ? '*' : 'o'}</span>
                 <span>Most Important Task</span>
               </ToggleChip>
