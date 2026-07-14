@@ -9,6 +9,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useDomainStore } from '../store/useDomainStore';
 import { getDomainLabel } from '../lib/domain-utils';
 import { formatDateDisplay, formatDateWithWeekday } from '../lib/date-format';
+import { TextInput, Select } from '../components/shared/form';
 
 function relativeTime(iso: string) {
   const diff = Date.now() - new Date(iso).getTime();
@@ -173,8 +174,7 @@ export const NotesPage: React.FC = () => {
 
         {/* Search */}
         <div style={{ padding: 'var(--space-2) var(--space-3)', borderBottom: '1px solid var(--color-border)' }}>
-          <input
-            className="input"
+          <TextInput
             placeholder="> SEARCH ENTRIES..."
             value={searchQuery}
             onChange={(e) => setSearch(e.target.value)}
@@ -316,15 +316,14 @@ export const NotesPage: React.FC = () => {
               flexWrap: 'wrap',
             }}>
               {/* Domain selector */}
-              <select
-                className="input"
+              <Select
                 value={note.domain_id ?? ''}
                 onChange={(e) => updateNote({ id: note.id, domain_id: e.target.value as DomainId | '' })}
                 style={{ height: 24, fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', width: 'auto', minWidth: 100, padding: '0 var(--space-2)' }}
               >
                 <option value="">ALL DOMAINS</option>
                 {domains.map((domain) => <option key={domain.id} value={domain.id}>{getDomainLabel(domain.id, domains).toUpperCase()}</option>)}
-              </select>
+              </Select>
 
               {/* Pin toggle */}
               <button
@@ -335,8 +334,7 @@ export const NotesPage: React.FC = () => {
               </button>
 
               {/* Tags input */}
-              <input
-                className="input"
+              <TextInput
                 placeholder="TAGS (comma separated)"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
@@ -349,8 +347,7 @@ export const NotesPage: React.FC = () => {
               />
 
               {/* Goal link */}
-              <select
-                className="input"
+              <Select
                 value={note.goal_id ?? ''}
                 onChange={(e) => updateNote({ id: note.id, goal_id: e.target.value || '' }).catch(console.error)}
                 style={{ height: 24, fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', width: 'auto', minWidth: 100, padding: '0 var(--space-2)' }}
@@ -360,7 +357,7 @@ export const NotesPage: React.FC = () => {
                 {goals.filter((g) => g.status === 'active').map((g) => (
                   <option key={g.id} value={g.id}>{g.title.slice(0, 32)}</option>
                 ))}
-              </select>
+              </Select>
 
               {/* Delete */}
               <button className="btn btn-sm btn-ghost" onClick={() => handleSendToInbox().catch(console.error)}>INBOX</button>

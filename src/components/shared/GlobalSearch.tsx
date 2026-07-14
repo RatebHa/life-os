@@ -8,6 +8,7 @@ import { useInboxStore } from '../../store/useInboxStore';
 import { useDomainStore } from '../../store/useDomainStore';
 import type { DomainId } from '../../lib/types';
 import { getDomainLabel, getDomainThemeStyle } from '../../lib/domain-utils';
+import { TextInput } from './form';
 
 interface SearchResult {
   type: 'task' | 'goal' | 'note' | 'habit' | 'inbox' | 'command';
@@ -208,9 +209,8 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ open, onClose }) => 
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-4)', borderBottom: '1px solid var(--color-border)' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-md)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-text-muted)' }}>?</span>
-          <input
+          <TextInput
             ref={inputRef}
-            className="input"
             style={{ flex: 1, border: 'none', background: 'transparent', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', padding: 0 }}
             placeholder="SEARCH TASKS, GOALS, NOTES, HABITS..."
             value={query}
