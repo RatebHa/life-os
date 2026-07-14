@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { clsx } from 'clsx';
 import { useHabitStore } from '../store/useHabitStore';
 import { useDomainStore } from '../store/useDomainStore';
 import { HabitCard } from '../components/habits/HabitCard';
@@ -25,6 +24,7 @@ import type {
   UpdateHabitPayload,
 } from '../lib/types';
 import { getDefaultDomainId, getDomainLabel, getDomainThemeStyle } from '../lib/domain-utils';
+import { FormField, FormSection, TextInput, Textarea, Select, ToggleChip } from '../components/shared/form';
 
 const HABIT_SKIP_SUGGESTIONS = ['LOW ENERGY', 'OVERBOOKED', 'SICK', 'TRAVEL', 'DISRUPTED ROUTINE', 'FORGOT'];
 const WEEKDAY_NAMES = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -142,91 +142,80 @@ const HabitForm: React.FC<HabitFormProps> = ({ onClose, initialHabit }) => {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 'var(--space-4)' }}>
-      <div>
-        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Domain</label>
+      <FormField label="Domain">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 'var(--space-2)' }}>
           {domains.map((entry) => (
-            <button key={entry.id} type="button" data-domain={entry.id} onClick={() => setDomain(entry.id)} className={clsx('btn', domain === entry.id ? 'btn-primary' : 'btn-ghost')} style={{ ...getDomainThemeStyle(entry), padding: 'var(--space-1) var(--space-2)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)' }}>
+            <ToggleChip key={entry.id} active={domain === entry.id} onClick={() => setDomain(entry.id)} domain={entry.id} style={getDomainThemeStyle(entry)}>
               {getDomainLabel(entry.id, domains).toUpperCase()}
-            </button>
+            </ToggleChip>
           ))}
         </div>
-      </div>
+      </FormField>
 
-      <div>
-        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Habit Name *</label>
-        <input className="input" dir="auto" value={title} onChange={(event) => setTitle(event.target.value)} autoFocus required placeholder="Read 20 minutes / Train / Write" style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }} />
-      </div>
+      <FormField label="Habit Name" required>
+        <TextInput dir="auto" value={title} onChange={(event) => setTitle(event.target.value)} autoFocus placeholder="Read 20 minutes / Train / Write" style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }} />
+      </FormField>
 
       <div className="layout-grid-two">
-        <div>
-          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Cadence</label>
-          <select className="input" value={cadenceType} onChange={(event) => setCadenceType(event.target.value as HabitCadenceType)}>
+        <FormField label="Cadence">
+          <Select value={cadenceType} onChange={(event) => setCadenceType(event.target.value as HabitCadenceType)}>
             <option value="daily">DAILY</option>
             <option value="weekdays">WEEKDAYS</option>
             <option value="selected_days">SELECTED DAYS</option>
             <option value="interval">EVERY N DAYS</option>
             <option value="times_per_week">N TIMES / WEEK</option>
-          </select>
-        </div>
-        <div>
-          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Target Type</label>
-          <select className="input" value={targetType} onChange={(event) => setTargetType(event.target.value as HabitTargetType)}>
+          </Select>
+        </FormField>
+        <FormField label="Target Type">
+          <Select value={targetType} onChange={(event) => setTargetType(event.target.value as HabitTargetType)}>
             <option value="checkbox">CHECKBOX</option>
             <option value="count">COUNT</option>
             <option value="minutes">MINUTES</option>
-          </select>
-        </div>
+          </Select>
+        </FormField>
       </div>
 
       {cadenceType === 'selected_days' && (
-        <div>
-          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Selected Days</label>
+        <FormField label="Selected Days">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(68px, 1fr))', gap: 'var(--space-2)' }}>
             {WEEKDAY_NAMES.map((name, index) => (
-              <button key={name} type="button" className={clsx('btn', selectedDays.includes(index) ? 'btn-primary' : 'btn-ghost')} onClick={() => toggleWeekday(index)} style={{ padding: 'var(--space-1) 0' }}>
+              <ToggleChip key={name} active={selectedDays.includes(index)} onClick={() => toggleWeekday(index)} style={{ padding: 'var(--space-1) 0', justifyContent: 'center' }}>
                 {name}
-              </button>
+              </ToggleChip>
             ))}
           </div>
-        </div>
+        </FormField>
       )}
 
       {cadenceType === 'interval' && (
-        <div>
-          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Every N Days</label>
-          <input className="input" type="number" min={1} value={cadenceIntervalDays} onChange={(event) => setCadenceIntervalDays(parseInt(event.target.value, 10) || 1)} />
-        </div>
+        <FormField label="Every N Days">
+          <TextInput type="number" min={1} value={cadenceIntervalDays} onChange={(event) => setCadenceIntervalDays(parseInt(event.target.value, 10) || 1)} />
+        </FormField>
       )}
 
       {cadenceType === 'times_per_week' && (
-        <div>
-          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Times Per Week</label>
-          <input className="input" type="number" min={1} max={14} value={cadenceWeeklyTarget} onChange={(event) => setCadenceWeeklyTarget(parseInt(event.target.value, 10) || 1)} />
-        </div>
+        <FormField label="Times Per Week">
+          <TextInput type="number" min={1} max={14} value={cadenceWeeklyTarget} onChange={(event) => setCadenceWeeklyTarget(parseInt(event.target.value, 10) || 1)} />
+        </FormField>
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: targetType === 'checkbox' ? '1fr' : 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'var(--space-3)' }}>
         {targetType !== 'checkbox' && (
           <>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Target Value</label>
-              <input className="input" type="number" min={1} value={targetValue} onChange={(event) => setTargetValue(parseInt(event.target.value, 10) || 1)} />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Minimum Value</label>
-              <input className="input" type="number" min={1} value={minimumValue} onChange={(event) => setMinimumValue(parseInt(event.target.value, 10) || 1)} />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Unit</label>
-              <input className="input" value={targetType === 'minutes' ? 'min' : unitLabel} onChange={(event) => setUnitLabel(event.target.value)} disabled={targetType === 'minutes'} />
-            </div>
+            <FormField label="Target Value">
+              <TextInput type="number" min={1} value={targetValue} onChange={(event) => setTargetValue(parseInt(event.target.value, 10) || 1)} />
+            </FormField>
+            <FormField label="Minimum Value">
+              <TextInput type="number" min={1} value={minimumValue} onChange={(event) => setMinimumValue(parseInt(event.target.value, 10) || 1)} />
+            </FormField>
+            <FormField label="Unit">
+              <TextInput value={targetType === 'minutes' ? 'min' : unitLabel} onChange={(event) => setUnitLabel(event.target.value)} disabled={targetType === 'minutes'} />
+            </FormField>
           </>
         )}
-        <div>
-          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Minimum Version</label>
-          <input className="input" dir="auto" value={minimumVersion} onChange={(event) => setMinimumVersion(event.target.value)} placeholder="Smallest valid version" style={{ fontFamily: minimumArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }} />
-        </div>
+        <FormField label="Minimum Version">
+          <TextInput dir="auto" value={minimumVersion} onChange={(event) => setMinimumVersion(event.target.value)} placeholder="Smallest valid version" style={{ fontFamily: minimumArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }} />
+        </FormField>
       </div>
 
       <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
@@ -246,22 +235,19 @@ const HabitForm: React.FC<HabitFormProps> = ({ onClose, initialHabit }) => {
 
         {showAdvanced && (
           <>
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Description</label>
-              <textarea className="input" dir="auto" value={description} onChange={(event) => setDescription(event.target.value)} rows={2} style={{ resize: 'none', fontFamily: descriptionArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }} placeholder="Why this matters" />
-            </div>
+            <FormField label="Description">
+              <Textarea dir="auto" value={description} onChange={(event) => setDescription(event.target.value)} rows={2} style={{ resize: 'none', fontFamily: descriptionArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }} placeholder="Why this matters" />
+            </FormField>
 
             {cadenceType === 'interval' && (
-              <div>
-                <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Anchor Date</label>
-                <input className="input" type="date" lang="en-GB" value={cadenceAnchorDate} onChange={(event) => setCadenceAnchorDate(event.target.value)} />
-              </div>
+              <FormField label="Anchor Date">
+                <TextInput type="date" lang="en-GB" value={cadenceAnchorDate} onChange={(event) => setCadenceAnchorDate(event.target.value)} />
+              </FormField>
             )}
 
-            <div>
-              <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Recovery Days</label>
-              <input className="input" type="number" min={0} max={7} value={recoveryGraceDays} onChange={(event) => setRecoveryGraceDays(parseInt(event.target.value, 10) || 0)} />
-            </div>
+            <FormField label="Recovery Days">
+              <TextInput type="number" min={0} max={7} value={recoveryGraceDays} onChange={(event) => setRecoveryGraceDays(parseInt(event.target.value, 10) || 0)} />
+            </FormField>
           </>
         )}
       </div>
