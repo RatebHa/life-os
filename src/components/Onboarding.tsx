@@ -6,6 +6,7 @@ import { useDomainStore } from '../store/useDomainStore';
 import { db } from '../lib/db';
 import type { DomainId } from '../lib/types';
 import { getDefaultDomainId, getDomainLabel, getDomainThemeStyle } from '../lib/domain-utils';
+import { FormField, TextInput, ToggleChip } from './shared/form';
 
 const STEPS = ['DOMAINS', 'SYSTEM', 'FIRST HABIT', 'FIRST TASK', 'COMPLETE'];
 
@@ -225,12 +226,18 @@ export const Onboarding: React.FC = () => {
                   <span className="card-title">ADD DOMAIN</span>
                 </div>
                 <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-                  <input className="input" placeholder="DOMAIN NAME" value={domainName} onChange={(event) => setDomainName(event.target.value)} />
-                  <input className="input" placeholder="ICON OR TAG" value={domainIcon} maxLength={8} onChange={(event) => setDomainIcon(event.target.value)} />
+                  <FormField label="Domain Name">
+                    <TextInput placeholder="DOMAIN NAME" value={domainName} onChange={(event) => setDomainName(event.target.value)} />
+                  </FormField>
+                  <FormField label="Icon or Tag">
+                    <TextInput placeholder="ICON OR TAG" value={domainIcon} maxLength={8} onChange={(event) => setDomainIcon(event.target.value)} />
+                  </FormField>
+                  <FormField label="Color">
                   <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
-                    <input className="input" value={domainColor} onChange={(event) => setDomainColor(event.target.value)} placeholder="#7C6CFF" style={{ flex: 1 }} />
+                    <TextInput value={domainColor} onChange={(event) => setDomainColor(event.target.value)} placeholder="#7C6CFF" style={{ flex: 1 }} />
                     <input type="color" value={/^#[0-9a-fA-F]{6}$/.test(domainColor) ? domainColor : '#7C6CFF'} onChange={(event) => setDomainColor(event.target.value)} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
                   </div>
+                  </FormField>
                   <button className="btn btn-primary" type="button" onClick={() => void handleAddDomain()} disabled={creatingDomain}>
                     {creatingDomain ? 'ADDING...' : 'ADD DOMAIN'}
                   </button>
@@ -285,27 +292,24 @@ export const Onboarding: React.FC = () => {
               START SMALL. PICK ONE REPEATED BEHAVIOR YOU WANT THIS SYSTEM TO HELP YOU MAINTAIN.
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Habit Name</label>
-                <input className="input" placeholder="E.G. REVIEW PRIORITIES, WALK, TRAIN, STUDY..." value={habitTitle} onChange={(event) => setHabitTitle(event.target.value)} autoFocus />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Area</label>
+              <FormField label="Habit Name">
+                <TextInput placeholder="E.G. REVIEW PRIORITIES, WALK, TRAIN, STUDY..." value={habitTitle} onChange={(event) => setHabitTitle(event.target.value)} autoFocus />
+              </FormField>
+              <FormField label="Area">
                 <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.max(1, orderedDomains.length)}, minmax(0, 1fr))`, gap: 'var(--space-2)' }}>
                   {orderedDomains.map((domain) => (
-                    <button
+                    <ToggleChip
                       key={domain.id}
-                      type="button"
-                      data-domain={domain.id}
+                      active={habitDomain === domain.id}
                       onClick={() => setHabitDomain(domain.id)}
-                      className={habitDomain === domain.id ? 'btn btn-primary' : 'btn btn-ghost'}
+                      domain={domain.id}
                       style={{ ...getDomainThemeStyle(domain), fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)' }}
                     >
                       {getDomainLabel(domain.id, orderedDomains).toUpperCase()}
-                    </button>
+                    </ToggleChip>
                   ))}
                 </div>
-              </div>
+              </FormField>
             </div>
           </>
         )}
@@ -319,27 +323,24 @@ export const Onboarding: React.FC = () => {
               YOUR MOST IMPORTANT TASK IS THE ONE THING THAT MAKES TODAY FEEL REAL IF IT GETS DONE.
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Task Title</label>
-                <input className="input" placeholder="WHAT MUST MOVE FORWARD?" value={taskTitle} onChange={(event) => setTaskTitle(event.target.value)} autoFocus />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>Area</label>
+              <FormField label="Task Title">
+                <TextInput placeholder="WHAT MUST MOVE FORWARD?" value={taskTitle} onChange={(event) => setTaskTitle(event.target.value)} autoFocus />
+              </FormField>
+              <FormField label="Area">
                 <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.max(1, orderedDomains.length)}, minmax(0, 1fr))`, gap: 'var(--space-2)' }}>
                   {orderedDomains.map((domain) => (
-                    <button
+                    <ToggleChip
                       key={domain.id}
-                      type="button"
-                      data-domain={domain.id}
+                      active={taskDomain === domain.id}
                       onClick={() => setTaskDomain(domain.id)}
-                      className={taskDomain === domain.id ? 'btn btn-primary' : 'btn btn-ghost'}
+                      domain={domain.id}
                       style={{ ...getDomainThemeStyle(domain), fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)' }}
                     >
                       {getDomainLabel(domain.id, orderedDomains).toUpperCase()}
-                    </button>
+                    </ToggleChip>
                   ))}
                 </div>
-              </div>
+              </FormField>
             </div>
           </>
         )}
