@@ -1021,21 +1021,19 @@ export const SettingsPage: React.FC = () => {
             TUNE TEXT SCALE AND DENSITY PROFILE. THESE SETTINGS PERSIST IN YOUR DATABASE SO THE APP FEELS CONSISTENT AFTER RESTORE.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-3)' }}>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-              <span style={rowLabelStyle}>TEXT SCALE</span>
-              <select className="input" value={textScale} onChange={(e) => setTextScale(e.target.value as 'normal' | 'large' | 'xl')}>
+            <FormField label="Text Scale">
+              <Select value={textScale} onChange={(e) => setTextScale(e.target.value as 'normal' | 'large' | 'xl')}>
                 <option value="normal">NORMAL</option>
                 <option value="large">LARGE</option>
                 <option value="xl">XL</option>
-              </select>
-            </label>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-              <span style={rowLabelStyle}>UI DENSITY</span>
-              <select className="input" value={uiDensity} onChange={(e) => setUiDensity(e.target.value as 'compact' | 'comfortable')}>
+              </Select>
+            </FormField>
+            <FormField label="UI Density">
+              <Select value={uiDensity} onChange={(e) => setUiDensity(e.target.value as 'compact' | 'comfortable')}>
                 <option value="compact">COMPACT</option>
                 <option value="comfortable">COMFORTABLE</option>
-              </select>
-            </label>
+              </Select>
+            </FormField>
           </div>
           <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
             <button className="btn btn-primary" onClick={handleSaveDisplaySettings}>
@@ -1071,21 +1069,18 @@ export const SettingsPage: React.FC = () => {
                   )}
                 />
                 <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-                  <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                    <span style={rowLabelStyle}>DISPLAY NAME</span>
-                    <input className="input" value={domain.name} onChange={(event) => handleDomainDraftChange(domain.id, 'name', event.target.value)} />
-                  </label>
-                  <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                    <span style={rowLabelStyle}>ICON</span>
-                    <input className="input" value={domain.icon} onChange={(event) => handleDomainDraftChange(domain.id, 'icon', event.target.value)} placeholder="[A] or emoji" maxLength={8} />
-                  </label>
-                  <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                    <span style={rowLabelStyle}>COLOR</span>
+                  <FormField label="Display Name">
+                    <TextInput value={domain.name} onChange={(event) => handleDomainDraftChange(domain.id, 'name', event.target.value)} />
+                  </FormField>
+                  <FormField label="Icon">
+                    <TextInput value={domain.icon} onChange={(event) => handleDomainDraftChange(domain.id, 'icon', event.target.value)} placeholder="[A] or emoji" maxLength={8} />
+                  </FormField>
+                  <FormField label="Color">
                     <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
-                      <input className="input" value={domain.color} onChange={(event) => handleDomainDraftChange(domain.id, 'color', event.target.value)} placeholder="#7C6CFF" style={{ flex: 1 }} />
+                      <TextInput value={domain.color} onChange={(event) => handleDomainDraftChange(domain.id, 'color', event.target.value)} placeholder="#7C6CFF" style={{ flex: 1 }} />
                       <input type="color" value={isHexColor(domain.color) ? domain.color : '#7C6CFF'} onChange={(event) => handleDomainDraftChange(domain.id, 'color', event.target.value)} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
                     </div>
-                  </label>
+                  </FormField>
                 </div>
               </div>
             ))}
@@ -1093,21 +1088,18 @@ export const SettingsPage: React.FC = () => {
           <div className="card" style={{ margin: 0 }}>
             <PanelHeader title="ADD DOMAIN" />
             <div className="card-body layout-grid-domain-form">
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                <span style={rowLabelStyle}>DISPLAY NAME</span>
-                <input className="input" value={newDomainDraft.name} onChange={(event) => setNewDomainDraft((current) => ({ ...current, name: event.target.value }))} placeholder="Work, Health, Study..." />
-              </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                <span style={rowLabelStyle}>ICON</span>
-                <input className="input" value={newDomainDraft.icon} onChange={(event) => setNewDomainDraft((current) => ({ ...current, icon: event.target.value }))} maxLength={8} placeholder="[D]" />
-              </label>
-              <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-                <span style={rowLabelStyle}>COLOR</span>
+              <FormField label="Display Name">
+                <TextInput value={newDomainDraft.name} onChange={(event) => setNewDomainDraft((current) => ({ ...current, name: event.target.value }))} placeholder="Work, Health, Study..." />
+              </FormField>
+              <FormField label="Icon">
+                <TextInput value={newDomainDraft.icon} onChange={(event) => setNewDomainDraft((current) => ({ ...current, icon: event.target.value }))} maxLength={8} placeholder="[D]" />
+              </FormField>
+              <FormField label="Color">
                 <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
-                  <input className="input" value={newDomainDraft.color} onChange={(event) => setNewDomainDraft((current) => ({ ...current, color: event.target.value }))} placeholder="#7C6CFF" style={{ flex: 1 }} />
+                  <TextInput value={newDomainDraft.color} onChange={(event) => setNewDomainDraft((current) => ({ ...current, color: event.target.value }))} placeholder="#7C6CFF" style={{ flex: 1 }} />
                   <input type="color" value={isHexColor(newDomainDraft.color) ? newDomainDraft.color : '#7C6CFF'} onChange={(event) => setNewDomainDraft((current) => ({ ...current, color: event.target.value }))} style={{ width: 42, height: 42, border: '1px solid var(--color-border)', background: 'var(--color-surface-hover)' }} />
                 </div>
-              </label>
+              </FormField>
               <button className="btn btn-primary" onClick={() => void handleCreateDomain()}>
                 ADD
               </button>
@@ -1153,8 +1145,7 @@ export const SettingsPage: React.FC = () => {
             WITHOUT A KEY, LIFE OS STAYS FULLY LOCAL AND CONTINUES TO WORK NORMALLY.
           </p>
           <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
-            <input
-              className="input"
+            <TextInput
               type="password"
               placeholder="sk-ant-..."
               value={apiKeyInput}
