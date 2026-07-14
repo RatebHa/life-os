@@ -795,15 +795,13 @@ export const SettingsPage: React.FC = () => {
             USE A NORMAL FOLDER ON YOUR COMPUTER OR A SYNCTHING-SYNCED FOLDER. LIFE OS WRITES JSON SNAPSHOTS THERE, SO YOU CAN RESTORE THEM ON ANY INSTALL WITHOUT SHARING THE LIVE SQLITE DATABASE.
           </p>
 
-          <label style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-            <span style={rowLabelStyle}>BACKUP FOLDER PATH</span>
-            <input
-              className="input"
+          <FormField label="Backup Folder Path">
+            <TextInput
               value={backupDirectoryInput}
               onChange={(e) => setBackupDirectoryInput(e.target.value)}
               placeholder="C:\\Users\\YourName\\Syncthing\\Life OS"
             />
-          </label>
+          </FormField>
 
           <label style={{
             display: 'flex',
@@ -843,8 +841,7 @@ export const SettingsPage: React.FC = () => {
           </div>
 
           <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', alignItems: 'center' }}>
-            <input
-              className="input"
+            <TextInput
               value={snapshotName}
               onChange={(e) => setSnapshotName(e.target.value)}
               placeholder="weekly-plan-clean-state"
