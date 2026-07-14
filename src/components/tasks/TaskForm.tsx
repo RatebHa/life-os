@@ -4,8 +4,8 @@ import { useGoalStore } from '../../store/useGoalStore';
 import { useDomainStore } from '../../store/useDomainStore';
 import { containsArabic } from '../../lib/text-utils';
 import type { DomainId, EnergyLevel, Priority, RecurrenceType, Task, TaskKind } from '../../lib/types';
-import { clsx } from 'clsx';
 import { getDefaultDomainId, getDomainLabel, getDomainThemeStyle } from '../../lib/domain-utils';
+import { FormField, FormSection, TextInput, Textarea, Select, ToggleChip } from '../shared/form';
 
 interface TaskFormProps {
   onClose: () => void;
@@ -50,6 +50,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
   const [recurrenceType, setRecurrenceType] = useState<RecurrenceType | 'none'>(defaultRecurrenceType(initialTask));
   const [recurrenceInterval, setRecurrenceInterval] = useState(String(initialTask?.recurrence_interval ?? 2));
   const [saving, setSaving] = useState(false);
+  const [titleError, setTitleError] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(Boolean(
     initialTask?.goal_id
     || (initialTask?.tags && initialTask.tags !== '[]')
@@ -64,7 +65,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim()) {
+      setTitleError('Title is required.');
+      return;
+    }
+    setTitleError('');
     setSaving(true);
 
     const tagsJson = tags.trim()
@@ -131,93 +136,80 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {!isEditing && (
-        <div>
-          <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Domain</label>
-          <div className="grid grid-cols-3 gap-2">
+        <FormField label="Domain">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-2)' }}>
             {domains.map((entry) => (
-              <button
+              <ToggleChip
                 key={entry.id}
-                type="button"
-                data-domain={entry.id}
+                active={domain === entry.id}
                 onClick={() => setDomain(entry.id)}
-                className={clsx(
-                  'flex items-center gap-2 px-3 py-2 border text-sm font-semibold transition-all',
-                  domain === entry.id
-                    ? 'border-[var(--domain-primary)] bg-[var(--domain-bg)] text-[var(--color-text)]'
-                    : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)]',
-                )}
-                style={{ ...getDomainThemeStyle(entry), clipPath: 'polygon(6px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 6px)' }}
+                domain={entry.id}
+                style={getDomainThemeStyle(entry)}
               >
                 <span>{entry.icon}</span>
                 {getDomainLabel(entry.id, domains)}
-              </button>
+              </ToggleChip>
             ))}
           </div>
-        </div>
+        </FormField>
       )}
 
-      <div>
-        <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Title *</label>
-        <input
-          className="input"
+      <FormField label="Title" required error={titleError}>
+        <TextInput
           dir="auto"
           placeholder="What needs to move forward?"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           autoFocus
-          required
           style={{ fontFamily: titleArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }}
         />
-      </div>
+      </FormField>
 
-      <div>
-        <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Description</label>
-        <textarea
-          className="input min-h-[88px] resize-none"
+      <FormField label="Description">
+        <Textarea
           dir="auto"
           placeholder="Why does this matter, or what is the next step?"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           rows={3}
-          style={{ fontFamily: descriptionArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }}
+          style={{ resize: 'none', minHeight: 88, fontFamily: descriptionArabic ? 'var(--font-arabic)' : 'var(--font-sans)' }}
         />
-      </div>
+      </FormField>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Priority</label>
-          <select className="input" value={priority} onChange={(event) => setPriority(event.target.value as Priority)}>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-            <option value="critical">Critical</option>
-          </select>
+      <FormSection heading="Details">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+          <FormField label="Priority">
+            <Select value={priority} onChange={(event) => setPriority(event.target.value as Priority)}>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+            </Select>
+          </FormField>
+          <FormField label="Energy">
+            <Select value={energyLevel} onChange={(event) => setEnergyLevel(event.target.value as EnergyLevel)}>
+              <option value="deep">Deep</option>
+              <option value="medium">Medium</option>
+              <option value="light">Light</option>
+            </Select>
+          </FormField>
         </div>
-        <div>
-          <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Energy</label>
-          <select className="input" value={energyLevel} onChange={(event) => setEnergyLevel(event.target.value as EnergyLevel)}>
-            <option value="deep">Deep</option>
-            <option value="medium">Medium</option>
-            <option value="light">Light</option>
-          </select>
-        </div>
-      </div>
 
-      <div>
-        <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Time Estimate (min)</label>
-        <input className="input" type="number" min={0} placeholder="e.g. 45" value={timeEst} onChange={(event) => setTimeEst(event.target.value)} />
-      </div>
+        <FormField label="Time Estimate (min)">
+          <TextInput type="number" min={0} placeholder="e.g. 45" value={timeEst} onChange={(event) => setTimeEst(event.target.value)} />
+        </FormField>
+      </FormSection>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Due Date</label>
-          <input className="input" type="date" lang="en-GB" value={dueDate} onChange={(event) => setDueDate(event.target.value)} />
+      <FormSection heading="Scheduling">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+          <FormField label="Due Date">
+            <TextInput type="date" lang="en-GB" value={dueDate} onChange={(event) => setDueDate(event.target.value)} />
+          </FormField>
+          <FormField label="Start Date">
+            <TextInput type="date" lang="en-GB" value={plannedForDate} onChange={(event) => setPlannedForDate(event.target.value)} />
+          </FormField>
         </div>
-        <div>
-          <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Start Date</label>
-          <input className="input" type="date" lang="en-GB" value={plannedForDate} onChange={(event) => setPlannedForDate(event.target.value)} />
-        </div>
-      </div>
+      </FormSection>
 
       <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
         Start date means the task will begin showing up in Today on that date and stay active there until it is done.
@@ -226,8 +218,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
       <div className="border border-[var(--color-border)] bg-[var(--color-bg)] p-3 space-y-3">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <div className="text-xs uppercase tracking-wide text-[var(--color-text-muted)]">Advanced Planning</div>
-            <div className="text-[12px] text-[var(--color-text-muted)]">Goal links, repeat rules, and day-shaping flags live here.</div>
+            <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-medium)', letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--color-text-muted)' }}>Advanced Planning</div>
+            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>Goal links, repeat rules, and day-shaping flags live here.</div>
           </div>
           <button type="button" className="btn btn-ghost btn-sm" onClick={() => setShowAdvanced((value) => !value)}>
             {showAdvanced ? 'HIDE' : 'SHOW'}
@@ -235,85 +227,60 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
         </div>
 
         {showAdvanced && (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Goal Link</label>
-              <select className="input" value={goalId} onChange={(event) => setGoalId(event.target.value)}>
+          <FormSection>
+            <FormField label="Goal Link">
+              <Select value={goalId} onChange={(event) => setGoalId(event.target.value)}>
                 <option value="">No goal</option>
                 {domainGoals.map((goal) => (
                   <option key={goal.id} value={goal.id}>{goal.title}</option>
                 ))}
-              </select>
-            </div>
+              </Select>
+            </FormField>
 
             {!isRecurringInstance && (
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Recurrence</label>
-                  <select className="input" value={recurrenceType} onChange={(event) => setRecurrenceType(event.target.value as RecurrenceType | 'none')}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+                <FormField label="Recurrence">
+                  <Select value={recurrenceType} onChange={(event) => setRecurrenceType(event.target.value as RecurrenceType | 'none')}>
                     <option value="none">No repeat</option>
                     <option value="daily">Daily</option>
                     <option value="weekdays">Weekdays</option>
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                     <option value="interval">Every N days</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Tags</label>
-                  <input className="input" dir="auto" placeholder="planning, admin" value={tags} onChange={(event) => setTags(event.target.value)} />
-                </div>
+                  </Select>
+                </FormField>
+                <FormField label="Tags">
+                  <TextInput dir="auto" placeholder="planning, admin" value={tags} onChange={(event) => setTags(event.target.value)} />
+                </FormField>
               </div>
             )}
 
             {recurrenceType === 'interval' && !isRecurringInstance && (
-              <div>
-                <label className="block text-xs text-[var(--color-text-muted)] mb-1.5 tracking-wide uppercase">Repeat Every N Days</label>
-                <input className="input" type="number" min={1} value={recurrenceInterval} onChange={(event) => setRecurrenceInterval(event.target.value)} />
-              </div>
+              <FormField label="Repeat Every N Days">
+                <TextInput type="number" min={1} value={recurrenceInterval} onChange={(event) => setRecurrenceInterval(event.target.value)} />
+              </FormField>
             )}
 
             <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
               MIT and Top 3 usually belong to Today. Set them here only if this task should already land in the daily plan.
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setIsMit((value) => !value)}
-                className={clsx(
-                  'flex items-center gap-2.5 px-3 py-2 border text-sm font-semibold tracking-wider transition-all w-full',
-                  isMit
-                    ? 'border-yellow-500 bg-[rgba(234,179,8,0.08)] text-yellow-400'
-                    : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)]',
-                )}
-                style={{ clipPath: 'polygon(6px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 6px)' }}
-              >
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+              <ToggleChip active={isMit} onClick={() => setIsMit((value) => !value)}>
                 <span>{isMit ? '*' : 'o'}</span>
                 <span>Most Important Task</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setIsTopThree((value) => !value)}
-                className={clsx(
-                  'flex items-center gap-2.5 px-3 py-2 border text-sm font-semibold tracking-wider transition-all w-full',
-                  isTopThree
-                    ? 'border-[var(--color-accent)] bg-[rgba(124,108,255,0.08)] text-[var(--color-text)]'
-                    : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)]',
-                )}
-                style={{ clipPath: 'polygon(6px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 6px)' }}
-              >
+              </ToggleChip>
+              <ToggleChip active={isTopThree} onClick={() => setIsTopThree((value) => !value)}>
                 <span>{isTopThree ? '[x]' : '[ ]'}</span>
                 <span>Top 3</span>
-              </button>
+              </ToggleChip>
             </div>
-          </div>
+          </FormSection>
         )}
       </div>
 
       <div className="flex items-center justify-between pt-3 border-t border-[var(--color-border)]">
-        <div className="text-[12px] text-[var(--color-text-muted)]">
+        <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
           {recurrenceType !== 'none' && !isRecurringInstance ? 'This will save as a recurring template and generate dated instances automatically.' : 'This task will appear wherever its due date, start date, or status makes it relevant.'}
         </div>
         <div className="flex items-center gap-2">
