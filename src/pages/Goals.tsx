@@ -7,6 +7,7 @@ import { useNoteStore } from '../store/useNoteStore';
 import { useDomainStore } from '../store/useDomainStore';
 import type { CreateGoalPayload, DomainId, Goal, GoalHealth, UpdateGoalPayload } from '../lib/types';
 import { Modal } from '../components/shared/Modal';
+import { FormField, TextInput, Textarea, ToggleChip } from '../components/shared/form';
 import { getDefaultDomainId, getDomainLabel, getDomainThemeStyle } from '../lib/domain-utils';
 import { formatDateDisplay } from '../lib/date-format';
 
@@ -115,88 +116,56 @@ const GoalForm: React.FC<GoalFormProps> = ({ onClose, parentGoalId, defaultDomai
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
       {!parentGoalId && !isEditing && (
-        <div>
-          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
-            Domain
-          </label>
+        <FormField label="Domain">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-2)' }}>
             {domains.map((entry) => (
-              <button
-                key={entry.id}
-                type="button"
-                data-domain={entry.id}
-                onClick={() => setDomain(entry.id)}
-                className={clsx('btn', domain === entry.id ? 'btn-primary' : 'btn-ghost')}
-                style={{ ...getDomainThemeStyle(entry), padding: 'var(--space-1) var(--space-2)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)' }}
-              >
+              <ToggleChip key={entry.id} active={domain === entry.id} onClick={() => setDomain(entry.id)} domain={entry.id} style={getDomainThemeStyle(entry)}>
                 {getDomainLabel(entry.id, domains).toUpperCase()}
-              </button>
+              </ToggleChip>
             ))}
           </div>
-        </div>
+        </FormField>
       )}
 
-      <div>
-        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
-          Goal Title *
-        </label>
-        <input className="input" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="WHAT ARE YOU DRIVING TOWARD?" autoFocus required />
-      </div>
+      <FormField label="Goal Title" required>
+        <TextInput value={title} onChange={(event) => setTitle(event.target.value)} placeholder="WHAT ARE YOU DRIVING TOWARD?" autoFocus />
+      </FormField>
 
-      <div>
-        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
-          Why It Matters
-        </label>
-        <textarea className="input" value={description} onChange={(event) => setDescription(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHY DOES THIS GOAL MATTER?" />
-      </div>
+      <FormField label="Why It Matters">
+        <Textarea value={description} onChange={(event) => setDescription(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHY DOES THIS GOAL MATTER?" />
+      </FormField>
 
-      <div>
-        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
-          Next Action
-        </label>
-        <input className="input" value={nextAction} onChange={(event) => setNextAction(event.target.value)} placeholder="WHAT IS THE VERY NEXT CONCRETE MOVE?" />
-      </div>
+      <FormField label="Next Action">
+        <TextInput value={nextAction} onChange={(event) => setNextAction(event.target.value)} placeholder="WHAT IS THE VERY NEXT CONCRETE MOVE?" />
+      </FormField>
 
       <div className="grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
-        <div>
-          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
-            Review Date
-          </label>
-          <input className="input" type="date" lang="en-GB" value={reviewDate} onChange={(event) => setReviewDate(event.target.value)} />
-        </div>
-        <div>
-          <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
-            Target Date
-          </label>
-          <input className="input" type="date" lang="en-GB" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} />
-        </div>
+        <FormField label="Review Date">
+          <TextInput type="date" lang="en-GB" value={reviewDate} onChange={(event) => setReviewDate(event.target.value)} />
+        </FormField>
+        <FormField label="Target Date">
+          <TextInput type="date" lang="en-GB" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} />
+        </FormField>
       </div>
 
-      <div>
-        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
-          Blocked / Stalled Reason
-        </label>
-        <textarea className="input" value={blockedBy} onChange={(event) => setBlockedBy(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHAT IS SLOWING THIS GOAL DOWN?" />
-      </div>
+      <FormField label="Blocked / Stalled Reason">
+        <Textarea value={blockedBy} onChange={(event) => setBlockedBy(event.target.value)} rows={2} style={{ resize: 'none' }} placeholder="WHAT IS SLOWING THIS GOAL DOWN?" />
+      </FormField>
 
-      <div>
-        <label style={{ display: 'block', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 'var(--space-2)' }}>
-          Health
-        </label>
+      <FormField label="Health">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-2)' }}>
           {(['on_track', 'at_risk', 'stalled'] as GoalHealth[]).map((value) => (
-            <button
+            <ToggleChip
               key={value}
-              type="button"
-              className={clsx('btn', health === value ? 'btn-primary' : 'btn-ghost')}
+              active={health === value}
               onClick={() => setHealth(value)}
               style={{ padding: 'var(--space-1) var(--space-2)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)' }}
             >
               {value.replace('_', ' ').toUpperCase()}
-            </button>
+            </ToggleChip>
           ))}
         </div>
-      </div>
+      </FormField>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 'var(--space-2)', paddingTop: 'var(--space-3)', borderTop: '1px solid var(--color-border)' }}>
         <button type="button" className="btn btn-ghost" onClick={onClose}>CANCEL</button>
