@@ -91,11 +91,10 @@ export const QuickAddTask: React.FC<QuickAddTaskProps> = ({ onClose, defaultDoma
         </div>
 
         <div
-          className="border"
           style={{
+            border: '1px solid var(--color-border)',
             padding: 'var(--space-2) var(--space-3)',
             background: 'var(--color-bg)',
-            borderColor: 'var(--color-border)',
             fontSize: 'var(--text-xs)',
             color: 'var(--color-text-muted)',
           }}
