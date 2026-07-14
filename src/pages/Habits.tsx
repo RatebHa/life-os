@@ -476,7 +476,7 @@ export const HabitsPage: React.FC = () => {
                 </button>
               ))}
             </div>
-            <textarea className="input" value={skipReason} onChange={(event) => setSkipReason(event.target.value)} rows={3} placeholder="Low energy, travel, sick, overloaded..." style={{ resize: 'none' }} />
+            <Textarea value={skipReason} onChange={(event) => setSkipReason(event.target.value)} rows={3} placeholder="Low energy, travel, sick, overloaded..." style={{ resize: 'none' }} />
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--space-2)' }}>
               <button type="button" className="btn btn-ghost" onClick={() => setSkipTarget(null)}>CANCEL</button>
               <button type="submit" className="btn btn-primary" disabled={!skipReason.trim()}>SAVE SKIP</button>
