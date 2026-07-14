@@ -293,7 +293,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, defaultDomain, pare
         </div>
         <div className="flex items-center gap-2">
           <button type="button" className="btn btn-ghost" onClick={onClose}>Cancel</button>
-          <button type="submit" className="btn btn-primary" disabled={!title.trim() || saving}>
+          <button type="submit" className="btn btn-primary" disabled={saving}>
             {saving ? (isEditing ? 'Saving...' : 'Creating...') : (isEditing ? 'Save Changes' : 'Create Task')}
           </button>
         </div>
