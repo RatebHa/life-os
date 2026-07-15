@@ -660,3 +660,19 @@ export interface CalendarDay {
   habits_logged: CalendarHabitSummary[];
   xp_earned: number;
 }
+
+export interface DebugEntry {
+  id: string;
+  level: 'info' | 'warn' | 'error';
+  scope: string;
+  message: string;
+  detail?: string;
+  created_at: string;
+}
+
+export interface NewDebugEntryPayload {
+  level: 'info' | 'warn' | 'error';
+  scope: string;
+  message: string;
+  detail?: string;
+}
