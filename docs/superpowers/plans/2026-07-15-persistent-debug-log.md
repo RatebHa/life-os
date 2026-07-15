@@ -634,8 +634,22 @@ Add this new section to `AppDatabase` in `lib/data/local/app_database.dart`, nea
         .get();
   }
 
-  Future<void> logDebugEntry(LocalDebugLogEntriesCompanion entry) async {
-    await into(localDebugLogEntries).insert(entry);
+  Future<void> logDebugEntry({
+    required String level,
+    required String scope,
+    required String message,
+    String? detail,
+  }) async {
+    await into(localDebugLogEntries).insert(
+      LocalDebugLogEntriesCompanion.insert(
+        id: _uuid.v4(),
+        level: level,
+        scope: scope,
+        message: message,
+        detail: Value(detail),
+        createdAt: _nowIso(),
+      ),
+    );
     await customStatement(
       'DELETE FROM local_debug_log_entries WHERE id NOT IN '
       '(SELECT id FROM local_debug_log_entries ORDER BY created_at DESC LIMIT 500)',
@@ -644,6 +658,8 @@ Add this new section to `AppDatabase` in `lib/data/local/app_database.dart`, nea
 
   Future<void> clearDebugLog() => delete(localDebugLogEntries).go();
 ```
+
+`logDebugEntry` generates `id`/`createdAt` internally via this file's existing `_uuid`/`_nowIso()` helpers, matching every other create-style method in this class (`createTask`, `createHabit`, etc.) rather than accepting a raw `Companion` from the caller — this guarantees `created_at` is always a consistently-formatted UTC ISO-8601 string, which both `getDebugLog()`'s ordering and the trim query's `ORDER BY created_at DESC` depend on.
 
 - [ ] **Step 5: Verify it compiles**
 
@@ -680,14 +696,10 @@ void main() {
     addTearDown(db.close);
 
     await db.logDebugEntry(
-      LocalDebugLogEntriesCompanion.insert(
-        id: 'entry-1',
-        level: 'error',
-        scope: 'test.scope',
-        message: 'boom',
-        detail: const Value('stack trace'),
-        createdAt: '2026-01-01T00:00:00Z',
-      ),
+      level: 'error',
+      scope: 'test.scope',
+      message: 'boom',
+      detail: 'stack trace',
     );
 
     final entries = await db.getDebugLog();
@@ -720,13 +732,9 @@ void main() {
     }
 
     await db.logDebugEntry(
-      LocalDebugLogEntriesCompanion.insert(
-        id: 'trigger',
-        level: 'info',
-        scope: 'test',
-        message: 'trigger trim',
-        createdAt: '2026-01-01T09:00:00Z',
-      ),
+      level: 'info',
+      scope: 'test',
+      message: 'trigger trim',
     );
 
     final entries = await db.getDebugLog();
@@ -764,7 +772,6 @@ Create `lib/data/local/debug_log_notifier.dart`:
 ```dart
 import 'dart:async';
 
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -837,14 +844,10 @@ class DebugLogNotifier extends StateNotifier<List<DebugLogEntryData>> {
     unawaited(
       _database
           .logDebugEntry(
-            LocalDebugLogEntriesCompanion.insert(
-              id: entry.id,
-              level: entry.level,
-              scope: entry.scope,
-              message: entry.message,
-              detail: Value(entry.detail),
-              createdAt: entry.createdAt,
-            ),
+            level: level,
+            scope: scope,
+            message: message,
+            detail: detail,
           )
           .catchError((_) {}),
     );
