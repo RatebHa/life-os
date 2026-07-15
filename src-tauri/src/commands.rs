@@ -1302,6 +1302,8 @@ fn load_export_payload(conn: &Connection) -> Result<ExportPayload, String> {
 
     let mut app_state = read_app_state_row(conn)?;
     app_state.api_key = None;
+    app_state.sync_access_token = None;
+    app_state.sync_refresh_token = None;
 
     Ok(ExportPayload {
         exported_at: Utc::now().to_rfc3339(),
