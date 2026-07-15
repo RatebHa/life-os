@@ -305,6 +305,16 @@ pub fn init_db(conn: &Connection) -> Result<()> {
             created_at TEXT NOT NULL
         );
         CREATE INDEX IF NOT EXISTS idx_restore_history_created ON restore_history(created_at);
+
+        CREATE TABLE IF NOT EXISTS debug_log (
+            id TEXT PRIMARY KEY,
+            level TEXT NOT NULL,
+            scope TEXT NOT NULL,
+            message TEXT NOT NULL,
+            detail TEXT,
+            created_at TEXT NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_debug_log_created ON debug_log(created_at);
     ")?;
 
     seed_initial_data(conn)?;
