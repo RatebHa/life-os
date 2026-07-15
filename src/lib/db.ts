@@ -18,6 +18,8 @@ import type {
   SyncPayload,
   SyncQueueItem,
   SyncCursor,
+  DebugEntry,
+  NewDebugEntryPayload,
 } from './types';
 import { emitSyncDirty } from './sync/events';
 
@@ -228,4 +230,11 @@ export const db = {
 
   // ─── Streak Freeze ───────────────────────────────────────────────────────────
   useStreakFreeze: (domain_id: string) => withSyncMutation(() => invoke<Domain>('use_streak_freeze', { domainId: domain_id }), 'domain:streak-freeze'),
+
+  // ─── Debug Log ─────────────────────────────────────────────────────────────
+  getDebugLog: (): Promise<DebugEntry[]> =>
+    invoke<Array<{ id: string; level: 'info' | 'warn' | 'error'; scope: string; message: string; detail: string | null; created_at: string }>>('get_debug_log')
+      .then((rows) => rows.map((row) => ({ ...row, detail: row.detail ?? undefined }))),
+  logDebugEntry: (payload: NewDebugEntryPayload) => invoke<void>('log_debug_entry', { payload }),
+  clearDebugLog: () => invoke<void>('clear_debug_log'),
 };
