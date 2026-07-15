@@ -126,6 +126,9 @@ pub fn run() {
             commands::export_data,
             commands::get_calendar_data,
             commands::use_streak_freeze,
+            commands::log_debug_entry,
+            commands::get_debug_log,
+            commands::clear_debug_log,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
