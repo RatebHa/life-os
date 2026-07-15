@@ -4443,19 +4443,19 @@ pub fn configure_sync(state: State<'_, DbState>, payload: SyncConfigPayload) -> 
 pub fn save_sync_session(state: State<'_, DbState>, payload: SyncSessionPayload) -> Result<AppStateRow, String> {
     let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
     let _ = conn.execute("INSERT OR IGNORE INTO app_state (id, momentum_score, onboarding_complete) VALUES (1, 50, 0)", []);
+    credentials::set_secret("sync_access_token", payload.access_token.trim())?;
+    credentials::set_secret("sync_refresh_token", payload.refresh_token.trim())?;
     conn.execute(
         "UPDATE app_state
          SET sync_enabled = 1,
              sync_provider = 'supabase',
-             sync_access_token = ?1,
-             sync_refresh_token = ?2,
-             sync_user_id = ?3,
-             sync_user_email = ?4,
+             sync_access_token = NULL,
+             sync_refresh_token = NULL,
+             sync_user_id = ?1,
+             sync_user_email = ?2,
              sync_last_sync_error = NULL
          WHERE id = 1",
         params![
-            payload.access_token.trim(),
-            payload.refresh_token.trim(),
             payload.user_id.trim(),
             payload.user_email.map(|value| value.trim().to_string()).filter(|value| !value.is_empty()),
         ],
