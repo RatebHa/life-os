@@ -4467,6 +4467,8 @@ pub fn save_sync_session(state: State<'_, DbState>, payload: SyncSessionPayload)
 pub fn clear_sync_session(state: State<'_, DbState>) -> Result<AppStateRow, String> {
     let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
     let _ = conn.execute("INSERT OR IGNORE INTO app_state (id, momentum_score, onboarding_complete) VALUES (1, 50, 0)", []);
+    credentials::delete_secret("sync_access_token")?;
+    credentials::delete_secret("sync_refresh_token")?;
     conn.execute(
         "UPDATE app_state
          SET sync_access_token = NULL,
