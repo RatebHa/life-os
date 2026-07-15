@@ -4329,9 +4329,10 @@ pub fn set_mit_task(state: State<'_, DbState>, task_id: Option<String>) -> Resul
 pub fn save_api_key(state: State<'_, DbState>, api_key: String) -> Result<(), String> {
     let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
     let _ = conn.execute("INSERT OR IGNORE INTO app_state (id, momentum_score, onboarding_complete) VALUES (1, 50, 0)", []);
+    credentials::set_secret("api_key", &api_key)?;
     conn.execute(
-        "UPDATE app_state SET api_key = ?1 WHERE id = 1",
-        params![api_key],
+        "UPDATE app_state SET api_key = NULL WHERE id = 1",
+        [],
     ).map_err(|e| e.to_string())?;
     Ok(())
 }
