@@ -1996,7 +1996,6 @@ fn import_payload_into_db(conn: &mut Connection, payload: ImportPayload) -> Resu
         sync_last_pulled_at: None,
     });
 
-    imported_app_state.api_key = preserved.api_key.clone();
     imported_app_state.backup_directory = preserved.backup_directory.clone();
     imported_app_state.auto_backup_enabled = preserved.auto_backup_enabled;
     imported_app_state.last_backup_at = preserved.last_backup_at.clone();
@@ -2004,8 +2003,6 @@ fn import_payload_into_db(conn: &mut Connection, payload: ImportPayload) -> Resu
     imported_app_state.sync_provider = preserved.sync_provider.clone();
     imported_app_state.sync_supabase_url = preserved.sync_supabase_url.clone();
     imported_app_state.sync_supabase_anon_key = preserved.sync_supabase_anon_key.clone();
-    imported_app_state.sync_access_token = preserved.sync_access_token.clone();
-    imported_app_state.sync_refresh_token = preserved.sync_refresh_token.clone();
     imported_app_state.sync_user_id = preserved.sync_user_id.clone();
     imported_app_state.sync_user_email = preserved.sync_user_email.clone();
     imported_app_state.sync_last_sync_at = preserved.sync_last_sync_at.clone();
