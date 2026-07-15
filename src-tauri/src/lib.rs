@@ -1,5 +1,6 @@
 mod db;
 mod commands;
+mod credentials;
 
 use commands::DbState;
 use rusqlite::Connection;
