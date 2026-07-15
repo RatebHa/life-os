@@ -967,23 +967,33 @@ fn default_ui_density() -> String {
     "comfortable".to_string()
 }
 
+/// Best-effort migration of a plaintext SQL value into the OS keychain, or a
+/// best-effort read from the keychain if already migrated. Never fails outward —
+/// a keychain-layer error (platform failure, no storage access, etc.) just means
+/// this field falls back to `None` for this read rather than blocking the whole
+/// `read_app_state_row` call, since most callers don't even use these fields.
 fn migrate_and_read_secret(
     conn: &Connection,
     service: &str,
     field: &str,
     sql_value: Option<String>,
-) -> Result<Option<String>, String> {
-    if let Some(value) = sql_value.filter(|v| !v.is_empty()) {
-        credentials::set_secret_in(service, field, &value)?;
-        conn.execute(
-            &format!("UPDATE app_state SET {} = NULL WHERE id = 1", field),
-            [],
-        ).map_err(|e| e.to_string())?;
-        return Ok(Some(value));
+) -> Option<String> {
+    if let Some(value) = sql_value.filter(|v| !v.trim().is_empty()) {
+        if credentials::set_secret_in(service, field, &value).is_ok() {
+            let _ = conn.execute(
+                &format!("UPDATE app_state SET {} = NULL WHERE id = 1", field),
+                [],
+            );
+        }
+        return Some(value);
     }
-    credentials::get_secret_from(service, field)
+    credentials::get_secret_from(service, field).ok().flatten()
 }
 
+/// Reads the singleton `app_state` row. As a side effect, best-effort migrates
+/// any still-plaintext `api_key`/`sync_access_token`/`sync_refresh_token` values
+/// into the OS keychain (see `migrate_and_read_secret`) and returns the current
+/// keychain-backed values for those three fields.
 fn read_app_state_row(conn: &Connection) -> Result<AppStateRow, String> {
     let mut app_state = conn.query_row(
         "SELECT id, momentum_score, last_momentum_calc, current_mit_task_id, api_key, onboarding_complete, last_opened_date, backup_directory, auto_backup_enabled, last_backup_at, crt_intensity, text_scale, ui_density, sync_enabled, sync_provider, sync_supabase_url, sync_supabase_anon_key, sync_access_token, sync_refresh_token, sync_user_id, sync_user_email, sync_last_sync_at, sync_last_sync_error, sync_last_pushed_at, sync_last_pulled_at FROM app_state WHERE id = 1",
@@ -1017,9 +1027,9 @@ fn read_app_state_row(conn: &Connection) -> Result<AppStateRow, String> {
         })
     ).map_err(|e| e.to_string())?;
 
-    app_state.api_key = migrate_and_read_secret(conn, credentials::SERVICE_NAME, "api_key", app_state.api_key)?;
-    app_state.sync_access_token = migrate_and_read_secret(conn, credentials::SERVICE_NAME, "sync_access_token", app_state.sync_access_token)?;
-    app_state.sync_refresh_token = migrate_and_read_secret(conn, credentials::SERVICE_NAME, "sync_refresh_token", app_state.sync_refresh_token)?;
+    app_state.api_key = migrate_and_read_secret(conn, credentials::SERVICE_NAME, "api_key", app_state.api_key);
+    app_state.sync_access_token = migrate_and_read_secret(conn, credentials::SERVICE_NAME, "sync_access_token", app_state.sync_access_token);
+    app_state.sync_refresh_token = migrate_and_read_secret(conn, credentials::SERVICE_NAME, "sync_refresh_token", app_state.sync_refresh_token);
 
     Ok(app_state)
 }
@@ -1052,8 +1062,7 @@ mod credential_migration_tests {
             TEST_SERVICE_NAME,
             "api_key",
             Some("plaintext-secret".to_string()),
-        )
-        .unwrap();
+        );
         assert_eq!(result, Some("plaintext-secret".to_string()));
 
         let column_value: Option<String> = conn
@@ -1072,18 +1081,16 @@ mod credential_migration_tests {
     #[test]
     fn reads_from_the_keychain_when_the_column_is_already_null() {
         // Uses a distinct keychain field name from the other test in this module
-        // (`api_key_readback` vs. `api_key`) so the two tests don't race on the
-        // same OS credential-store entry when cargo runs them in parallel. This
-        // is safe because `sql_value` is `None` here, so `migrate_and_read_secret`
-        // never touches the SQL column and this field name doesn't need to match
-        // an actual `app_state` column.
+        // (`api_key_readback` vs. `api_key`) purely for test isolation/hygiene —
+        // `KEYRING_TEST_LOCK` already serializes these tests against each other,
+        // so this doesn't need to match an actual `app_state` column.
         let _guard = crate::credentials::KEYRING_TEST_LOCK
             .lock()
             .unwrap_or_else(|e| e.into_inner());
         let conn = setup_conn();
         credentials::set_secret_in(TEST_SERVICE_NAME, "api_key_readback", "already-migrated").unwrap();
 
-        let result = migrate_and_read_secret(&conn, TEST_SERVICE_NAME, "api_key_readback", None).unwrap();
+        let result = migrate_and_read_secret(&conn, TEST_SERVICE_NAME, "api_key_readback", None);
         assert_eq!(result, Some("already-migrated".to_string()));
 
         credentials::delete_secret_from(TEST_SERVICE_NAME, "api_key_readback").unwrap();
