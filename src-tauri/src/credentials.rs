@@ -1,6 +1,6 @@
 use keyring::Entry;
 
-const SERVICE_NAME: &str = "com.lifeos.app";
+pub(crate) const SERVICE_NAME: &str = "com.lifeos.app";
 
 fn entry_for(service: &str, key: &str) -> Result<Entry, String> {
     Entry::new(service, key).map_err(|e| e.to_string())

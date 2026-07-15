@@ -8,6 +8,7 @@ use std::path::PathBuf;
 use std::sync::Mutex;
 use uuid::Uuid;
 use chrono::{DateTime, Datelike, Duration, NaiveDate, Utc};
+use crate::credentials;
 
 pub struct DbState(pub Mutex<Connection>);
 
@@ -966,8 +967,25 @@ fn default_ui_density() -> String {
     "comfortable".to_string()
 }
 
+fn migrate_and_read_secret(
+    conn: &Connection,
+    service: &str,
+    field: &str,
+    sql_value: Option<String>,
+) -> Result<Option<String>, String> {
+    if let Some(value) = sql_value.filter(|v| !v.is_empty()) {
+        credentials::set_secret_in(service, field, &value)?;
+        conn.execute(
+            &format!("UPDATE app_state SET {} = NULL WHERE id = 1", field),
+            [],
+        ).map_err(|e| e.to_string())?;
+        return Ok(Some(value));
+    }
+    credentials::get_secret_from(service, field)
+}
+
 fn read_app_state_row(conn: &Connection) -> Result<AppStateRow, String> {
-    conn.query_row(
+    let mut app_state = conn.query_row(
         "SELECT id, momentum_score, last_momentum_calc, current_mit_task_id, api_key, onboarding_complete, last_opened_date, backup_directory, auto_backup_enabled, last_backup_at, crt_intensity, text_scale, ui_density, sync_enabled, sync_provider, sync_supabase_url, sync_supabase_anon_key, sync_access_token, sync_refresh_token, sync_user_id, sync_user_email, sync_last_sync_at, sync_last_sync_error, sync_last_pushed_at, sync_last_pulled_at FROM app_state WHERE id = 1",
         [],
         |row| Ok(AppStateRow {
@@ -997,7 +1015,73 @@ fn read_app_state_row(conn: &Connection) -> Result<AppStateRow, String> {
             sync_last_pushed_at: row.get(23)?,
             sync_last_pulled_at: row.get(24)?,
         })
-    ).map_err(|e| e.to_string())
+    ).map_err(|e| e.to_string())?;
+
+    app_state.api_key = migrate_and_read_secret(conn, credentials::SERVICE_NAME, "api_key", app_state.api_key)?;
+    app_state.sync_access_token = migrate_and_read_secret(conn, credentials::SERVICE_NAME, "sync_access_token", app_state.sync_access_token)?;
+    app_state.sync_refresh_token = migrate_and_read_secret(conn, credentials::SERVICE_NAME, "sync_refresh_token", app_state.sync_refresh_token)?;
+
+    Ok(app_state)
+}
+
+#[cfg(test)]
+mod credential_migration_tests {
+    use super::*;
+
+    const TEST_SERVICE_NAME: &str = "com.lifeos.app.migration-test";
+
+    fn setup_conn() -> Connection {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute("CREATE TABLE app_state (id INTEGER PRIMARY KEY, api_key TEXT)", [])
+            .unwrap();
+        conn.execute("INSERT INTO app_state (id, api_key) VALUES (1, NULL)", [])
+            .unwrap();
+        conn
+    }
+
+    #[test]
+    fn migrates_a_plaintext_value_into_the_keychain_and_nulls_the_column() {
+        let conn = setup_conn();
+        let _ = credentials::delete_secret_from(TEST_SERVICE_NAME, "api_key");
+
+        let result = migrate_and_read_secret(
+            &conn,
+            TEST_SERVICE_NAME,
+            "api_key",
+            Some("plaintext-secret".to_string()),
+        )
+        .unwrap();
+        assert_eq!(result, Some("plaintext-secret".to_string()));
+
+        let column_value: Option<String> = conn
+            .query_row("SELECT api_key FROM app_state WHERE id = 1", [], |row| row.get(0))
+            .unwrap();
+        assert_eq!(column_value, None);
+
+        assert_eq!(
+            credentials::get_secret_from(TEST_SERVICE_NAME, "api_key").unwrap(),
+            Some("plaintext-secret".to_string())
+        );
+
+        credentials::delete_secret_from(TEST_SERVICE_NAME, "api_key").unwrap();
+    }
+
+    #[test]
+    fn reads_from_the_keychain_when_the_column_is_already_null() {
+        // Uses a distinct keychain field name from the other test in this module
+        // (`api_key_readback` vs. `api_key`) so the two tests don't race on the
+        // same OS credential-store entry when cargo runs them in parallel. This
+        // is safe because `sql_value` is `None` here, so `migrate_and_read_secret`
+        // never touches the SQL column and this field name doesn't need to match
+        // an actual `app_state` column.
+        let conn = setup_conn();
+        credentials::set_secret_in(TEST_SERVICE_NAME, "api_key_readback", "already-migrated").unwrap();
+
+        let result = migrate_and_read_secret(&conn, TEST_SERVICE_NAME, "api_key_readback", None).unwrap();
+        assert_eq!(result, Some("already-migrated".to_string()));
+
+        credentials::delete_secret_from(TEST_SERVICE_NAME, "api_key_readback").unwrap();
+    }
 }
 
 fn task_select_columns() -> &'static str {
