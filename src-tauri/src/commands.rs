@@ -5905,3 +5905,140 @@ pub struct CreateTaskFrictionLogPayload {
     pub details: Option<String>,
     pub action_type: String,
 }
+
+// ─── Debug Log ──────────────────────────────────────────────────────────────
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct DebugEntry {
+    pub id: String,
+    pub level: String,
+    pub scope: String,
+    pub message: String,
+    pub detail: Option<String>,
+    pub created_at: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct NewDebugEntryPayload {
+    pub level: String,
+    pub scope: String,
+    pub message: String,
+    pub detail: Option<String>,
+}
+
+fn insert_debug_log_entry(
+    conn: &Connection,
+    level: &str,
+    scope: &str,
+    message: &str,
+    detail: Option<&str>,
+) -> Result<(), String> {
+    let id = Uuid::new_v4().to_string();
+    let now = Utc::now().to_rfc3339();
+    conn.execute(
+        "INSERT INTO debug_log (id, level, scope, message, detail, created_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+        params![id, level, scope, message, detail, now],
+    ).map_err(|e| e.to_string())?;
+    conn.execute(
+        "DELETE FROM debug_log WHERE id NOT IN (SELECT id FROM debug_log ORDER BY created_at DESC LIMIT 500)",
+        [],
+    ).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+fn select_debug_log(conn: &Connection) -> Result<Vec<DebugEntry>, String> {
+    let mut stmt = conn.prepare(
+        "SELECT id, level, scope, message, detail, created_at FROM debug_log ORDER BY created_at ASC"
+    ).map_err(|e| e.to_string())?;
+    let rows = stmt.query_map([], |row| {
+        Ok(DebugEntry {
+            id: row.get(0)?,
+            level: row.get(1)?,
+            scope: row.get(2)?,
+            message: row.get(3)?,
+            detail: row.get(4)?,
+            created_at: row.get(5)?,
+        })
+    }).map_err(|e| e.to_string())?;
+    rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn log_debug_entry(state: State<'_, DbState>, payload: NewDebugEntryPayload) -> Result<(), String> {
+    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    insert_debug_log_entry(&conn, &payload.level, &payload.scope, &payload.message, payload.detail.as_deref())
+}
+
+#[tauri::command]
+pub fn get_debug_log(state: State<'_, DbState>) -> Result<Vec<DebugEntry>, String> {
+    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    select_debug_log(&conn)
+}
+
+#[tauri::command]
+pub fn clear_debug_log(state: State<'_, DbState>) -> Result<(), String> {
+    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    conn.execute("DELETE FROM debug_log", []).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+#[cfg(test)]
+mod debug_log_tests {
+    use super::*;
+
+    fn setup_conn() -> Connection {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute(
+            "CREATE TABLE debug_log (
+                id TEXT PRIMARY KEY,
+                level TEXT NOT NULL,
+                scope TEXT NOT NULL,
+                message TEXT NOT NULL,
+                detail TEXT,
+                created_at TEXT NOT NULL
+            )",
+            [],
+        ).unwrap();
+        conn
+    }
+
+    #[test]
+    fn round_trips_a_debug_log_entry() {
+        let conn = setup_conn();
+        insert_debug_log_entry(&conn, "error", "test.scope", "boom", Some("stack trace")).unwrap();
+
+        let entries = select_debug_log(&conn).unwrap();
+        assert_eq!(entries.len(), 1);
+        assert_eq!(entries[0].level, "error");
+        assert_eq!(entries[0].scope, "test.scope");
+        assert_eq!(entries[0].message, "boom");
+        assert_eq!(entries[0].detail.as_deref(), Some("stack trace"));
+
+        conn.execute("DELETE FROM debug_log", []).unwrap();
+        assert!(select_debug_log(&conn).unwrap().is_empty());
+    }
+
+    #[test]
+    fn trims_to_the_500_most_recent_entries() {
+        let conn = setup_conn();
+        for i in 0..510 {
+            let hour = i / 60;
+            let minute = i % 60;
+            conn.execute(
+                "INSERT INTO debug_log (id, level, scope, message, detail, created_at) VALUES (?1, 'info', 'test', ?2, NULL, ?3)",
+                params![
+                    format!("id-{}", i),
+                    format!("entry {}", i),
+                    format!("2026-01-01T{:02}:{:02}:00Z", hour, minute)
+                ],
+            ).unwrap();
+        }
+
+        insert_debug_log_entry(&conn, "info", "test", "trigger trim", None).unwrap();
+
+        let entries = select_debug_log(&conn).unwrap();
+        assert_eq!(entries.len(), 500);
+        assert_eq!(entries.last().unwrap().message, "trigger trim");
+        assert!(!entries.iter().any(|e| e.message == "entry 0"));
+    }
+}
