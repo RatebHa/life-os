@@ -38,6 +38,17 @@ pub fn delete_secret(key: &str) -> Result<(), String> {
     delete_secret_from(SERVICE_NAME, key)
 }
 
+// Test-only lock serializing every keychain-touching test across the crate
+// (this module and `commands::credential_migration_tests`). `keyring-core`'s
+// default credential-store selection is lazily initialized and not safe
+// against concurrent first-use from multiple threads; Rust's test runner
+// gives each `#[test]` its own thread, so without this lock these tests can
+// race each other and intermittently fail with "No default store has been
+// set, so cannot search or create entries". Every other (non-keychain) test
+// in the crate is unaffected and keeps running fully in parallel.
+#[cfg(test)]
+pub(crate) static KEYRING_TEST_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -46,6 +57,7 @@ mod tests {
 
     #[test]
     fn round_trips_a_secret_through_the_os_credential_store() {
+        let _guard = KEYRING_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         let key = "round_trip_test_key";
         let _ = delete_secret_from(TEST_SERVICE_NAME, key);
 

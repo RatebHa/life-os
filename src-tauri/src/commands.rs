@@ -1041,6 +1041,9 @@ mod credential_migration_tests {
 
     #[test]
     fn migrates_a_plaintext_value_into_the_keychain_and_nulls_the_column() {
+        let _guard = crate::credentials::KEYRING_TEST_LOCK
+            .lock()
+            .unwrap_or_else(|e| e.into_inner());
         let conn = setup_conn();
         let _ = credentials::delete_secret_from(TEST_SERVICE_NAME, "api_key");
 
@@ -1074,6 +1077,9 @@ mod credential_migration_tests {
         // is safe because `sql_value` is `None` here, so `migrate_and_read_secret`
         // never touches the SQL column and this field name doesn't need to match
         // an actual `app_state` column.
+        let _guard = crate::credentials::KEYRING_TEST_LOCK
+            .lock()
+            .unwrap_or_else(|e| e.into_inner());
         let conn = setup_conn();
         credentials::set_secret_in(TEST_SERVICE_NAME, "api_key_readback", "already-migrated").unwrap();
 
