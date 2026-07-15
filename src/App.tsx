@@ -176,6 +176,7 @@ const AppInner: React.FC = () => {
   const { loadTaskFrictionLogs } = useFrictionStore();
   const addDebugEntry = useDebugStore((state) => state.addEntry);
   const toggleDebugOpen = useDebugStore((state) => state.toggleOpen);
+  const loadDebugLog = useDebugStore((state) => state.loadDebugLog);
   const undoLatest = useUndoStore((state) => state.undoLatest);
   const [booted, setBooted] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -326,6 +327,7 @@ const AppInner: React.FC = () => {
       loadFocusSessions(),
       loadFocusDrafts(),
       loadTaskFrictionLogs(),
+      loadDebugLog(),
       db.updateLastOpened(),
     ])
       .then(() => {
