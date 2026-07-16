@@ -3,7 +3,7 @@ import type {
   Domain, Task, CreateTaskPayload, UpdateTaskPayload,
   Habit, CreateHabitPayload, UpdateHabitPayload, HabitLog,
   Goal, CreateGoalPayload, UpdateGoalPayload,
-  XpEvent, Achievement, AppStateRow, DailyXp, TaskStats,
+  AppStateRow, TaskStats,
   Note, CreateNotePayload, UpdateNotePayload, CalendarDay,
   InboxItem, CreateInboxItemPayload, TriageInboxItemPayload,
   TaskTemplate, CreateTaskTemplatePayload, UpdateTaskTemplatePayload,
@@ -39,8 +39,6 @@ export const db = {
     withSyncMutation(() => invoke<void>('delete_domain', { id }), 'domain:delete'),
   updateDomainProfile: (payload: UpdateDomainProfilePayload) =>
     withSyncMutation(() => invoke<Domain>('update_domain_profile', { payload }), 'domain:update'),
-  updateDomainXp: (domain_id: string, xp_delta: number) =>
-    withSyncMutation(() => invoke<Domain>('update_domain_xp', { domainId: domain_id, xpDelta: xp_delta }), 'domain:xp'),
   updateDomainStreak: (domain_id: string) =>
     withSyncMutation(() => invoke<Domain>('update_domain_streak', { domainId: domain_id }), 'domain:streak'),
 
@@ -139,17 +137,6 @@ export const db = {
   deleteGoal: (id: string) => withSyncMutation(() => invoke<void>('delete_goal', { id }), 'goal:delete'),
   restoreGoal: (id: string) => withSyncMutation(() => invoke<Goal>('restore_goal', { id }), 'goal:restore'),
 
-  // ─── XP Events ─────────────────────────────────────────────────────────────
-  getXpEvents: (limit = 20) => invoke<XpEvent[]>('get_xp_events', { limit }),
-  getXpEventsByDomainAndRange: (domain_id: string, start_date: string, end_date: string) =>
-    invoke<XpEvent[]>('get_xp_events_by_domain_and_range', { domainId: domain_id, startDate: start_date, endDate: end_date }),
-  claimRecoveryBonus: (domain_id: string, source_id: string, xp_amount: number) =>
-    invoke<Domain>('claim_recovery_bonus', { domainId: domain_id, sourceId: source_id, xpAmount: xp_amount }),
-
-  // ─── Achievements ──────────────────────────────────────────────────────────
-  getAchievements: () => invoke<Achievement[]>('get_achievements'),
-  unlockAchievement: (id: string) => invoke<Achievement>('unlock_achievement', { id }),
-
   // ─── App State ─────────────────────────────────────────────────────────────
   getAppState: () => invoke<AppStateRow>('get_app_state'),
   updateMomentum: (score: number) => invoke<void>('update_momentum', { score }),
@@ -192,7 +179,6 @@ export const db = {
     invoke<void>('set_sync_cursor', { entityType: entity_type, lastPulledAt: last_pulled_at ?? null }),
 
   // ─── Analytics ─────────────────────────────────────────────────────────────
-  getDailyXp: (days: number) => invoke<DailyXp[]>('get_daily_xp', { days }),
   getTaskStats: () => invoke<TaskStats>('get_task_stats'),
 
   // ─── Reset ─────────────────────────────────────────────────────────────────
