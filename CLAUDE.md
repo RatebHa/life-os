@@ -61,7 +61,7 @@ life-os/
 │   │   ├── habits/           # HabitItem, HabitGrid
 │   │   ├── goals/            # GoalTree, GoalCard
 │   │   ├── analytics/        # All chart components
-│   │   ├── gamification/     # XPBar, StreakFlame, AchievementToast, LevelUpCeremony
+│   │   ├── gamification/     # StreakFlame
 │   │   └── shared/           # CompletionButton, ErrorToast, Modal, Badge
 │   ├── pages/
 │   │   ├── CommandCenter.tsx
@@ -84,11 +84,8 @@ life-os/
 │   │   ├── useCalendarStore.ts # Month nav + day data
 │   │   └── useErrorStore.ts
 │   ├── lib/
-│   │   ├── xp-engine.ts      # Rule-based XP calculator (always-on fallback)
-│   │   ├── ai-xp.ts          # Claude Haiku XP scorer + fallback logic
 │   │   ├── momentum.ts       # Momentum score algorithm
-│   │   ├── achievement-checker.ts # All achievement trigger logic
-│   │   ├── post-action.ts    # Post-completion: XP, level-up, achievements, momentum
+│   │   ├── post-action.ts    # Post-completion: momentum recalculation
 │   │   ├── types.ts          # All shared TypeScript interfaces
 │   │   └── db.ts             # Typed invoke() wrappers for all Tauri commands
 │   ├── test/
@@ -144,7 +141,7 @@ Never add a Google Fonts CDN link. Never use `@import url('https://...')` for fo
 --pip-elevated: #0f1f0f;   /* elevated surfaces */
 
 /* Accent colors */
---pip-amber:    #c8a020;   /* XP values, warnings */
+--pip-amber:    #c8a020;   /* warnings */
 --pip-red:      #ff4040;   /* critical alerts */
 --pip-blue:     #40a0ff;   /* informational */
 
@@ -195,7 +192,7 @@ The `--domain-primary`, `--domain-subtle` CSS vars resolve automatically per dom
 Never hardcode domain hex values directly in components.
 
 ### Typography
-- `VT323` (`var(--font-display)`) → all headings, domain names, level titles, large numbers, momentum score
+- `VT323` (`var(--font-display)`) → all headings, domain names, large numbers, momentum score
 - `Share Tech Mono` (`var(--font-body)`) → all body text, labels, descriptions, UI copy
 
 Both fonts are loaded via `@font-face` from `src/assets/fonts/`. Font variables are set in tokens.css:
@@ -207,7 +204,7 @@ Both fonts are loaded via `@font-face` from `src/assets/fonts/`. Font variables 
 ### Layout Components
 - **TopBar** (`components/layout/TopBar.tsx`) — brand + live clock + momentum stat + "+ NEW TASK" button + RED ALERT banner
 - **TabBar** (`components/layout/TabBar.tsx`) — STAT / TASKS / NOTES / HABITS / GOALS / CAL / DATA tabs
-- **Sidebar** (`components/layout/Sidebar.tsx`) — vertical nav, domain XP blocks, achievements count, rank footer
+- **Sidebar** (`components/layout/Sidebar.tsx`) — vertical nav, domain list with streak flame, search/quick-capture shortcuts
 - **FooterBar** (`components/layout/FooterBar.tsx`) — system status, version, keyboard hints
 
 ### CSS Classes (defined in globals.css)
@@ -237,8 +234,6 @@ Both fonts are loaded via `@font-face` from `src/assets/fonts/`. Font variables 
 .priority-badge-{critical|high|medium|low} — task priority chips
 .task-row            — task list row with domain border
 
-.xp-bar-track .xp-bar-fill — XP progress bar
-.xp-float            — "+N XP ↑" particle animation (1.2s)
 .check-pop           — checkmark animation on task completion
 .red-alert           — pulsing red border (critical momentum state)
 .blink               — 1s step-end blink animation
@@ -247,15 +242,14 @@ Both fonts are loaded via `@font-face` from `src/assets/fonts/`. Font variables 
 ```
 
 ### Animation Rules
-- Task completion: `check-pop` on CheckCircle icon + `.xp-float` particle
+- Task completion: `check-pop` on CheckCircle icon
 - All timing: `step-end` for digital CRT behavior (no ease curves)
 - Boot screen: `bootBlink` staggered dots
 - RED ALERT: `.red-alert` pulsing border + blinking banner
 
 ### Animation Rules
-- Task completion: `check-pop` on CheckCircle2 + `.xp-float` particle (`+{xp} XP ↑`)
+- Task completion: `check-pop` on CheckCircle2
 - Streak increment: `streak-pulse` glow
-- Level-up: `.level-up-overlay` with angular card + domain color flash
 - RED ALERT: `.red-alert` pulsing red border on affected domain card
 - Modal entrance: `modalEnter` (scale + translateY)
 - Page entrance: `.fade-in` (opacity + translateY)
@@ -273,8 +267,6 @@ CREATE TABLE IF NOT EXISTS domains (
   name TEXT NOT NULL,
   icon TEXT NOT NULL,
   color TEXT NOT NULL,
-  xp_total INTEGER DEFAULT 0,
-  level INTEGER DEFAULT 1,
   streak_current INTEGER DEFAULT 0,
   streak_longest INTEGER DEFAULT 0,
   streak_freeze_tokens INTEGER DEFAULT 0,
@@ -341,28 +333,6 @@ CREATE TABLE IF NOT EXISTS goals (
   updated_at TEXT NOT NULL
 );
 
--- XP event log (source of truth for all analytics)
-CREATE TABLE IF NOT EXISTS xp_events (
-  id TEXT PRIMARY KEY,
-  domain_id TEXT NOT NULL,
-  source_type TEXT NOT NULL,    -- 'task' | 'habit' | 'achievement' | 'bonus'
-  source_id TEXT NOT NULL,
-  xp_amount INTEGER NOT NULL,
-  ai_scored INTEGER DEFAULT 0,
-  ai_reasoning TEXT,
-  created_at TEXT NOT NULL
-);
-
--- Achievements
-CREATE TABLE IF NOT EXISTS achievements (
-  id TEXT PRIMARY KEY,
-  title TEXT NOT NULL,
-  description TEXT NOT NULL,
-  icon TEXT NOT NULL,
-  unlocked INTEGER DEFAULT 0,
-  unlocked_at TEXT
-);
-
 -- Notes (freeform text notes, optionally scoped to a domain)
 CREATE TABLE IF NOT EXISTS notes (
   id TEXT PRIMARY KEY,
@@ -394,7 +364,7 @@ CREATE TABLE IF NOT EXISTS app_state (
 - All datetimes stored as ISO 8601 strings (`2025-03-26T14:30:00Z`)
 - Tags and attachments stored as JSON strings, parsed in the frontend
 - All queries go through typed Tauri commands — never raw SQL from the frontend
-- Add indexes on: `tasks(domain_id)`, `tasks(status)`, `tasks(due_date)`, `xp_events(domain_id)`, `xp_events(created_at)`
+- Add indexes on: `tasks(domain_id)`, `tasks(status)`, `tasks(due_date)`
 
 ---
 
@@ -411,14 +381,14 @@ get_task(id) -> Task
 create_task(task: NewTask) -> Task
 update_task(id, updates: TaskUpdate) -> Task
 delete_task(id) -> ()
-complete_task(id) -> TaskCompletionResult  // awards XP, checks achievements
+complete_task(id) -> TaskCompletionResult  // updates status, checks streak
 
 // Habits
 get_habits(domain_id?) -> Vec<Habit>
 create_habit(habit: NewHabit) -> Habit
 update_habit(id, updates: HabitUpdate) -> Habit
 delete_habit(id) -> ()
-log_habit(habit_id, date) -> HabitLogResult  // awards XP, checks streak
+log_habit(habit_id, date) -> HabitLogResult  // checks streak
 
 // Goals
 get_goals(domain_id?, parent_goal_id?) -> Vec<Goal>
@@ -431,8 +401,6 @@ get_domains() -> Vec<Domain>
 get_domain(id) -> Domain
 
 // Gamification
-get_xp_events(domain_id?, days?) -> Vec<XPEvent>
-get_achievements() -> Vec<Achievement>
 get_app_state() -> AppState
 update_momentum() -> i32  // recalculates and returns new score
 set_mit(task_id?) -> ()
@@ -445,69 +413,12 @@ delete_note(id) -> ()
 search_notes(query) -> Vec<Note>
 
 // Calendar
-get_calendar_data(year, month) -> Vec<CalendarDay>  // tasks + habits + XP grouped by date
+get_calendar_data(year, month) -> Vec<CalendarDay>  // tasks + habits grouped by date
 
 // Settings
 save_api_key(key) -> ()
 get_api_key() -> Option<String>
 export_data() -> String  // returns full JSON export
-```
-
----
-
-## XP ENGINE
-
-### Rule-Based (lib/xp-engine.ts) — always active, zero dependencies
-```typescript
-export function calculateXP(task: {
-  priority: 'low' | 'medium' | 'high' | 'critical'
-  time_estimate_minutes: number | null
-  is_mit: boolean
-  due_date: string | null
-  completed_at: string | null
-}): number {
-  // Base XP from time estimate
-  let base = 30
-  if (task.time_estimate_minutes !== null) {
-    if (task.time_estimate_minutes < 30) base = 20
-    else if (task.time_estimate_minutes <= 90) base = 50
-    else base = 100
-  }
-
-  // Priority multiplier
-  const multipliers = { low: 1.0, medium: 1.5, high: 2.0, critical: 3.0 }
-  let xp = base * multipliers[task.priority]
-
-  // MIT bonus
-  if (task.is_mit) xp *= 1.5
-
-  // On-time completion bonus
-  if (task.due_date && task.completed_at && task.completed_at <= task.due_date) {
-    xp *= 1.25
-  }
-
-  return Math.round(xp)
-}
-```
-
-### AI-Based (lib/ai-xp.ts) — only runs if API key is stored
-```typescript
-// Model: claude-haiku-4-5-20251001
-// Falls back to rule-based on any error — never throws to the UI
-// Returns { xp: number, reason: string, ai_scored: boolean }
-
-// System prompt:
-// "You are an XP scoring engine for a gamified productivity app.
-//  Return ONLY valid JSON: {"xp": number, "reason": string}
-//  XP range: 10 to 500. Consider complexity, importance, and time investment.
-//  Be consistent. A quick low-priority task = ~20 XP. A critical deep work block = ~200-300 XP."
-
-// User prompt template:
-// "Task: {title}
-//  Description: {description || 'none'}
-//  Priority: {priority}
-//  Domain: {domain}
-//  Time estimate: {time_estimate_minutes || 'unknown'} minutes"
 ```
 
 ---
@@ -545,61 +456,11 @@ Momentum recalculates:
 
 ## GAMIFICATION RULES
 
-### Level System (per domain, independent)
-
-| Level | XP Required | Title |
-|---|---|---|
-| 1 | 0 | Recruit |
-| 2 | 500 | Private |
-| 3 | 1,200 | Corporal |
-| 4 | 2,500 | Sergeant |
-| 5 | 4,500 | Lieutenant |
-| 6 | 7,500 | Captain |
-| 7 | 12,000 | Major |
-| 8 | 20,000 | Colonel |
-| 9 | 35,000 | General |
-| 10 | 60,000 | Commander |
-
-Level is recalculated after every XP award. Never decreases.
-
 ### Streak Rules
 - Domain streak increments when ≥1 task OR habit completed in that domain that calendar day
 - Streak reset check runs on app open — if `last_activity_date < today` and no freeze used, streak resets to 0
 - Freeze token: earned at every 7-day streak milestone; protects one missed day
 - Display: flame icon + day count, color = domain primary color
-
-### Habit XP
-- Base: 15 XP per completion
-- Streak bonus: +5 XP per active 7-day streak tier (7 days = +5, 14 days = +10, etc.)
-
-### Achievement Triggers (achievements.ts)
-Check after every: task completion, habit log, XP event, momentum update.
-```typescript
-const ACHIEVEMENTS = [
-  { id: 'first_blood',    trigger: (s) => s.totalTasksCompleted >= 1 },
-  { id: 'on_fire',        trigger: (s) => s.maxDomainStreak >= 7 },
-  { id: 'overdrive',      trigger: (s) => s.todayXP >= 200 },
-  { id: 'mit_master',     trigger: (s) => s.mitStreak >= 5 },
-  { id: 'warrior',        trigger: (s) => s.domainLevels.military >= 5 },
-  { id: 'architect',      trigger: (s) => s.domainLevels.builder >= 5 },
-  { id: 'monk',           trigger: (s) => s.domainLevels.self >= 5 },
-  { id: 'balanced',       trigger: (s) => s.domainXPVariancePercent <= 10 },
-  { id: 'comeback',       trigger: (s) => s.prevMomentum < 15 && s.momentum >= 70 },
-  { id: 'dawn_operator',  trigger: (s) => s.earlyTaskDays >= 5 },
-  { id: 'centurion',      trigger: (s) => s.totalTasksCompleted >= 100 },
-  { id: 'habit_machine',  trigger: (s) => s.maxHabitStreak >= 30 },
-  { id: 'goal_crusher',   trigger: (s) => s.completedGoals >= 10 },
-  { id: 'deep_work',      trigger: (s) => s.weeklyDeepWorkTasks >= 5 },
-  { id: 'triple_threat',  trigger: (s) => s.todayActiveDomainsCount >= 3 },
-  { id: 'level_10',       trigger: (s) => Math.max(...Object.values(s.domainLevels)) >= 10 },
-  { id: 'streak_30',      trigger: (s) => s.maxDomainStreak >= 30 },
-  { id: 'xp_10000',       trigger: (s) => s.totalXP >= 10000 },
-  { id: 'all_habits',     trigger: (s) => s.allHabitsCompletedToday === true },
-  { id: 'perfect_week',   trigger: (s) => s.tasksCompletedAllWeek === true },
-]
-```
-
-On unlock: show `<AchievementToast>` for 4 seconds. Mark unlocked in DB. Never show again.
 
 ---
 
@@ -633,7 +494,6 @@ On unlock: show `<AchievementToast>` for 4 seconds. Mark unlocked in DB. Never s
 ### Error Handling
 - Every `invoke()` call wrapped in try/catch
 - Errors shown in UI (toast notification) — never swallowed silently
-- AI XP scoring failures silently fall back to rule-based (no error shown to user)
 
 ### File Conventions
 - Components: `PascalCase.tsx`
@@ -713,15 +573,12 @@ Always build in this order. Complete and verify each phase before starting the n
 
 ### Test File Locations
 ```
-src/lib/__tests__/xp-engine.test.ts         — calculateXP, bonuses, level math
 src/lib/__tests__/momentum.test.ts          — calcMomentum, state thresholds, labels
-src/lib/__tests__/achievement-checker.test.ts — all 15+ achievement triggers
 src/store/__tests__/useTaskStore.test.ts    — task CRUD, selectors
 src/store/__tests__/useNoteStore.test.ts    — note CRUD, search, selection
 src/store/__tests__/useCalendarStore.test.ts — month navigation, day lookup
-src/components/__tests__/XPBar.test.tsx     — progress bar rendering
 src/components/__tests__/StreakFlame.test.tsx — streak display, sizing
-src/components/__tests__/CompletionButton.test.tsx — click, double-click guard, XP float
+src/components/__tests__/CompletionButton.test.tsx — click, double-click guard
 ```
 
 ### Store Testing Pattern
