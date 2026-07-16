@@ -5635,6 +5635,224 @@ pub fn clear_debug_log(state: State<'_, DbState>) -> Result<(), String> {
 }
 
 #[cfg(test)]
+mod task_lifecycle_tests {
+    use super::*;
+
+    fn setup_conn() -> Connection {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute_batch(
+            "CREATE TABLE tasks (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                priority TEXT NOT NULL DEFAULT 'medium',
+                energy_level TEXT NOT NULL DEFAULT 'medium',
+                status TEXT NOT NULL DEFAULT 'todo',
+                is_mit INTEGER NOT NULL DEFAULT 0,
+                is_top_three INTEGER NOT NULL DEFAULT 0,
+                xp_value INTEGER NOT NULL DEFAULT 30,
+                xp_awarded INTEGER NOT NULL DEFAULT 0,
+                parent_task_id TEXT,
+                goal_id TEXT,
+                tags TEXT DEFAULT '[]',
+                time_estimate_minutes INTEGER,
+                due_date TEXT,
+                planned_for_date TEXT,
+                task_kind TEXT NOT NULL DEFAULT 'standard',
+                scheduled_for TEXT,
+                recurring_template_id TEXT,
+                recurrence_type TEXT,
+                recurrence_interval INTEGER,
+                recurrence_days TEXT DEFAULT '[]',
+                recurrence_anchor_date TEXT,
+                recurrence_rule TEXT,
+                time_actual_minutes INTEGER,
+                completed_at TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                attachments TEXT DEFAULT '[]'
+            );
+            CREATE TABLE domains (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                icon TEXT NOT NULL,
+                color TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                streak_current INTEGER DEFAULT 0,
+                streak_longest INTEGER DEFAULT 0,
+                streak_freeze_tokens INTEGER DEFAULT 0,
+                last_activity_date TEXT
+            );
+            CREATE TABLE habits (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                frequency TEXT NOT NULL DEFAULT 'daily',
+                target_days TEXT NOT NULL DEFAULT '[0,1,2,3,4,5,6]',
+                xp_per_completion INTEGER NOT NULL DEFAULT 15,
+                cadence_type TEXT NOT NULL DEFAULT 'daily',
+                cadence_days TEXT NOT NULL DEFAULT '[0,1,2,3,4,5,6]',
+                cadence_interval_days INTEGER NOT NULL DEFAULT 1,
+                cadence_weekly_target INTEGER NOT NULL DEFAULT 1,
+                cadence_anchor_date TEXT,
+                target_type TEXT NOT NULL DEFAULT 'checkbox',
+                target_value INTEGER NOT NULL DEFAULT 1,
+                minimum_value INTEGER,
+                unit_label TEXT,
+                minimum_version TEXT,
+                recovery_grace_days INTEGER NOT NULL DEFAULT 1,
+                restart_from_date TEXT,
+                streak_current INTEGER NOT NULL DEFAULT 0,
+                streak_longest INTEGER NOT NULL DEFAULT 0,
+                is_active INTEGER NOT NULL DEFAULT 1,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );
+            CREATE TABLE habit_logs (
+                id TEXT PRIMARY KEY,
+                habit_id TEXT NOT NULL,
+                completed_date TEXT NOT NULL,
+                xp_awarded INTEGER NOT NULL DEFAULT 15,
+                value_completed INTEGER NOT NULL DEFAULT 1,
+                status TEXT NOT NULL DEFAULT 'completed',
+                skip_reason TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                UNIQUE(habit_id, completed_date)
+            );"
+        ).unwrap();
+        conn
+    }
+
+    fn insert_domain(conn: &Connection, id: &str, last_activity_date: Option<&str>, streak_current: i64, streak_longest: i64) {
+        conn.execute(
+            "INSERT INTO domains (id, name, icon, color, created_at, updated_at, streak_current, streak_longest, last_activity_date)
+             VALUES (?1, ?1, 'icon', '#000000', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z', ?2, ?3, ?4)",
+            params![id, streak_current, streak_longest, last_activity_date],
+        ).unwrap();
+    }
+
+    fn base_task_payload(domain_id: &str) -> CreateTaskPayload {
+        CreateTaskPayload {
+            domain_id: domain_id.to_string(),
+            title: "Write the plan".to_string(),
+            description: None,
+            priority: "medium".to_string(),
+            energy_level: None,
+            status: None,
+            is_mit: false,
+            is_top_three: false,
+            xp_value: 0,
+            parent_task_id: None,
+            goal_id: None,
+            tags: None,
+            time_estimate_minutes: None,
+            due_date: None,
+            planned_for_date: None,
+            task_kind: None,
+            scheduled_for: None,
+            recurring_template_id: None,
+            recurrence_type: None,
+            recurrence_interval: None,
+            recurrence_days: None,
+            recurrence_anchor_date: None,
+            recurrence_rule: None,
+        }
+    }
+
+    #[test]
+    fn create_task_row_applies_defaults() {
+        let conn = setup_conn();
+        insert_domain(&conn, "military", None, 0, 0);
+
+        let task = create_task_row(&conn, base_task_payload("military")).unwrap();
+
+        assert_eq!(task.status, "todo");
+        assert_eq!(task.task_kind, "standard");
+        assert_eq!(task.energy_level, "medium");
+        assert_eq!(task.tags, "[]");
+        assert!(!task.xp_awarded);
+        assert!(task.completed_at.is_none());
+    }
+
+    #[test]
+    fn complete_task_row_starts_a_new_streak() {
+        let conn = setup_conn();
+        insert_domain(&conn, "military", None, 0, 0);
+        let task = create_task_row(&conn, base_task_payload("military")).unwrap();
+
+        let completed = complete_task_row(&conn, &task.id).unwrap();
+
+        assert_eq!(completed.status, "done");
+        assert!(completed.completed_at.is_some());
+        let domain = get_domain_by_id(&conn, "military").unwrap();
+        assert_eq!(domain.streak_current, 1);
+        assert_eq!(domain.last_activity_date, Some(Utc::now().format("%Y-%m-%d").to_string()));
+    }
+
+    #[test]
+    fn complete_task_row_increments_a_consecutive_day_streak() {
+        let conn = setup_conn();
+        let yesterday = (Utc::now() - Duration::days(1)).format("%Y-%m-%d").to_string();
+        insert_domain(&conn, "military", Some(&yesterday), 3, 5);
+        let task = create_task_row(&conn, base_task_payload("military")).unwrap();
+
+        complete_task_row(&conn, &task.id).unwrap();
+
+        let domain = get_domain_by_id(&conn, "military").unwrap();
+        assert_eq!(domain.streak_current, 4);
+        assert_eq!(domain.streak_longest, 5);
+    }
+
+    #[test]
+    fn undo_complete_task_row_restores_status_and_recalculates_streak_to_zero() {
+        let conn = setup_conn();
+        insert_domain(&conn, "military", None, 0, 0);
+        let task = create_task_row(&conn, base_task_payload("military")).unwrap();
+        complete_task_row(&conn, &task.id).unwrap();
+
+        let restored = undo_complete_task_row(&conn, &task.id, Some("in_progress".to_string())).unwrap();
+
+        assert_eq!(restored.status, "in_progress");
+        assert!(restored.completed_at.is_none());
+        let domain = get_domain_by_id(&conn, "military").unwrap();
+        assert_eq!(domain.streak_current, 0);
+        assert_eq!(domain.last_activity_date, None);
+    }
+
+    #[test]
+    fn undo_complete_task_row_defaults_to_todo_when_no_previous_status_given() {
+        let conn = setup_conn();
+        insert_domain(&conn, "military", None, 0, 0);
+        let task = create_task_row(&conn, base_task_payload("military")).unwrap();
+        complete_task_row(&conn, &task.id).unwrap();
+
+        let restored = undo_complete_task_row(&conn, &task.id, None).unwrap();
+
+        assert_eq!(restored.status, "todo");
+    }
+
+    #[test]
+    fn delete_task_row_soft_deletes_without_removing_the_row() {
+        let conn = setup_conn();
+        insert_domain(&conn, "military", None, 0, 0);
+        let task = create_task_row(&conn, base_task_payload("military")).unwrap();
+
+        delete_task_row(&conn, &task.id).unwrap();
+
+        let row = get_task_row(&conn, &task.id).unwrap();
+        assert!(row.deleted_at.is_some());
+    }
+}
+
+#[cfg(test)]
 mod debug_log_tests {
     use super::*;
 
