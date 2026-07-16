@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { DOMAIN_META, LEVEL_TITLES, type Domain, type DomainId } from './types';
+import { DOMAIN_META, type Domain, type DomainId } from './types';
 
 type DomainVisual = {
   label: string;
@@ -136,10 +136,6 @@ export function getDomainThemeStyle(
     ['--domain-subtle' as string]: buildSubtle(meta.color),
     ['--domain-accent' as string]: meta.accent,
   };
-}
-
-export function getLevelTitle(level: number): string {
-  return LEVEL_TITLES[level] ?? LEVEL_TITLES[10];
 }
 
 export function getDefaultDomainId(domains: Array<Pick<Domain, 'id' | 'name' | 'icon' | 'color'>>): DomainId {
