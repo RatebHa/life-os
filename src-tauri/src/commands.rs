@@ -455,18 +455,6 @@ fn row_to_focus_timer_draft(row: &rusqlite::Row) -> rusqlite::Result<FocusTimerD
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct XpEvent {
-    pub id: String,
-    pub domain_id: String,
-    pub source_type: String,
-    pub source_id: String,
-    pub xp_amount: i64,
-    pub ai_scored: bool,
-    pub ai_reasoning: Option<String>,
-    pub created_at: String,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct AppStateRow {
     pub id: i64,
     pub momentum_score: i64,
@@ -701,7 +689,6 @@ struct ExportPayload {
     habits: Vec<Habit>,
     habit_logs: Vec<HabitLog>,
     goals: Vec<Goal>,
-    xp_events: Vec<XpEvent>,
     notes: Vec<Note>,
     inbox_items: Vec<InboxItem>,
     task_templates: Vec<TaskTemplate>,
@@ -727,8 +714,6 @@ struct ImportPayload {
     habit_logs: Vec<HabitLog>,
     #[serde(default)]
     goals: Vec<Goal>,
-    #[serde(default)]
-    xp_events: Vec<XpEvent>,
     #[serde(default)]
     notes: Vec<ImportNote>,
     #[serde(default)]
@@ -1251,25 +1236,6 @@ fn load_export_payload(conn: &Connection) -> Result<ExportPayload, String> {
         rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())?
     };
 
-    let xp_events = {
-        let mut stmt = conn.prepare(
-            "SELECT id, domain_id, source_type, source_id, xp_amount, ai_scored, ai_reasoning, created_at FROM xp_events ORDER BY created_at DESC"
-        ).map_err(|e| e.to_string())?;
-        let rows = stmt.query_map([], |row| {
-            Ok(XpEvent {
-                id: row.get(0)?,
-                domain_id: row.get(1)?,
-                source_type: row.get(2)?,
-                source_id: row.get(3)?,
-                xp_amount: row.get(4)?,
-                ai_scored: row.get::<_, i64>(5)? != 0,
-                ai_reasoning: row.get(6)?,
-                created_at: row.get(7)?,
-            })
-        }).map_err(|e| e.to_string())?;
-        rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())?
-    };
-
     let mut app_state = read_app_state_row(conn)?;
     app_state.api_key = None;
     app_state.sync_access_token = None;
@@ -1283,7 +1249,6 @@ fn load_export_payload(conn: &Connection) -> Result<ExportPayload, String> {
         habits,
         habit_logs,
         goals,
-        xp_events,
         notes,
         inbox_items,
         task_templates,
@@ -1988,7 +1953,6 @@ fn import_payload_into_db(conn: &mut Connection, payload: ImportPayload) -> Resu
         DELETE FROM tasks;
         DELETE FROM habits;
         DELETE FROM goals;
-        DELETE FROM xp_events;
         DELETE FROM notes;
         DELETE FROM inbox_items;
         DELETE FROM task_templates;
@@ -2162,23 +2126,6 @@ fn import_payload_into_db(conn: &mut Connection, payload: ImportPayload) -> Resu
                 goal.created_at,
                 goal.updated_at,
                 goal.deleted_at
-            ],
-        ).map_err(|e| e.to_string())?;
-    }
-
-    for xp_event in payload.xp_events {
-        tx.execute(
-            "INSERT INTO xp_events (id, domain_id, source_type, source_id, xp_amount, ai_scored, ai_reasoning, created_at)
-             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
-            params![
-                xp_event.id,
-                xp_event.domain_id,
-                xp_event.source_type,
-                xp_event.source_id,
-                xp_event.xp_amount,
-                xp_event.ai_scored as i64,
-                xp_event.ai_reasoning,
-                xp_event.created_at
             ],
         ).map_err(|e| e.to_string())?;
     }
@@ -2433,14 +2380,13 @@ pub fn delete_domain(state: State<'_, DbState>, id: String) -> Result<(), String
     let tasks: i64 = conn.query_row("SELECT COUNT(*) FROM tasks WHERE domain_id = ?1 AND deleted_at IS NULL", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
     let habits: i64 = conn.query_row("SELECT COUNT(*) FROM habits WHERE domain_id = ?1 AND deleted_at IS NULL", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
     let goals: i64 = conn.query_row("SELECT COUNT(*) FROM goals WHERE domain_id = ?1", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
-    let xp_events: i64 = conn.query_row("SELECT COUNT(*) FROM xp_events WHERE domain_id = ?1", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
     let notes: i64 = conn.query_row("SELECT COUNT(*) FROM notes WHERE domain_id = ?1", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
     let inbox_items: i64 = conn.query_row("SELECT COUNT(*) FROM inbox_items WHERE domain_id = ?1", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
     let templates: i64 = conn.query_row("SELECT COUNT(*) FROM task_templates WHERE domain_id = ?1", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
 
-    if tasks + habits + goals + xp_events + notes + inbox_items + templates > 0 {
+    if tasks + habits + goals + notes + inbox_items + templates > 0 {
         return Err(format!(
-            "Domain still has linked data (tasks: {tasks}, habits: {habits}, goals: {goals}, xp: {xp_events}, notes: {notes}, inbox: {inbox_items}, templates: {templates}). Move or clear that data before deleting the domain."
+            "Domain still has linked data (tasks: {tasks}, habits: {habits}, goals: {goals}, notes: {notes}, inbox: {inbox_items}, templates: {templates}). Move or clear that data before deleting the domain."
         ));
     }
 
@@ -3902,23 +3848,6 @@ pub fn undo_habit_log(
         params![Utc::now().to_rfc3339(), habit_id.clone(), completed_date],
     ).map_err(|e| e.to_string())?;
 
-    if log.xp_awarded > 0 {
-        conn.execute(
-            "DELETE FROM xp_events
-             WHERE id IN (
-                SELECT id
-                FROM xp_events
-                WHERE source_type = 'habit'
-                  AND source_id = ?1
-                  AND xp_amount = ?2
-                  AND created_at = ?3
-                ORDER BY created_at DESC
-                LIMIT 1
-             )",
-            params![habit_id, log.xp_awarded, log.created_at.clone()],
-        ).map_err(|e| e.to_string())?;
-    }
-
     sync_habit_streaks(&conn)?;
     recalculate_domain_state(&conn, &habit.domain_id)?;
 
@@ -4096,98 +4025,6 @@ pub fn restore_goal(state: State<'_, DbState>, id: String) -> Result<Goal, Strin
         params![id],
         row_to_goal,
     ).map_err(|e| e.to_string())
-}
-
-// ─── XP Events ────────────────────────────────────────────────────────────────
-
-#[tauri::command]
-pub fn get_xp_events(state: State<'_, DbState>, limit: i64) -> Result<Vec<XpEvent>, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
-    let mut stmt = conn.prepare(
-        "SELECT id, domain_id, source_type, source_id, xp_amount, ai_scored, ai_reasoning, created_at FROM xp_events ORDER BY created_at DESC LIMIT ?1"
-    ).map_err(|e| e.to_string())?;
-
-    let events = stmt.query_map(params![limit], |row| {
-        Ok(XpEvent {
-            id: row.get(0)?,
-            domain_id: row.get(1)?,
-            source_type: row.get(2)?,
-            source_id: row.get(3)?,
-            xp_amount: row.get(4)?,
-            ai_scored: row.get::<_, i64>(5)? != 0,
-            ai_reasoning: row.get(6)?,
-            created_at: row.get(7)?,
-        })
-    }).map_err(|e| e.to_string())?
-    .collect::<Result<Vec<_>, _>>()
-    .map_err(|e| e.to_string())?;
-
-    Ok(events)
-}
-
-#[tauri::command]
-pub fn get_xp_events_by_domain_and_range(state: State<'_, DbState>, domain_id: String, start_date: String, end_date: String) -> Result<Vec<XpEvent>, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
-    let mut stmt = conn.prepare(
-        "SELECT id, domain_id, source_type, source_id, xp_amount, ai_scored, ai_reasoning, created_at FROM xp_events WHERE domain_id = ?1 AND created_at >= ?2 AND created_at <= ?3 ORDER BY created_at DESC"
-    ).map_err(|e| e.to_string())?;
-
-    let events = stmt.query_map(params![domain_id, start_date, end_date], |row| {
-        Ok(XpEvent {
-            id: row.get(0)?,
-            domain_id: row.get(1)?,
-            source_type: row.get(2)?,
-            source_id: row.get(3)?,
-            xp_amount: row.get(4)?,
-            ai_scored: row.get::<_, i64>(5)? != 0,
-            ai_reasoning: row.get(6)?,
-            created_at: row.get(7)?,
-        })
-    }).map_err(|e| e.to_string())?
-    .collect::<Result<Vec<_>, _>>()
-    .map_err(|e| e.to_string())?;
-
-    Ok(events)
-}
-
-#[tauri::command]
-pub fn claim_recovery_bonus(state: State<'_, DbState>, domain_id: String, source_id: String, xp_amount: i64) -> Result<Domain, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
-    let exists: i64 = conn.query_row(
-        "SELECT COUNT(*) FROM xp_events WHERE source_type = 'bonus' AND source_id = ?1",
-        params![source_id],
-        |row| row.get(0),
-    ).map_err(|e| e.to_string())?;
-
-    if exists > 0 {
-        return get_domain_by_id(&conn, &domain_id);
-    }
-
-    let event_id = Uuid::new_v4().to_string();
-    let now = Utc::now().to_rfc3339();
-    conn.execute(
-        "INSERT INTO xp_events (id, domain_id, source_type, source_id, xp_amount, ai_scored, ai_reasoning, created_at)
-         VALUES (?1, ?2, 'bonus', ?3, ?4, 0, ?5, ?6)",
-        params![event_id, domain_id, source_id, xp_amount, Some("Recovery bonus".to_string()), now],
-    ).map_err(|e| e.to_string())?;
-
-    conn.execute(
-        "UPDATE domains SET xp_total = xp_total + ?1 WHERE id = ?2",
-        params![xp_amount, domain_id],
-    ).map_err(|e| e.to_string())?;
-
-    let total_xp: i64 = conn.query_row(
-        "SELECT xp_total FROM domains WHERE id = ?1",
-        params![domain_id],
-        |row| row.get(0),
-    ).map_err(|e| e.to_string())?;
-    let level = xp_to_level(total_xp);
-    conn.execute(
-        "UPDATE domains SET level = ?1 WHERE id = ?2",
-        params![level, domain_id],
-    ).map_err(|e| e.to_string())?;
-
-    get_domain_by_id(&conn, &domain_id)
 }
 
 // ─── App State ────────────────────────────────────────────────────────────────
@@ -4515,38 +4352,6 @@ pub fn set_sync_cursor(state: State<'_, DbState>, entity_type: String, last_pull
 // ─── Analytics ────────────────────────────────────────────────────────────────
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct DailyXp {
-    pub date: String,
-    pub domain_id: String,
-    pub xp: i64,
-}
-
-#[tauri::command]
-pub fn get_daily_xp(state: State<'_, DbState>, days: i64) -> Result<Vec<DailyXp>, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
-    let start = chrono::Utc::now()
-        .checked_sub_signed(chrono::Duration::days(days))
-        .map(|d| d.format("%Y-%m-%d").to_string())
-        .unwrap_or_default();
-
-    let mut stmt = conn.prepare(
-        "SELECT substr(created_at, 1, 10) as date, domain_id, SUM(xp_amount) as xp FROM xp_events WHERE date >= ?1 GROUP BY date, domain_id ORDER BY date ASC"
-    ).map_err(|e| e.to_string())?;
-
-    let rows = stmt.query_map(params![start], |row| {
-        Ok(DailyXp {
-            date: row.get(0)?,
-            domain_id: row.get(1)?,
-            xp: row.get(2)?,
-        })
-    }).map_err(|e| e.to_string())?
-    .collect::<Result<Vec<_>, _>>()
-    .map_err(|e| e.to_string())?;
-
-    Ok(rows)
-}
-
-#[derive(Debug, Serialize, Deserialize)]
 pub struct TaskStats {
     pub total: i64,
     pub completed: i64,
@@ -4595,7 +4400,6 @@ pub fn reset_all_data(state: State<'_, DbState>) -> Result<(), String> {
         DELETE FROM habits;
         DELETE FROM habit_logs;
         DELETE FROM goals;
-        DELETE FROM xp_events;
         DELETE FROM notes;
         DELETE FROM inbox_items;
         DELETE FROM task_templates;
