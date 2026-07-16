@@ -2802,9 +2802,7 @@ fn get_task_row(conn: &Connection, task_id: &str) -> Result<Task, String> {
     ).map_err(|e| e.to_string())
 }
 
-#[tauri::command]
-pub fn create_task(state: State<'_, DbState>, payload: CreateTaskPayload) -> Result<Task, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+fn create_task_row(conn: &Connection, payload: CreateTaskPayload) -> Result<Task, String> {
     let id = Uuid::new_v4().to_string();
     let now = Utc::now().to_rfc3339();
     let tags = payload.tags.unwrap_or_else(default_json_array);
@@ -2903,7 +2901,13 @@ pub fn create_task(state: State<'_, DbState>, payload: CreateTaskPayload) -> Res
         ],
     ).map_err(|e| e.to_string())?;
 
-    get_task_row(&conn, &id)
+    get_task_row(conn, &id)
+}
+
+#[tauri::command]
+pub fn create_task(state: State<'_, DbState>, payload: CreateTaskPayload) -> Result<Task, String> {
+    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    create_task_row(&conn, payload)
 }
 
 #[tauri::command]
@@ -3007,9 +3011,7 @@ pub fn update_task(state: State<'_, DbState>, payload: UpdateTaskPayload) -> Res
     get_task_row(&conn, &payload.id)
 }
 
-#[tauri::command]
-pub fn delete_task(state: State<'_, DbState>, id: String) -> Result<(), String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+fn delete_task_row(conn: &Connection, id: &str) -> Result<(), String> {
     let now = Utc::now().to_rfc3339();
     conn.execute(
         "UPDATE tasks SET deleted_at = ?1, updated_at = ?1 WHERE id = ?2",
@@ -3019,8 +3021,12 @@ pub fn delete_task(state: State<'_, DbState>, id: String) -> Result<(), String> 
 }
 
 #[tauri::command]
-pub fn complete_task(state: State<'_, DbState>, id: String) -> Result<Task, String> {
+pub fn delete_task(state: State<'_, DbState>, id: String) -> Result<(), String> {
     let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    delete_task_row(&conn, &id)
+}
+
+fn complete_task_row(conn: &Connection, id: &str) -> Result<Task, String> {
     let now = Utc::now().to_rfc3339();
 
     conn.execute(
@@ -3059,17 +3065,17 @@ pub fn complete_task(state: State<'_, DbState>, id: String) -> Result<Task, Stri
             ).map_err(|e| e.to_string())?;
         }
     }
-    get_task_row(&conn, &id)
+    get_task_row(conn, id)
 }
 
 #[tauri::command]
-pub fn undo_complete_task(
-    state: State<'_, DbState>,
-    id: String,
-    previous_status: Option<String>,
-) -> Result<Task, String> {
+pub fn complete_task(state: State<'_, DbState>, id: String) -> Result<Task, String> {
     let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
-    let task = get_task_row(&conn, &id)?;
+    complete_task_row(&conn, &id)
+}
+
+fn undo_complete_task_row(conn: &Connection, id: &str, previous_status: Option<String>) -> Result<Task, String> {
+    let task = get_task_row(conn, id)?;
     let restore_status = previous_status
         .as_deref()
         .filter(|value| !value.trim().is_empty())
@@ -3087,9 +3093,19 @@ pub fn undo_complete_task(
         params![restore_status, now, id],
     ).map_err(|e| e.to_string())?;
 
-    recalculate_domain_state(&conn, &task.domain_id)?;
+    recalculate_domain_state(conn, &task.domain_id)?;
 
-    get_task_row(&conn, &task.id)
+    get_task_row(conn, &task.id)
+}
+
+#[tauri::command]
+pub fn undo_complete_task(
+    state: State<'_, DbState>,
+    id: String,
+    previous_status: Option<String>,
+) -> Result<Task, String> {
+    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    undo_complete_task_row(&conn, &id, previous_status)
 }
 
 #[tauri::command]
