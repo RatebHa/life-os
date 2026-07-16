@@ -467,16 +467,6 @@ pub struct XpEvent {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct Achievement {
-    pub id: String,
-    pub title: String,
-    pub description: String,
-    pub icon: String,
-    pub unlocked: bool,
-    pub unlocked_at: Option<String>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct AppStateRow {
     pub id: i64,
     pub momentum_score: i64,
@@ -712,7 +702,6 @@ struct ExportPayload {
     habit_logs: Vec<HabitLog>,
     goals: Vec<Goal>,
     xp_events: Vec<XpEvent>,
-    achievements: Vec<Achievement>,
     notes: Vec<Note>,
     inbox_items: Vec<InboxItem>,
     task_templates: Vec<TaskTemplate>,
@@ -740,8 +729,6 @@ struct ImportPayload {
     goals: Vec<Goal>,
     #[serde(default)]
     xp_events: Vec<XpEvent>,
-    #[serde(default)]
-    achievements: Vec<Achievement>,
     #[serde(default)]
     notes: Vec<ImportNote>,
     #[serde(default)]
@@ -1160,23 +1147,6 @@ fn load_export_payload(conn: &Connection) -> Result<ExportPayload, String> {
         rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())?
     };
 
-    let achievements = {
-        let mut stmt = conn.prepare(
-            "SELECT id, title, description, icon, unlocked, unlocked_at FROM achievements"
-        ).map_err(|e| e.to_string())?;
-        let rows = stmt.query_map([], |row| {
-            Ok(Achievement {
-                id: row.get(0)?,
-                title: row.get(1)?,
-                description: row.get(2)?,
-                icon: row.get(3)?,
-                unlocked: row.get::<_, i64>(4)? != 0,
-                unlocked_at: row.get(5)?,
-            })
-        }).map_err(|e| e.to_string())?;
-        rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())?
-    };
-
     let notes = {
         let mut stmt = conn.prepare(
             "SELECT id, domain_id, goal_id, title, content, tags, pinned, created_at, updated_at, deleted_at FROM notes ORDER BY pinned DESC, updated_at DESC"
@@ -1314,7 +1284,6 @@ fn load_export_payload(conn: &Connection) -> Result<ExportPayload, String> {
         habit_logs,
         goals,
         xp_events,
-        achievements,
         notes,
         inbox_items,
         task_templates,
@@ -2026,7 +1995,6 @@ fn import_payload_into_db(conn: &mut Connection, payload: ImportPayload) -> Resu
         DELETE FROM focus_sessions;
         DELETE FROM focus_timer_drafts;
         DELETE FROM task_friction_logs;
-        DELETE FROM achievements;
         DELETE FROM domains;
         DELETE FROM app_state;
         ",
@@ -2211,21 +2179,6 @@ fn import_payload_into_db(conn: &mut Connection, payload: ImportPayload) -> Resu
                 xp_event.ai_scored as i64,
                 xp_event.ai_reasoning,
                 xp_event.created_at
-            ],
-        ).map_err(|e| e.to_string())?;
-    }
-
-    for achievement in payload.achievements {
-        tx.execute(
-            "INSERT INTO achievements (id, title, description, icon, unlocked, unlocked_at)
-             VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
-            params![
-                achievement.id,
-                achievement.title,
-                achievement.description,
-                achievement.icon,
-                achievement.unlocked as i64,
-                achievement.unlocked_at
             ],
         ).map_err(|e| e.to_string())?;
     }
@@ -4237,55 +4190,6 @@ pub fn claim_recovery_bonus(state: State<'_, DbState>, domain_id: String, source
     get_domain_by_id(&conn, &domain_id)
 }
 
-// ─── Achievements ─────────────────────────────────────────────────────────────
-
-#[tauri::command]
-pub fn get_achievements(state: State<'_, DbState>) -> Result<Vec<Achievement>, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
-    let mut stmt = conn.prepare(
-        "SELECT id, title, description, icon, unlocked, unlocked_at FROM achievements"
-    ).map_err(|e| e.to_string())?;
-
-    let achievements = stmt.query_map([], |row| {
-        Ok(Achievement {
-            id: row.get(0)?,
-            title: row.get(1)?,
-            description: row.get(2)?,
-            icon: row.get(3)?,
-            unlocked: row.get::<_, i64>(4)? != 0,
-            unlocked_at: row.get(5)?,
-        })
-    }).map_err(|e| e.to_string())?
-    .collect::<Result<Vec<_>, _>>()
-    .map_err(|e| e.to_string())?;
-
-    Ok(achievements)
-}
-
-#[tauri::command]
-pub fn unlock_achievement(state: State<'_, DbState>, id: String) -> Result<Achievement, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
-    let now = Utc::now().to_rfc3339();
-
-    conn.execute(
-        "UPDATE achievements SET unlocked = 1, unlocked_at = ?1 WHERE id = ?2 AND unlocked = 0",
-        params![now, id],
-    ).map_err(|e| e.to_string())?;
-
-    conn.query_row(
-        "SELECT id, title, description, icon, unlocked, unlocked_at FROM achievements WHERE id = ?1",
-        params![id],
-        |row| Ok(Achievement {
-            id: row.get(0)?,
-            title: row.get(1)?,
-            description: row.get(2)?,
-            icon: row.get(3)?,
-            unlocked: row.get::<_, i64>(4)? != 0,
-            unlocked_at: row.get(5)?,
-        })
-    ).map_err(|e| e.to_string())
-}
-
 // ─── App State ────────────────────────────────────────────────────────────────
 
 #[tauri::command]
@@ -4698,7 +4602,6 @@ pub fn reset_all_data(state: State<'_, DbState>) -> Result<(), String> {
         DELETE FROM focus_sessions;
         DELETE FROM focus_timer_drafts;
         DELETE FROM task_friction_logs;
-        UPDATE achievements SET unlocked = 0, unlocked_at = NULL;
         UPDATE app_state SET momentum_score = 50, current_mit_task_id = NULL, last_momentum_calc = NULL, onboarding_complete = 0;
     ").map_err(|e| e.to_string())?;
     Ok(())
