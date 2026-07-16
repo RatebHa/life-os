@@ -8,8 +8,6 @@ export interface Domain {
   created_at: string;
   updated_at?: string;
   deleted_at?: string | null;
-  xp_total: number;
-  level: number;
   streak_current: number;
   streak_longest: number;
   streak_freeze_tokens: number;
@@ -255,26 +253,6 @@ export interface UpdateGoalPayload {
   progress_percent?: number;
 }
 
-export interface XpEvent {
-  id: string;
-  domain_id: DomainId;
-  source_type: 'task' | 'habit' | 'achievement' | 'bonus';
-  source_id: string;
-  xp_amount: number;
-  ai_scored: boolean;
-  ai_reasoning: string | null;
-  created_at: string;
-}
-
-export interface Achievement {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  unlocked: boolean;
-  unlocked_at: string | null;
-}
-
 export interface AppStateRow {
   id: number;
   momentum_score: number;
@@ -365,8 +343,6 @@ export interface BackupCounts {
   habits: number;
   habit_logs: number;
   goals: number;
-  xp_events: number;
-  achievements: number;
   notes: number;
   inbox_items: number;
   task_templates: number;
@@ -563,12 +539,6 @@ export interface CompleteFocusSessionPayload {
   ended_at: string;
 }
 
-export interface DailyXp {
-  date: string;
-  domain_id: DomainId;
-  xp: number;
-}
-
 export interface TaskStats {
   total: number;
   completed: number;
@@ -582,21 +552,6 @@ export const DOMAIN_META = {
   builder:  { label: 'Builder',  icon: '[B]', color: '#4A90E2', accent: '#3574C4' },
   self:     { label: 'Self',     icon: '[+]', color: '#34B27B', accent: '#26935F' },
 };
-
-export const LEVEL_TITLES: Record<number, string> = {
-  1: 'Initiate',
-  2: 'Scout',
-  3: 'Operator',
-  4: 'Specialist',
-  5: 'Strategist',
-  6: 'Lead',
-  7: 'Director',
-  8: 'Master',
-  9: 'Elite',
-  10: 'Legend',
-};
-
-export const XP_THRESHOLDS = [0, 500, 1200, 2500, 4500, 7500, 12000, 20000, 35000, 60000];
 
 // Notes
 export interface Note {
@@ -658,7 +613,6 @@ export interface CalendarDay {
   date: string;
   tasks: CalendarTaskSummary[];
   habits_logged: CalendarHabitSummary[];
-  xp_earned: number;
 }
 
 export interface DebugEntry {
