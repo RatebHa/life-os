@@ -1170,15 +1170,13 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
 }
 
 /* ── PROGRESS BAR ──────────────────────────────────────────────────────────── */
-.progress-track,
-.xp-bar-track {
+.progress-track {
   background: var(--color-surface-elevated);
   border-radius: var(--radius-full);
   height: 4px;
   overflow: hidden;
 }
-.progress-fill,
-.xp-bar-fill {
+.progress-fill {
   height: 100%;
   border-radius: var(--radius-full);
   background: var(--domain-primary, var(--color-accent));
@@ -1249,131 +1247,6 @@ textarea.input, .input[rows] { height: auto; min-height: 80px; resize: vertical;
 .boot-item:nth-child(8)  { animation-delay: 350ms; }
 .boot-item:nth-child(9)  { animation-delay: 400ms; }
 .boot-item:nth-child(10) { animation-delay: 450ms; }
-
-/* ── LEVEL UP CARD (shrunk from full-screen ceremony to a centered card) ───── */
-.level-up-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(4,5,8,0.55);
-}
-.level-up-shell {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 28px 40px;
-  text-align: center;
-  background: var(--color-surface);
-  border: 1px solid var(--domain-primary, var(--color-accent));
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  min-width: 320px;
-}
-.level-up-hud,
-.level-up-grid {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  font-family: var(--font-sans);
-  font-size: var(--text-2xs);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.04em;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-}
-.level-up-kicker {
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--text-sm);
-  letter-spacing: 0.08em;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-}
-.level-up-rank {
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-bold);
-  font-size: var(--text-2xl);
-  letter-spacing: -0.02em;
-  color: var(--domain-bright, var(--color-accent));
-  line-height: 1;
-}
-.level-up-title {
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-bold);
-  font-size: var(--text-xl);
-  color: var(--color-text);
-}
-.level-up-subtitle {
-  font-family: var(--font-sans);
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-regular);
-  color: var(--color-text-muted);
-}
-
-/* ── ACHIEVEMENT TOAST ─────────────────────────────────────────────────────── */
-.achievement-toast-wrap {
-  animation: toastIn var(--motion-base) both;
-}
-.achievement-toast {
-  position: relative;
-  display: flex;
-  gap: 14px;
-  align-items: stretch;
-  padding: 12px 14px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--elevation-2);
-  background: var(--color-surface);
-}
-.achievement-toast::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  border-radius: var(--radius-full) 0 0 var(--radius-full);
-  background: var(--color-accent);
-}
-.achievement-toast-icon {
-  min-width: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-regular);
-}
-.achievement-toast-kicker {
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--text-2xs);
-  letter-spacing: 0.06em;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-}
-.achievement-toast-title {
-  font-family: var(--font-sans);
-  font-weight: var(--font-weight-bold);
-  font-size: var(--text-md);
-  color: var(--color-accent);
-}
-.achievement-toast-copy {
-  font-family: var(--font-sans);
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-regular);
-  color: var(--color-text-muted);
-  margin-top: 4px;
-}
 
 /* ── UNDO TOAST ────────────────────────────────────────────────────────────── */
 .undo-toast-stack {
