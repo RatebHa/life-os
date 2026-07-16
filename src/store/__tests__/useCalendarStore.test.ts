@@ -10,7 +10,6 @@ function makeCalendarDay(date: string, overrides: Partial<CalendarDay> = {}): Ca
     date,
     tasks: [],
     habits_logged: [],
-    xp_earned: 0,
     ...overrides,
   };
 }
@@ -40,7 +39,7 @@ describe('useCalendarStore', () => {
 
   it('loadMonth: fetches and stores calendar days', async () => {
     const days = [
-      makeCalendarDay('2025-01-15', { xp_earned: 90 }),
+      makeCalendarDay('2025-01-15'),
       makeCalendarDay('2025-01-16'),
     ];
     mockInvoke.mockResolvedValueOnce(days);
@@ -118,10 +117,9 @@ describe('useCalendarStore', () => {
   });
 
   it('dayData: returns matching day or undefined', () => {
-    const day = makeCalendarDay('2025-06-15', { xp_earned: 120 });
+    const day = makeCalendarDay('2025-06-15');
     useCalendarStore.setState({ ...initialState, days: [day, makeCalendarDay('2025-06-16')] });
 
-    expect(useCalendarStore.getState().dayData('2025-06-15')?.xp_earned).toBe(120);
     expect(useCalendarStore.getState().dayData('2025-06-99')).toBeUndefined();
   });
 });
