@@ -553,8 +553,6 @@ pub struct BackupCounts {
     pub habits: usize,
     pub habit_logs: usize,
     pub goals: usize,
-    pub xp_events: usize,
-    pub achievements: usize,
     pub notes: usize,
     pub inbox_items: usize,
     pub task_templates: usize,
@@ -1642,8 +1640,6 @@ fn build_backup_counts(payload: &ImportPayload) -> BackupCounts {
         habits: payload.habits.len(),
         habit_logs: payload.habit_logs.len(),
         goals: payload.goals.len(),
-        xp_events: payload.xp_events.len(),
-        achievements: payload.achievements.len(),
         notes: payload.notes.len(),
         inbox_items: payload.inbox_items.len(),
         task_templates: payload.task_templates.len(),
@@ -1752,8 +1748,6 @@ fn preview_from_export_payload(
             habits: payload.habits.len(),
             habit_logs: payload.habit_logs.len(),
             goals: payload.goals.len(),
-            xp_events: payload.xp_events.len(),
-            achievements: payload.achievements.len(),
             notes: payload.notes.len(),
             inbox_items: payload.inbox_items.len(),
             task_templates: payload.task_templates.len(),
@@ -5425,7 +5419,6 @@ pub struct CalendarDay {
     pub date: String,
     pub tasks: Vec<CalendarTaskSummary>,
     pub habits_logged: Vec<CalendarHabitSummary>,
-    pub xp_earned: i64,
 }
 
 // ─── Calendar Command ─────────────────────────────────────────────────────────
@@ -5482,19 +5475,6 @@ pub fn get_calendar_data(state: State<'_, DbState>, year: i32, month: i32) -> Re
         habits_by_date.entry(date).or_default().push(habit);
     }
 
-    // Collect XP earned per day
-    let mut xp_stmt = conn.prepare(
-        "SELECT substr(created_at, 1, 10) as day, SUM(xp_amount) FROM xp_events WHERE created_at >= ?1 AND created_at < ?2 GROUP BY day"
-    ).map_err(|e| e.to_string())?;
-    let mut xp_by_date: std::collections::HashMap<String, i64> = std::collections::HashMap::new();
-    let xp_rows = xp_stmt.query_map(params![start, end], |row| {
-        Ok((row.get::<_, String>(0)?, row.get::<_, i64>(1)?))
-    }).map_err(|e| e.to_string())?;
-    for row in xp_rows {
-        let (date, xp) = row.map_err(|e| e.to_string())?;
-        xp_by_date.insert(date, xp);
-    }
-
     // Build list of all days in month
     let days_in_month = if month == 12 { 31 } else {
         let next_month_start = chrono::NaiveDate::from_ymd_opt(if month == 12 { year + 1 } else { year }, if month == 12 { 1 } else { (month + 1) as u32 }, 1).unwrap();
@@ -5508,7 +5488,6 @@ pub fn get_calendar_data(state: State<'_, DbState>, year: i32, month: i32) -> Re
         result.push(CalendarDay {
             tasks: tasks_by_date.remove(&date).unwrap_or_default(),
             habits_logged: habits_by_date.remove(&date).unwrap_or_default(),
-            xp_earned: xp_by_date.remove(&date).unwrap_or(0),
             date,
         });
     }
