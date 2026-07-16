@@ -94,7 +94,7 @@ function formatTimestamp(value: string | null | undefined): string {
 }
 
 export const SettingsPage: React.FC = () => {
-  const { appState, saveApiKey, resetData, loadAppState, loadAchievements } = useAppStore();
+  const { appState, saveApiKey, resetData, loadAppState } = useAppStore();
   const { loadDomains, domains, createDomain, updateDomainProfile, deleteDomain } = useDomainStore();
   const { loadTasks } = useTaskStore();
   const { loadHabits } = useHabitStore();
@@ -242,7 +242,6 @@ export const SettingsPage: React.FC = () => {
       loadHabits(),
       loadGoals(),
       loadAppState(),
-      loadAchievements(),
       loadNotes(),
       loadInbox(),
       loadTaskTemplates(),
