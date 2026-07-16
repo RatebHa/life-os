@@ -26,8 +26,6 @@ pub struct Domain {
     pub updated_at: String,
     #[serde(default)]
     pub deleted_at: Option<String>,
-    pub xp_total: i64,
-    pub level: i64,
     pub streak_current: i64,
     pub streak_longest: i64,
     pub streak_freeze_tokens: i64,
@@ -1086,7 +1084,7 @@ fn load_export_payload(conn: &Connection) -> Result<ExportPayload, String> {
 
     let domains = {
         let mut stmt = conn.prepare(
-            "SELECT id, name, icon, color, created_at, updated_at, deleted_at, xp_total, level, streak_current, streak_longest, streak_freeze_tokens, last_activity_date FROM domains"
+            "SELECT id, name, icon, color, created_at, updated_at, deleted_at, streak_current, streak_longest, streak_freeze_tokens, last_activity_date FROM domains"
         ).map_err(|e| e.to_string())?;
         let rows = stmt.query_map([], |row| {
             Ok(Domain {
@@ -1097,12 +1095,10 @@ fn load_export_payload(conn: &Connection) -> Result<ExportPayload, String> {
                 created_at: row.get(4)?,
                 updated_at: row.get(5)?,
                 deleted_at: row.get(6)?,
-                xp_total: row.get(7)?,
-                level: row.get(8)?,
-                streak_current: row.get(9)?,
-                streak_longest: row.get(10)?,
-                streak_freeze_tokens: row.get(11)?,
-                last_activity_date: row.get(12)?,
+                streak_current: row.get(7)?,
+                streak_longest: row.get(8)?,
+                streak_freeze_tokens: row.get(9)?,
+                last_activity_date: row.get(10)?,
             })
         }).map_err(|e| e.to_string())?;
         rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())?
@@ -1311,7 +1307,7 @@ fn read_sync_counts(conn: &Connection) -> Result<SyncCounts, String> {
 fn load_sync_payload(conn: &Connection) -> Result<SyncPayload, String> {
     let domains = {
         let mut stmt = conn.prepare(
-            "SELECT id, name, icon, color, created_at, updated_at, deleted_at, xp_total, level, streak_current, streak_longest, streak_freeze_tokens, last_activity_date FROM domains ORDER BY updated_at DESC"
+            "SELECT id, name, icon, color, created_at, updated_at, deleted_at, streak_current, streak_longest, streak_freeze_tokens, last_activity_date FROM domains ORDER BY updated_at DESC"
         ).map_err(|e| e.to_string())?;
         let rows = stmt.query_map([], |row| {
             Ok(Domain {
@@ -1322,12 +1318,10 @@ fn load_sync_payload(conn: &Connection) -> Result<SyncPayload, String> {
                 created_at: row.get(4)?,
                 updated_at: row.get(5)?,
                 deleted_at: row.get(6)?,
-                xp_total: row.get(7)?,
-                level: row.get(8)?,
-                streak_current: row.get(9)?,
-                streak_longest: row.get(10)?,
-                streak_freeze_tokens: row.get(11)?,
-                last_activity_date: row.get(12)?,
+                streak_current: row.get(7)?,
+                streak_longest: row.get(8)?,
+                streak_freeze_tokens: row.get(9)?,
+                last_activity_date: row.get(10)?,
             })
         }).map_err(|e| e.to_string())?;
         rows.collect::<Result<Vec<_>, _>>().map_err(|e| e.to_string())?
@@ -1420,8 +1414,8 @@ fn import_sync_payload_into_db(conn: &mut Connection, payload: SyncPayload) -> R
             domain.updated_at.clone()
         };
         tx.execute(
-            "INSERT INTO domains (id, name, icon, color, created_at, updated_at, deleted_at, xp_total, level, streak_current, streak_longest, streak_freeze_tokens, last_activity_date)
-             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13)",
+            "INSERT INTO domains (id, name, icon, color, created_at, updated_at, deleted_at, streak_current, streak_longest, streak_freeze_tokens, last_activity_date)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
             params![
                 domain.id,
                 domain.name,
@@ -1430,8 +1424,6 @@ fn import_sync_payload_into_db(conn: &mut Connection, payload: SyncPayload) -> R
                 created_at,
                 updated_at,
                 domain.deleted_at,
-                domain.xp_total,
-                domain.level,
                 domain.streak_current,
                 domain.streak_longest,
                 domain.streak_freeze_tokens,
@@ -1971,8 +1963,8 @@ fn import_payload_into_db(conn: &mut Connection, payload: ImportPayload) -> Resu
             domain.created_at.clone()
         };
         tx.execute(
-            "INSERT INTO domains (id, name, icon, color, created_at, updated_at, deleted_at, xp_total, level, streak_current, streak_longest, streak_freeze_tokens, last_activity_date)
-             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13)",
+            "INSERT INTO domains (id, name, icon, color, created_at, updated_at, deleted_at, streak_current, streak_longest, streak_freeze_tokens, last_activity_date)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
             params![
                 domain.id,
                 domain.name,
@@ -1981,8 +1973,6 @@ fn import_payload_into_db(conn: &mut Connection, payload: ImportPayload) -> Resu
                 created_at,
                 if domain.updated_at.trim().is_empty() { created_at.clone() } else { domain.updated_at },
                 domain.deleted_at,
-                domain.xp_total,
-                domain.level,
                 domain.streak_current,
                 domain.streak_longest,
                 domain.streak_freeze_tokens,
@@ -2285,7 +2275,7 @@ fn import_payload_into_db(conn: &mut Connection, payload: ImportPayload) -> Resu
 pub fn get_domains(state: State<'_, DbState>) -> Result<Vec<Domain>, String> {
     let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
     let mut stmt = conn.prepare(
-        "SELECT id, name, icon, color, created_at, updated_at, deleted_at, xp_total, level, streak_current, streak_longest, streak_freeze_tokens, last_activity_date
+        "SELECT id, name, icon, color, created_at, updated_at, deleted_at, streak_current, streak_longest, streak_freeze_tokens, last_activity_date
          FROM domains
          WHERE deleted_at IS NULL"
     ).map_err(|e| e.to_string())?;
@@ -2299,12 +2289,10 @@ pub fn get_domains(state: State<'_, DbState>) -> Result<Vec<Domain>, String> {
             created_at: row.get(4)?,
             updated_at: row.get(5)?,
             deleted_at: row.get(6)?,
-            xp_total: row.get(7)?,
-            level: row.get(8)?,
-            streak_current: row.get(9)?,
-            streak_longest: row.get(10)?,
-            streak_freeze_tokens: row.get(11)?,
-            last_activity_date: row.get(12)?,
+            streak_current: row.get(7)?,
+            streak_longest: row.get(8)?,
+            streak_freeze_tokens: row.get(9)?,
+            last_activity_date: row.get(10)?,
         })
     }).map_err(|e| e.to_string())?
     .collect::<Result<Vec<_>, _>>()
@@ -2340,8 +2328,8 @@ pub fn create_domain(
     let id = Uuid::new_v4().to_string();
     let now = Utc::now().to_rfc3339();
     conn.execute(
-        "INSERT INTO domains (id, name, icon, color, created_at, updated_at, deleted_at, xp_total, level, streak_current, streak_longest, streak_freeze_tokens, last_activity_date)
-         VALUES (?1, ?2, ?3, ?4, ?5, ?5, NULL, 0, 1, 0, 0, 0, NULL)",
+        "INSERT INTO domains (id, name, icon, color, created_at, updated_at, deleted_at, streak_current, streak_longest, streak_freeze_tokens, last_activity_date)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?5, NULL, 0, 0, 0, NULL)",
         params![id, name, icon, color, now],
     ).map_err(|e| e.to_string())?;
 
@@ -2399,45 +2387,9 @@ pub fn delete_domain(state: State<'_, DbState>, id: String) -> Result<(), String
     Ok(())
 }
 
-#[tauri::command]
-pub fn update_domain_xp(state: State<'_, DbState>, domain_id: String, xp_delta: i64) -> Result<Domain, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
-    let now = Utc::now().to_rfc3339();
-    conn.execute(
-        "UPDATE domains SET xp_total = xp_total + ?1, updated_at = ?2 WHERE id = ?3",
-        params![xp_delta, now, domain_id],
-    ).map_err(|e| e.to_string())?;
-
-    // Recalculate level (based on XP thresholds)
-    let xp_total: i64 = conn.query_row(
-        "SELECT xp_total FROM domains WHERE id = ?1",
-        params![domain_id],
-        |row| row.get(0),
-    ).map_err(|e| e.to_string())?;
-
-    let level = xp_to_level(xp_total);
-    conn.execute(
-        "UPDATE domains SET level = ?1, updated_at = ?2 WHERE id = ?3",
-        params![level, now, domain_id],
-    ).map_err(|e| e.to_string())?;
-
-    get_domain_by_id(&conn, &domain_id)
-}
-
-fn xp_to_level(xp: i64) -> i64 {
-    let thresholds = [0, 500, 1200, 2500, 4500, 7500, 12000, 20000, 35000, 60000];
-    let mut level = 1i64;
-    for threshold in &thresholds {
-        if xp >= *threshold {
-            level += 1;
-        }
-    }
-    level.min(10)
-}
-
 fn get_domain_by_id(conn: &Connection, domain_id: &str) -> Result<Domain, String> {
     conn.query_row(
-        "SELECT id, name, icon, color, created_at, updated_at, deleted_at, xp_total, level, streak_current, streak_longest, streak_freeze_tokens, last_activity_date FROM domains WHERE id = ?1",
+        "SELECT id, name, icon, color, created_at, updated_at, deleted_at, streak_current, streak_longest, streak_freeze_tokens, last_activity_date FROM domains WHERE id = ?1",
         params![domain_id],
         |row| Ok(Domain {
             id: row.get(0)?,
@@ -2447,12 +2399,10 @@ fn get_domain_by_id(conn: &Connection, domain_id: &str) -> Result<Domain, String
             created_at: row.get(4)?,
             updated_at: row.get(5)?,
             deleted_at: row.get(6)?,
-            xp_total: row.get(7)?,
-            level: row.get(8)?,
-            streak_current: row.get(9)?,
-            streak_longest: row.get(10)?,
-            streak_freeze_tokens: row.get(11)?,
-            last_activity_date: row.get(12)?,
+            streak_current: row.get(7)?,
+            streak_longest: row.get(8)?,
+            streak_freeze_tokens: row.get(9)?,
+            last_activity_date: row.get(10)?,
         })
     ).map_err(|e| e.to_string())
 }
