@@ -13,7 +13,6 @@ import { useGoalStore } from '../store/useGoalStore';
 import { useFrictionStore } from '../store/useFrictionStore';
 import type { DomainId, TaskStats } from '../lib/types';
 import { getDomainLabel } from '../lib/domain-utils';
-import { getAchievementDisplay } from '../lib/achievement-display';
 import { formatDateDisplay } from '../lib/date-format';
 
 // ── Domain palette default ──────────────────────────────────────────────────
@@ -48,71 +47,6 @@ const ChartTooltip: React.FC<TooltipProps> = ({ active, payload, label }) => {
   );
 };
 
-// ── Achievement tile ─────────────────────────────────────────────────────────
-const AchievementTile: React.FC<{
-  icon: string;
-  title: string;
-  description: string;
-  unlocked: boolean;
-  unlockedAt: string | null;
-}> = React.memo(({ icon, title, description, unlocked, unlockedAt }) => (
-  <div
-    className="card"
-    style={{
-      padding: 'var(--space-2) var(--space-3)',
-      display: 'flex',
-      alignItems: 'flex-start',
-      gap: 'var(--space-3)',
-      opacity: unlocked ? 1 : 0.35,
-      borderColor: unlocked ? 'var(--color-border)' : 'var(--color-surface-hover)',
-    }}
-  >
-    <div style={{
-      flexShrink: 0,
-      width: 32,
-      height: 32,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: 'var(--font-sans)',
-      fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)',
-      letterSpacing: 0.5,
-      color: unlocked ? 'var(--color-text)' : 'var(--color-text-muted)',
-      background: unlocked ? 'var(--color-surface-hover)' : 'var(--color-bg)',
-      border: `1px solid ${unlocked ? 'var(--color-border)' : 'var(--color-surface-hover)'}`,
-    }}>
-      {icon}
-    </div>
-    <div style={{ minWidth: 0 }}>
-      <div style={{
-        fontFamily: 'var(--font-sans)',
-        fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)',
-        letterSpacing: 1.5,
-        textTransform: 'uppercase',
-        color: unlocked ? 'var(--color-warning)' : 'var(--color-text-muted)',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-      }}>
-        {title}
-      </div>
-      <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', marginTop: 2 }}>
-        {description}
-      </div>
-      {unlocked && unlockedAt && (
-        <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-text-muted)', marginTop: 2 }}>
-          {formatDateDisplay(unlockedAt)}
-        </div>
-      )}
-    </div>
-    {unlocked && (
-      <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-warning)', flexShrink: 0, marginTop: 2 }}>★</span>
-    )}
-  </div>
-));
-
-AchievementTile.displayName = 'AchievementTile';
-
 function reasonLabel(value: string): string {
   return value.replace(/_/g, ' ').toUpperCase();
 }
@@ -123,7 +57,6 @@ export const AnalyticsPage: React.FC = () => {
   const [taskStats, setTaskStats] = useState<TaskStats | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const { achievements } = useAppStore();
   const { domains } = useDomainStore();
   const { tasks } = useTaskStore();
   const { habits, logs } = useHabitStore();
@@ -397,8 +330,6 @@ export const AnalyticsPage: React.FC = () => {
     if (activityRange === 30) return index % 5 === 0 ? val : '';
     return index % 15 === 0 ? val : '';
   };
-
-  const unlockedCount = achievements.filter((a) => a.unlocked).length;
 
   const chartAxisStyle = { fill: 'var(--color-text-muted)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-medium)', fontFamily: 'var(--font-sans)' };
 
@@ -828,39 +759,6 @@ export const AnalyticsPage: React.FC = () => {
               ))
             )}
           </div>
-        </div>
-      </div>
-
-      {/* Achievement gallery */}
-      <div className="card">
-        <div className="card-header">
-          <span className="card-title">ACHIEVEMENTS</span>
-          <span className="card-meta">
-            <span style={{ color: 'var(--color-warning)' }}>{unlockedCount}</span>/{achievements.length} UNLOCKED
-          </span>
-        </div>
-        <div className="card-body">
-          {achievements.length === 0 ? (
-            <div className="empty-state">
-              <div className="empty-state-title">NO ACHIEVEMENTS LOADED</div>
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-2)' }}>
-              {achievements.map((a) => {
-                const display = getAchievementDisplay(a, domains);
-                return (
-                  <AchievementTile
-                    key={a.id}
-                    icon={a.icon}
-                    title={display.title}
-                    description={display.description}
-                    unlocked={a.unlocked}
-                    unlockedAt={a.unlocked_at}
-                  />
-                );
-              })}
-            </div>
-          )}
         </div>
       </div>
     </div>
