@@ -6467,3 +6467,256 @@ mod streak_momentum_tests {
         assert_eq!(score, 85);
     }
 }
+
+#[cfg(test)]
+mod sync_tests {
+    use super::*;
+
+    fn setup_conn() -> Connection {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute_batch(
+            "CREATE TABLE app_state (
+                id INTEGER PRIMARY KEY DEFAULT 1,
+                momentum_score INTEGER NOT NULL DEFAULT 50,
+                onboarding_complete INTEGER NOT NULL DEFAULT 0,
+                sync_enabled INTEGER NOT NULL DEFAULT 0,
+                sync_provider TEXT,
+                sync_supabase_url TEXT,
+                sync_supabase_anon_key TEXT,
+                sync_last_sync_error TEXT
+            );
+            CREATE TABLE domains (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                icon TEXT NOT NULL,
+                color TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                streak_current INTEGER DEFAULT 0,
+                streak_longest INTEGER DEFAULT 0,
+                streak_freeze_tokens INTEGER DEFAULT 0,
+                last_activity_date TEXT
+            );
+            CREATE TABLE tasks (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                priority TEXT NOT NULL DEFAULT 'medium',
+                energy_level TEXT NOT NULL DEFAULT 'medium',
+                status TEXT NOT NULL DEFAULT 'todo',
+                is_mit INTEGER NOT NULL DEFAULT 0,
+                is_top_three INTEGER NOT NULL DEFAULT 0,
+                xp_value INTEGER NOT NULL DEFAULT 30,
+                xp_awarded INTEGER NOT NULL DEFAULT 0,
+                parent_task_id TEXT,
+                goal_id TEXT,
+                tags TEXT DEFAULT '[]',
+                time_estimate_minutes INTEGER,
+                due_date TEXT,
+                planned_for_date TEXT,
+                task_kind TEXT NOT NULL DEFAULT 'standard',
+                scheduled_for TEXT,
+                recurring_template_id TEXT,
+                recurrence_type TEXT,
+                recurrence_interval INTEGER,
+                recurrence_days TEXT DEFAULT '[]',
+                recurrence_anchor_date TEXT,
+                recurrence_rule TEXT,
+                time_actual_minutes INTEGER,
+                completed_at TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                attachments TEXT DEFAULT '[]'
+            );
+            CREATE TABLE habits (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                frequency TEXT NOT NULL DEFAULT 'daily',
+                target_days TEXT NOT NULL DEFAULT '[0,1,2,3,4,5,6]',
+                xp_per_completion INTEGER NOT NULL DEFAULT 15,
+                cadence_type TEXT NOT NULL DEFAULT 'daily',
+                cadence_days TEXT NOT NULL DEFAULT '[0,1,2,3,4,5,6]',
+                cadence_interval_days INTEGER NOT NULL DEFAULT 1,
+                cadence_weekly_target INTEGER NOT NULL DEFAULT 1,
+                cadence_anchor_date TEXT,
+                target_type TEXT NOT NULL DEFAULT 'checkbox',
+                target_value INTEGER NOT NULL DEFAULT 1,
+                minimum_value INTEGER,
+                unit_label TEXT,
+                minimum_version TEXT,
+                recovery_grace_days INTEGER NOT NULL DEFAULT 1,
+                restart_from_date TEXT,
+                streak_current INTEGER NOT NULL DEFAULT 0,
+                streak_longest INTEGER NOT NULL DEFAULT 0,
+                is_active INTEGER NOT NULL DEFAULT 1,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );
+            CREATE TABLE habit_logs (
+                id TEXT PRIMARY KEY,
+                habit_id TEXT NOT NULL,
+                completed_date TEXT NOT NULL,
+                xp_awarded INTEGER NOT NULL DEFAULT 15,
+                value_completed INTEGER NOT NULL DEFAULT 1,
+                status TEXT NOT NULL DEFAULT 'completed',
+                skip_reason TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                UNIQUE(habit_id, completed_date)
+            );
+            CREATE TABLE goals (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                parent_goal_id TEXT,
+                status TEXT NOT NULL DEFAULT 'active',
+                next_action TEXT,
+                review_date TEXT,
+                blocked_by TEXT,
+                health TEXT NOT NULL DEFAULT 'on_track',
+                target_date TEXT,
+                progress_percent INTEGER NOT NULL DEFAULT 0,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );
+            CREATE TABLE notes (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT,
+                goal_id TEXT,
+                title TEXT NOT NULL,
+                content TEXT NOT NULL DEFAULT '',
+                tags TEXT NOT NULL DEFAULT '[]',
+                pinned INTEGER NOT NULL DEFAULT 0,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );
+            CREATE TABLE inbox_items (
+                id TEXT PRIMARY KEY,
+                content TEXT NOT NULL,
+                domain_id TEXT,
+                source_label TEXT,
+                suggested_kind TEXT,
+                status TEXT NOT NULL DEFAULT 'pending',
+                created_at TEXT NOT NULL,
+                triaged_at TEXT,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );"
+        ).unwrap();
+        conn.execute("INSERT INTO app_state (id, momentum_score, onboarding_complete) VALUES (1, 50, 0)", []).unwrap();
+        conn
+    }
+
+    fn insert_domain(conn: &Connection, id: &str) {
+        conn.execute(
+            "INSERT INTO domains (id, name, icon, color, created_at, updated_at)
+             VALUES (?1, ?1, 'icon', '#000000', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z')",
+            params![id],
+        ).unwrap();
+    }
+
+    #[test]
+    fn configure_sync_row_enables_sync_and_stores_credentials() {
+        let conn = setup_conn();
+
+        configure_sync_row(&conn, SyncConfigPayload {
+            supabase_url: " https://example.supabase.co ".to_string(),
+            supabase_anon_key: " anon-key-123 ".to_string(),
+        }).unwrap();
+
+        let (enabled, provider, url, key): (i64, String, String, String) = conn.query_row(
+            "SELECT sync_enabled, sync_provider, sync_supabase_url, sync_supabase_anon_key FROM app_state WHERE id = 1",
+            [],
+            |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?)),
+        ).unwrap();
+
+        assert_eq!(enabled, 1);
+        assert_eq!(provider, "supabase");
+        assert_eq!(url, "https://example.supabase.co");
+        assert_eq!(key, "anon-key-123");
+    }
+
+    #[test]
+    fn configure_sync_row_clears_a_previous_sync_error() {
+        let conn = setup_conn();
+        conn.execute("UPDATE app_state SET sync_last_sync_error = 'network timeout' WHERE id = 1", []).unwrap();
+
+        configure_sync_row(&conn, SyncConfigPayload {
+            supabase_url: "https://example.supabase.co".to_string(),
+            supabase_anon_key: "anon-key-123".to_string(),
+        }).unwrap();
+
+        let error: Option<String> = conn.query_row("SELECT sync_last_sync_error FROM app_state WHERE id = 1", [], |row| row.get(0)).unwrap();
+        assert_eq!(error, None);
+    }
+
+    #[test]
+    fn export_then_import_sync_payload_round_trips_domains_and_tasks() {
+        let conn1 = setup_conn();
+        insert_domain(&conn1, "military");
+        create_task_row(&conn1, base_task_payload("military")).unwrap();
+
+        let payload = load_sync_payload(&conn1).unwrap();
+        assert_eq!(payload.domains.len(), 1);
+        assert_eq!(payload.tasks.len(), 1);
+
+        let mut conn2 = setup_conn();
+        let counts = import_sync_payload_into_db(&mut conn2, payload).unwrap();
+
+        assert_eq!(counts.domains, 1);
+        assert_eq!(counts.tasks, 1);
+        let title: String = conn2.query_row("SELECT title FROM tasks WHERE domain_id = 'military'", [], |row| row.get(0)).unwrap();
+        assert_eq!(title, "Write the plan");
+    }
+
+    #[test]
+    fn import_sync_payload_into_db_replaces_existing_rows_rather_than_appending() {
+        let mut conn = setup_conn();
+        insert_domain(&conn, "military");
+        create_task_row(&conn, base_task_payload("military")).unwrap();
+        let payload = load_sync_payload(&conn).unwrap();
+
+        import_sync_payload_into_db(&mut conn, payload).unwrap();
+
+        let count: i64 = conn.query_row("SELECT COUNT(*) FROM tasks", [], |row| row.get(0)).unwrap();
+        assert_eq!(count, 1, "re-importing the same payload must not duplicate rows");
+    }
+
+    fn base_task_payload(domain_id: &str) -> CreateTaskPayload {
+        CreateTaskPayload {
+            domain_id: domain_id.to_string(),
+            title: "Write the plan".to_string(),
+            description: None,
+            priority: "medium".to_string(),
+            energy_level: None,
+            status: None,
+            is_mit: false,
+            is_top_three: false,
+            xp_value: 0,
+            parent_task_id: None,
+            goal_id: None,
+            tags: None,
+            time_estimate_minutes: None,
+            due_date: None,
+            planned_for_date: None,
+            task_kind: None,
+            scheduled_for: None,
+            recurring_template_id: None,
+            recurrence_type: None,
+            recurrence_interval: None,
+            recurrence_days: None,
+            recurrence_anchor_date: None,
+            recurrence_rule: None,
+        }
+    }
+}
