@@ -538,6 +538,22 @@ tauri.conf.json key settings:
 
 ---
 
+## RELEASES & AUTO-UPDATE
+
+The app checks `https://github.com/RatebHa/life-os/releases/latest/download/latest.json` for updates automatically on startup (silent, no interruption if there's nothing new), and via a manual "Check for Updates" button in Settings. Updates are signed — see `src-tauri/tauri.conf.json`'s `plugins.updater.pubkey`.
+
+**Cutting a release:**
+1. Bump `"version"` in `src-tauri/tauri.conf.json` (and `src-tauri/Cargo.toml`'s `[package] version` and `package.json`'s `"version"`, so all three stay in sync).
+2. Commit the version bump.
+3. `git tag v0.7.0` (matching the new version, prefixed with `v`).
+4. `git push origin main --tags`.
+5. GitHub Actions (`.github/workflows/release.yml`) builds, signs, and creates a **draft** GitHub Release with the installers and update manifest attached.
+6. Review the draft release on GitHub, then publish it. Only once published does the updater's endpoint see it as the latest version.
+
+The signing keypair's private half lives only in this repo's GitHub Actions secrets (`TAURI_SIGNING_PRIVATE_KEY`, `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`) — it is never committed. Losing it means old installs can no longer verify new signed updates; a new keypair would need generating and every install would need one final manual reinstall to pick up the new public key.
+
+---
+
 ## PHASE BUILD ORDER
 
 Always build in this order. Complete and verify each phase before starting the next.
