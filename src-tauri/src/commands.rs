@@ -3908,9 +3908,7 @@ pub fn get_deleted_goals(state: State<'_, DbState>) -> Result<Vec<Goal>, String>
     Ok(goals)
 }
 
-#[tauri::command]
-pub fn create_goal(state: State<'_, DbState>, payload: CreateGoalPayload) -> Result<Goal, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+fn create_goal_row(conn: &Connection, payload: CreateGoalPayload) -> Result<Goal, String> {
     let id = Uuid::new_v4().to_string();
     let now = Utc::now().to_rfc3339();
 
@@ -3927,8 +3925,12 @@ pub fn create_goal(state: State<'_, DbState>, payload: CreateGoalPayload) -> Res
 }
 
 #[tauri::command]
-pub fn update_goal(state: State<'_, DbState>, payload: UpdateGoalPayload) -> Result<Goal, String> {
+pub fn create_goal(state: State<'_, DbState>, payload: CreateGoalPayload) -> Result<Goal, String> {
     let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    create_goal_row(&conn, payload)
+}
+
+fn update_goal_row(conn: &Connection, payload: UpdateGoalPayload) -> Result<Goal, String> {
     let now = Utc::now().to_rfc3339();
 
     if let Some(ref t) = payload.title {
@@ -3968,6 +3970,12 @@ pub fn update_goal(state: State<'_, DbState>, payload: UpdateGoalPayload) -> Res
         params![payload.id],
         row_to_goal,
     ).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn update_goal(state: State<'_, DbState>, payload: UpdateGoalPayload) -> Result<Goal, String> {
+    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    update_goal_row(&conn, payload)
 }
 
 #[tauri::command]
