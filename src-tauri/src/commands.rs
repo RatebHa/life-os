@@ -4150,9 +4150,7 @@ pub fn complete_onboarding(state: State<'_, DbState>) -> Result<(), String> {
     Ok(())
 }
 
-#[tauri::command]
-pub fn configure_sync(state: State<'_, DbState>, payload: SyncConfigPayload) -> Result<AppStateRow, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+fn configure_sync_row(conn: &Connection, payload: SyncConfigPayload) -> Result<(), String> {
     let _ = conn.execute("INSERT OR IGNORE INTO app_state (id, momentum_score, onboarding_complete) VALUES (1, 50, 0)", []);
     conn.execute(
         "UPDATE app_state
@@ -4164,6 +4162,13 @@ pub fn configure_sync(state: State<'_, DbState>, payload: SyncConfigPayload) -> 
          WHERE id = 1",
         params![payload.supabase_url.trim(), payload.supabase_anon_key.trim()],
     ).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+#[tauri::command]
+pub fn configure_sync(state: State<'_, DbState>, payload: SyncConfigPayload) -> Result<AppStateRow, String> {
+    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    configure_sync_row(&conn, payload)?;
     read_app_state_row(&conn)
 }
 
