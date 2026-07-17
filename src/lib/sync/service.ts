@@ -1,4 +1,4 @@
-import { createClient, type Session, type SupabaseClient } from '@supabase/supabase-js';
+import type { Session, SupabaseClient } from '@supabase/supabase-js';
 import { db } from '../db';
 import type {
   AppStateRow,
@@ -127,7 +127,8 @@ function stripUserId<T extends SyncRow>(rows: RemoteSyncRow<T>[]): T[] {
   return rows.map(({ user_id: _userId, ...row }) => row as unknown as T);
 }
 
-function buildClient(url: string, anonKey: string): SupabaseClient {
+async function buildClient(url: string, anonKey: string): Promise<SupabaseClient> {
+  const { createClient } = await import('@supabase/supabase-js');
   return createClient(url, anonKey, {
     auth: {
       persistSession: false,
@@ -150,7 +151,7 @@ async function ensureAuthedClient(appState: AppStateRow): Promise<{ client: Supa
     throw new Error('Sign in to sync before syncing this device.');
   }
 
-  const client = buildClient(url, anonKey);
+  const client = await buildClient(url, anonKey);
   const { data, error } = await client.auth.setSession({
     access_token: accessToken,
     refresh_token: refreshToken,
@@ -293,7 +294,7 @@ export const syncService = {
       supabase_url: options.url,
       supabase_anon_key: options.anonKey,
     });
-    const client = buildClient(configured.sync_supabase_url ?? options.url, configured.sync_supabase_anon_key ?? options.anonKey);
+    const client = await buildClient(configured.sync_supabase_url ?? options.url, configured.sync_supabase_anon_key ?? options.anonKey);
     const { data, error } = await client.auth.signInWithPassword({
       email: options.email.trim(),
       password: options.password,
