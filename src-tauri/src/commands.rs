@@ -14,7 +14,7 @@ pub struct DbState(pub Mutex<Connection>);
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct Domain {
     pub id: String,
     pub name: String,
@@ -6330,5 +6330,135 @@ mod goal_progress_tests {
         });
 
         assert!(result.is_err());
+    }
+}
+
+#[cfg(test)]
+mod streak_momentum_tests {
+    use super::*;
+
+    fn setup_conn() -> Connection {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute_batch(
+            "CREATE TABLE domains (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                icon TEXT NOT NULL,
+                color TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                streak_current INTEGER DEFAULT 0,
+                streak_longest INTEGER DEFAULT 0,
+                streak_freeze_tokens INTEGER DEFAULT 0,
+                last_activity_date TEXT
+            );
+            CREATE TABLE app_state (
+                id INTEGER PRIMARY KEY DEFAULT 1,
+                momentum_score INTEGER NOT NULL DEFAULT 50,
+                last_momentum_calc TEXT,
+                onboarding_complete INTEGER NOT NULL DEFAULT 0
+            );"
+        ).unwrap();
+        conn
+    }
+
+    fn insert_domain(conn: &Connection, id: &str, last_activity_date: Option<&str>, streak_current: i64, streak_longest: i64, streak_freeze_tokens: i64) {
+        conn.execute(
+            "INSERT INTO domains (id, name, icon, color, created_at, updated_at, streak_current, streak_longest, streak_freeze_tokens, last_activity_date)
+             VALUES (?1, ?1, 'icon', '#000000', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z', ?2, ?3, ?4, ?5)",
+            params![id, streak_current, streak_longest, streak_freeze_tokens, last_activity_date],
+        ).unwrap();
+    }
+
+    #[test]
+    fn update_domain_streak_row_resets_to_one_after_a_gap() {
+        let conn = setup_conn();
+        insert_domain(&conn, "military", Some("2020-01-01"), 9, 12, 0);
+
+        let domain = update_domain_streak_row(&conn, "military").unwrap();
+
+        assert_eq!(domain.streak_current, 1);
+    }
+
+    #[test]
+    fn update_domain_streak_row_increments_on_a_consecutive_day() {
+        let conn = setup_conn();
+        let yesterday = (Utc::now() - Duration::days(1)).format("%Y-%m-%d").to_string();
+        insert_domain(&conn, "military", Some(&yesterday), 6, 6, 0);
+
+        let domain = update_domain_streak_row(&conn, "military").unwrap();
+
+        assert_eq!(domain.streak_current, 7);
+        assert_eq!(domain.streak_longest, 7);
+    }
+
+    #[test]
+    fn update_domain_streak_row_grants_a_freeze_token_on_the_seventh_day() {
+        let conn = setup_conn();
+        let yesterday = (Utc::now() - Duration::days(1)).format("%Y-%m-%d").to_string();
+        insert_domain(&conn, "military", Some(&yesterday), 6, 6, 0);
+
+        update_domain_streak_row(&conn, "military").unwrap();
+
+        let domain = get_domain_by_id(&conn, "military").unwrap();
+        assert_eq!(domain.streak_freeze_tokens, 1);
+    }
+
+    #[test]
+    fn update_domain_streak_row_does_not_grant_a_token_on_a_non_multiple_of_seven() {
+        let conn = setup_conn();
+        let yesterday = (Utc::now() - Duration::days(1)).format("%Y-%m-%d").to_string();
+        insert_domain(&conn, "military", Some(&yesterday), 3, 3, 0);
+
+        update_domain_streak_row(&conn, "military").unwrap();
+
+        let domain = get_domain_by_id(&conn, "military").unwrap();
+        assert_eq!(domain.streak_freeze_tokens, 0);
+    }
+
+    #[test]
+    fn use_streak_freeze_row_consumes_a_token_and_backdates_last_activity() {
+        let conn = setup_conn();
+        insert_domain(&conn, "military", Some("2020-01-01"), 5, 5, 2);
+
+        let domain = use_streak_freeze_row(&conn, "military").unwrap();
+
+        assert_eq!(domain.streak_freeze_tokens, 1);
+        let yesterday = (Utc::now() - Duration::days(1)).format("%Y-%m-%d").to_string();
+        assert_eq!(domain.last_activity_date, Some(yesterday));
+    }
+
+    #[test]
+    fn use_streak_freeze_row_errors_when_no_tokens_available() {
+        let conn = setup_conn();
+        insert_domain(&conn, "military", None, 5, 5, 0);
+
+        let result = use_streak_freeze_row(&conn, "military");
+
+        assert_eq!(result, Err("No freeze tokens available".to_string()));
+    }
+
+    #[test]
+    fn update_momentum_row_creates_the_singleton_row_if_missing() {
+        let conn = setup_conn();
+
+        update_momentum_row(&conn, 72).unwrap();
+
+        let score: i64 = conn.query_row("SELECT momentum_score FROM app_state WHERE id = 1", [], |row| row.get(0)).unwrap();
+        assert_eq!(score, 72);
+    }
+
+    #[test]
+    fn update_momentum_row_updates_the_existing_row_without_duplicating() {
+        let conn = setup_conn();
+        update_momentum_row(&conn, 40).unwrap();
+
+        update_momentum_row(&conn, 85).unwrap();
+
+        let count: i64 = conn.query_row("SELECT COUNT(*) FROM app_state", [], |row| row.get(0)).unwrap();
+        assert_eq!(count, 1);
+        let score: i64 = conn.query_row("SELECT momentum_score FROM app_state WHERE id = 1", [], |row| row.get(0)).unwrap();
+        assert_eq!(score, 85);
     }
 }
