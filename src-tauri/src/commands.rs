@@ -4,7 +4,7 @@ use tauri::Manager;
 use tauri::State;
 use std::collections::{BTreeSet, HashMap};
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::sync::Mutex;
 use uuid::Uuid;
 use chrono::{DateTime, Datelike, Duration, NaiveDate, Utc};
@@ -1791,7 +1791,7 @@ fn sanitize_snapshot_name(name: &str) -> String {
     output.trim_matches('-').to_string()
 }
 
-fn list_backup_files(backup_dir: &PathBuf) -> Result<Vec<(PathBuf, fs::Metadata)>, String> {
+fn list_backup_files(backup_dir: &Path) -> Result<Vec<(PathBuf, fs::Metadata)>, String> {
     let mut files = Vec::new();
     for entry in fs::read_dir(backup_dir).map_err(|e| e.to_string())? {
         let entry = entry.map_err(|e| e.to_string())?;
@@ -1826,8 +1826,7 @@ fn resolve_backup_directory(app: &tauri::AppHandle, conn: &Connection) -> Result
     Ok(path)
 }
 
-fn write_backup_file(app: &tauri::AppHandle, conn: &Connection, prefix: &str) -> Result<String, String> {
-    let backup_dir = resolve_backup_directory(app, conn)?;
+fn write_backup_file_to_dir(conn: &Connection, backup_dir: &Path, prefix: &str) -> Result<String, String> {
     let payload = load_export_payload(conn)?;
     let file_name = format!(
         "{}-{}.json",
@@ -1843,6 +1842,11 @@ fn write_backup_file(app: &tauri::AppHandle, conn: &Connection, prefix: &str) ->
         params![now],
     ).map_err(|e| e.to_string())?;
     Ok(file_path.to_string_lossy().to_string())
+}
+
+fn write_backup_file(app: &tauri::AppHandle, conn: &Connection, prefix: &str) -> Result<String, String> {
+    let backup_dir = resolve_backup_directory(app, conn)?;
+    write_backup_file_to_dir(conn, &backup_dir, prefix)
 }
 
 fn record_restore_history(
@@ -1869,11 +1873,10 @@ fn record_restore_history(
     Ok(())
 }
 
-fn find_latest_backup_file(app: &tauri::AppHandle, conn: &Connection) -> Result<PathBuf, String> {
-    let backup_dir = resolve_backup_directory(app, conn)?;
+fn find_latest_backup_file_in_dir(backup_dir: &Path) -> Result<PathBuf, String> {
     let mut latest: Option<(std::time::SystemTime, PathBuf)> = None;
 
-    for (path, metadata) in list_backup_files(&backup_dir)? {
+    for (path, metadata) in list_backup_files(backup_dir)? {
         let modified = metadata.modified().map_err(|e| e.to_string())?;
         match &latest {
             Some((current, _)) if modified <= *current => {}
@@ -1884,6 +1887,11 @@ fn find_latest_backup_file(app: &tauri::AppHandle, conn: &Connection) -> Result<
     latest
         .map(|(_, path)| path)
         .ok_or_else(|| "No backup files found in the backup directory".to_string())
+}
+
+fn find_latest_backup_file(app: &tauri::AppHandle, conn: &Connection) -> Result<PathBuf, String> {
+    let backup_dir = resolve_backup_directory(app, conn)?;
+    find_latest_backup_file_in_dir(&backup_dir)
 }
 
 fn import_payload_into_db(conn: &mut Connection, payload: ImportPayload) -> Result<(), String> {
