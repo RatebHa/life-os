@@ -3641,9 +3641,7 @@ fn record_habit_day(
     get_habit_log_row(conn, habit_id, completed_date)
 }
 
-#[tauri::command]
-pub fn create_habit(state: State<'_, DbState>, payload: CreateHabitPayload) -> Result<Habit, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+fn create_habit_row(conn: &Connection, payload: CreateHabitPayload) -> Result<Habit, String> {
     let id = Uuid::new_v4().to_string();
     let now = Utc::now().to_rfc3339();
 
@@ -3680,7 +3678,13 @@ pub fn create_habit(state: State<'_, DbState>, payload: CreateHabitPayload) -> R
         ],
     ).map_err(|e| e.to_string())?;
 
-    get_habit_row(&conn, &id)
+    get_habit_row(conn, &id)
+}
+
+#[tauri::command]
+pub fn create_habit(state: State<'_, DbState>, payload: CreateHabitPayload) -> Result<Habit, String> {
+    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    create_habit_row(&conn, payload)
 }
 
 #[tauri::command]
@@ -3793,6 +3797,21 @@ pub fn skip_habit(state: State<'_, DbState>, habit_id: String, completed_date: S
     record_habit_day(&conn, &habit_id, &completed_date, "skipped", None, normalized_reason)
 }
 
+fn undo_habit_log_row(conn: &Connection, habit_id: &str, completed_date: &str) -> Result<HabitLog, String> {
+    let log = get_habit_log_row(conn, habit_id, completed_date)?;
+    let habit = get_habit_row(conn, habit_id)?;
+
+    conn.execute(
+        "UPDATE habit_logs SET deleted_at = ?1, updated_at = ?1 WHERE habit_id = ?2 AND completed_date = ?3",
+        params![Utc::now().to_rfc3339(), habit_id, completed_date],
+    ).map_err(|e| e.to_string())?;
+
+    sync_habit_streaks(conn)?;
+    recalculate_domain_state(conn, &habit.domain_id)?;
+
+    Ok(log)
+}
+
 #[tauri::command]
 pub fn undo_habit_log(
     state: State<'_, DbState>,
@@ -3800,18 +3819,7 @@ pub fn undo_habit_log(
     completed_date: String,
 ) -> Result<HabitLog, String> {
     let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
-    let log = get_habit_log_row(&conn, &habit_id, &completed_date)?;
-    let habit = get_habit_row(&conn, &habit_id)?;
-
-    conn.execute(
-        "UPDATE habit_logs SET deleted_at = ?1, updated_at = ?1 WHERE habit_id = ?2 AND completed_date = ?3",
-        params![Utc::now().to_rfc3339(), habit_id.clone(), completed_date],
-    ).map_err(|e| e.to_string())?;
-
-    sync_habit_streaks(&conn)?;
-    recalculate_domain_state(&conn, &habit.domain_id)?;
-
-    Ok(log)
+    undo_habit_log_row(&conn, &habit_id, &completed_date)
 }
 
 #[tauri::command]
