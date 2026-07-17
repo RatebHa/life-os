@@ -40,6 +40,7 @@ import { useFrictionStore } from './store/useFrictionStore';
 import { useTimerStore } from './store/useTimerStore';
 import { useDebugStore } from './store/useDebugStore';
 import { useUndoStore } from './store/useUndoStore';
+import { useUpdaterStore } from './store/useUpdaterStore';
 import { db } from './lib/db';
 import { PAGE_SHORTCUTS, SHORTCUT_ITEMS } from './lib/navigation';
 import type { DomainId } from './lib/types';
@@ -205,6 +206,10 @@ const AppInner: React.FC = () => {
     return () => {
       document.documentElement.lang = previousLang;
     };
+  }, []);
+
+  useEffect(() => {
+    void useUpdaterStore.getState().checkNow();
   }, []);
 
   useEffect(() => {
