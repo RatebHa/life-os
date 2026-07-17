@@ -2464,7 +2464,7 @@ fn recalculate_domain_state(conn: &Connection, domain_id: &str) -> Result<(), St
             "SELECT hl.completed_date
              FROM habit_logs hl
              JOIN habits h ON h.id = hl.habit_id
-             WHERE h.domain_id = ?1 AND hl.status IN ('completed', 'minimum')"
+             WHERE h.domain_id = ?1 AND hl.status IN ('completed', 'minimum') AND hl.deleted_at IS NULL"
         ).map_err(|e| e.to_string())?;
         let rows = stmt.query_map(params![domain_id], |row| row.get::<_, String>(0))
             .map_err(|e| e.to_string())?;
@@ -3319,7 +3319,8 @@ fn fetch_all_habit_logs_bulk(conn: &Connection) -> Result<HashMap<String, HashMa
     let mut stmt = conn.prepare(
         "SELECT hl.habit_id, hl.completed_date, hl.status, hl.value_completed
          FROM habit_logs hl
-         INNER JOIN habits h ON hl.habit_id = h.id AND h.is_active = 1"
+         INNER JOIN habits h ON hl.habit_id = h.id AND h.is_active = 1
+         WHERE hl.deleted_at IS NULL"
     ).map_err(|e| e.to_string())?;
     let mut all: HashMap<String, HashMap<NaiveDate, HabitLogState>> = HashMap::new();
     let rows = stmt.query_map([], |row| {
