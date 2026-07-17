@@ -2492,9 +2492,7 @@ fn recalculate_domain_state(conn: &Connection, domain_id: &str) -> Result<(), St
     Ok(())
 }
 
-#[tauri::command]
-pub fn update_domain_streak(state: State<'_, DbState>, domain_id: String) -> Result<Domain, String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+fn update_domain_streak_row(conn: &Connection, domain_id: &str) -> Result<Domain, String> {
     let today = Utc::now().format("%Y-%m-%d").to_string();
     let now = Utc::now().to_rfc3339();
 
@@ -2542,13 +2540,16 @@ pub fn update_domain_streak(state: State<'_, DbState>, domain_id: String) -> Res
         }
     }
 
-    get_domain_by_id(&conn, &domain_id)
+    get_domain_by_id(conn, domain_id)
 }
 
 #[tauri::command]
-pub fn use_streak_freeze(state: State<'_, DbState>, domain_id: String) -> Result<Domain, String> {
+pub fn update_domain_streak(state: State<'_, DbState>, domain_id: String) -> Result<Domain, String> {
     let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    update_domain_streak_row(&conn, &domain_id)
+}
 
+fn use_streak_freeze_row(conn: &Connection, domain_id: &str) -> Result<Domain, String> {
     let tokens: i64 = conn.query_row(
         "SELECT streak_freeze_tokens FROM domains WHERE id = ?1",
         params![domain_id],
@@ -2569,7 +2570,13 @@ pub fn use_streak_freeze(state: State<'_, DbState>, domain_id: String) -> Result
         params![yesterday, Utc::now().to_rfc3339(), domain_id],
     ).map_err(|e| e.to_string())?;
 
-    get_domain_by_id(&conn, &domain_id)
+    get_domain_by_id(conn, domain_id)
+}
+
+#[tauri::command]
+pub fn use_streak_freeze(state: State<'_, DbState>, domain_id: String) -> Result<Domain, String> {
+    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    use_streak_freeze_row(&conn, &domain_id)
 }
 
 // ─── Task Commands ────────────────────────────────────────────────────────────
@@ -4012,9 +4019,7 @@ pub fn get_app_state(state: State<'_, DbState>) -> Result<AppStateRow, String> {
     read_app_state_row(&conn)
 }
 
-#[tauri::command]
-pub fn update_momentum(state: State<'_, DbState>, score: i64) -> Result<(), String> {
-    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+fn update_momentum_row(conn: &Connection, score: i64) -> Result<(), String> {
     let now = Utc::now().to_rfc3339();
     // UPSERT: creates the singleton row if it doesn't exist yet
     conn.execute(
@@ -4024,6 +4029,12 @@ pub fn update_momentum(state: State<'_, DbState>, score: i64) -> Result<(), Stri
         params![score, now],
     ).map_err(|e| format!("update_momentum DB error: {}", e))?;
     Ok(())
+}
+
+#[tauri::command]
+pub fn update_momentum(state: State<'_, DbState>, score: i64) -> Result<(), String> {
+    let conn = state.0.lock().unwrap_or_else(|e| e.into_inner());
+    update_momentum_row(&conn, score)
 }
 
 #[tauri::command]
