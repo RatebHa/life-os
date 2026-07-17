@@ -242,7 +242,7 @@ pub struct UpdateHabitPayload {
     pub is_active: Option<bool>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct HabitLog {
     pub id: String,
     pub habit_id: String,
@@ -5858,6 +5858,266 @@ mod task_lifecycle_tests {
 
         let row = get_task_row(&conn, &task.id).unwrap();
         assert!(row.deleted_at.is_some());
+    }
+}
+
+#[cfg(test)]
+mod habit_lifecycle_tests {
+    use super::*;
+
+    fn setup_conn() -> Connection {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute_batch(
+            "CREATE TABLE tasks (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT 'todo',
+                completed_at TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );
+            CREATE TABLE domains (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                icon TEXT NOT NULL,
+                color TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                streak_current INTEGER DEFAULT 0,
+                streak_longest INTEGER DEFAULT 0,
+                streak_freeze_tokens INTEGER DEFAULT 0,
+                last_activity_date TEXT
+            );
+            CREATE TABLE habits (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                frequency TEXT NOT NULL DEFAULT 'daily',
+                target_days TEXT NOT NULL DEFAULT '[0,1,2,3,4,5,6]',
+                xp_per_completion INTEGER NOT NULL DEFAULT 15,
+                cadence_type TEXT NOT NULL DEFAULT 'daily',
+                cadence_days TEXT NOT NULL DEFAULT '[0,1,2,3,4,5,6]',
+                cadence_interval_days INTEGER NOT NULL DEFAULT 1,
+                cadence_weekly_target INTEGER NOT NULL DEFAULT 1,
+                cadence_anchor_date TEXT,
+                target_type TEXT NOT NULL DEFAULT 'checkbox',
+                target_value INTEGER NOT NULL DEFAULT 1,
+                minimum_value INTEGER,
+                unit_label TEXT,
+                minimum_version TEXT,
+                recovery_grace_days INTEGER NOT NULL DEFAULT 1,
+                restart_from_date TEXT,
+                streak_current INTEGER NOT NULL DEFAULT 0,
+                streak_longest INTEGER NOT NULL DEFAULT 0,
+                is_active INTEGER NOT NULL DEFAULT 1,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );
+            CREATE TABLE habit_logs (
+                id TEXT PRIMARY KEY,
+                habit_id TEXT NOT NULL,
+                completed_date TEXT NOT NULL,
+                xp_awarded INTEGER NOT NULL DEFAULT 15,
+                value_completed INTEGER NOT NULL DEFAULT 1,
+                status TEXT NOT NULL DEFAULT 'completed',
+                skip_reason TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                UNIQUE(habit_id, completed_date)
+            );"
+        ).unwrap();
+        conn
+    }
+
+    fn insert_domain(conn: &Connection, id: &str) {
+        conn.execute(
+            "INSERT INTO domains (id, name, icon, color, created_at, updated_at)
+             VALUES (?1, ?1, 'icon', '#000000', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z')",
+            params![id],
+        ).unwrap();
+    }
+
+    fn insert_checkbox_habit(conn: &Connection, id: &str, domain_id: &str) {
+        conn.execute(
+            "INSERT INTO habits (id, domain_id, title, cadence_type, target_type, target_value, created_at, updated_at)
+             VALUES (?1, ?2, 'Meditate', 'daily', 'checkbox', 1, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z')",
+            params![id, domain_id],
+        ).unwrap();
+    }
+
+    fn insert_count_habit(conn: &Connection, id: &str, domain_id: &str, target_value: i64) {
+        conn.execute(
+            "INSERT INTO habits (id, domain_id, title, cadence_type, target_type, target_value, created_at, updated_at)
+             VALUES (?1, ?2, 'Drink water', 'daily', 'count', ?3, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z')",
+            params![id, domain_id, target_value],
+        ).unwrap();
+    }
+
+    fn insert_weekdays_habit(conn: &Connection, id: &str, domain_id: &str) {
+        conn.execute(
+            "INSERT INTO habits (id, domain_id, title, cadence_type, cadence_days, target_type, target_value, created_at, updated_at)
+             VALUES (?1, ?2, 'Standup', 'weekdays', '[1,2,3,4,5]', 'checkbox', 1, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z')",
+            params![id, domain_id],
+        ).unwrap();
+    }
+
+    #[test]
+    fn create_habit_row_applies_cadence_defaults() {
+        let conn = setup_conn();
+        insert_domain(&conn, "self");
+
+        let habit = create_habit_row(&conn, CreateHabitPayload {
+            domain_id: "self".to_string(),
+            title: "Meditate".to_string(),
+            description: None,
+            frequency: "daily".to_string(),
+            target_days: "[0,1,2,3,4,5,6]".to_string(),
+            xp_per_completion: 0,
+            cadence_type: None,
+            cadence_days: None,
+            cadence_interval_days: None,
+            cadence_weekly_target: None,
+            cadence_anchor_date: None,
+            target_type: None,
+            target_value: None,
+            minimum_value: None,
+            unit_label: None,
+            minimum_version: None,
+            recovery_grace_days: None,
+        }).unwrap();
+
+        assert_eq!(habit.cadence_type, "daily");
+        assert_eq!(habit.target_type, "checkbox");
+        assert_eq!(habit.target_value, 1);
+        assert_eq!(habit.is_active, true);
+    }
+
+    #[test]
+    fn create_habit_row_clamps_interval_and_weekly_target_to_at_least_one() {
+        let conn = setup_conn();
+        insert_domain(&conn, "self");
+
+        let habit = create_habit_row(&conn, CreateHabitPayload {
+            domain_id: "self".to_string(),
+            title: "Drink water".to_string(),
+            description: None,
+            frequency: "daily".to_string(),
+            target_days: "[0,1,2,3,4,5,6]".to_string(),
+            xp_per_completion: 0,
+            cadence_type: Some("interval".to_string()),
+            cadence_days: None,
+            cadence_interval_days: Some(0),
+            cadence_weekly_target: Some(-1),
+            cadence_anchor_date: None,
+            target_type: Some("count".to_string()),
+            target_value: Some(3),
+            minimum_value: None,
+            unit_label: None,
+            minimum_version: None,
+            recovery_grace_days: None,
+        }).unwrap();
+
+        assert_eq!(habit.cadence_interval_days, 1);
+        assert_eq!(habit.cadence_weekly_target, 1);
+    }
+
+    #[test]
+    fn record_habit_day_completes_a_checkbox_habit() {
+        let conn = setup_conn();
+        insert_domain(&conn, "self");
+        insert_checkbox_habit(&conn, "h1", "self");
+
+        let log = record_habit_day(&conn, "h1", "2026-07-16", "completed", None, None).unwrap();
+
+        assert_eq!(log.status, "completed");
+        assert_eq!(log.value_completed, 1);
+    }
+
+    #[test]
+    fn record_habit_day_rejects_a_day_the_habit_is_not_due() {
+        let conn = setup_conn();
+        insert_domain(&conn, "self");
+        insert_weekdays_habit(&conn, "h1", "self");
+
+        // 2026-07-19 is a Sunday
+        let result = record_habit_day(&conn, "h1", "2026-07-19", "completed", None, None);
+
+        assert_eq!(result, Err("Habit is not scheduled for that day".to_string()));
+    }
+
+    #[test]
+    fn record_habit_day_computes_partial_progress_below_the_minimum_threshold() {
+        let conn = setup_conn();
+        insert_domain(&conn, "self");
+        insert_count_habit(&conn, "h1", "self", 3);
+
+        let log = record_habit_day(&conn, "h1", "2026-07-16", "completed", Some(1), None).unwrap();
+
+        assert_eq!(log.value_completed, 1);
+        assert_eq!(log.status, "partial");
+    }
+
+    #[test]
+    fn record_habit_day_accumulates_value_across_repeated_calls_for_the_same_day() {
+        let conn = setup_conn();
+        insert_domain(&conn, "self");
+        insert_count_habit(&conn, "h1", "self", 3);
+
+        record_habit_day(&conn, "h1", "2026-07-16", "completed", Some(1), None).unwrap();
+        let log = record_habit_day(&conn, "h1", "2026-07-16", "completed", Some(1), None).unwrap();
+
+        assert_eq!(log.value_completed, 2);
+        assert_eq!(log.status, "partial");
+    }
+
+    #[test]
+    fn record_habit_day_marks_completed_once_value_reaches_target() {
+        let conn = setup_conn();
+        insert_domain(&conn, "self");
+        insert_count_habit(&conn, "h1", "self", 2);
+
+        record_habit_day(&conn, "h1", "2026-07-16", "completed", Some(1), None).unwrap();
+        let log = record_habit_day(&conn, "h1", "2026-07-16", "completed", Some(1), None).unwrap();
+
+        assert_eq!(log.value_completed, 2);
+        assert_eq!(log.status, "completed");
+    }
+
+    #[test]
+    fn record_habit_day_rejects_skip_after_the_grace_window_expires() {
+        let conn = setup_conn();
+        insert_domain(&conn, "self");
+        insert_checkbox_habit(&conn, "h1", "self");
+        // recovery_grace_days defaults to 1; three days ago is outside that window
+        let three_days_ago = (Utc::now() - Duration::days(3)).format("%Y-%m-%d").to_string();
+
+        let result = record_habit_day(&conn, "h1", &three_days_ago, "skipped", None, None);
+
+        assert_eq!(result, Err("Skip window has expired for that day".to_string()));
+    }
+
+    #[test]
+    fn undo_habit_log_row_soft_deletes_and_resets_streaks_to_zero() {
+        let conn = setup_conn();
+        insert_domain(&conn, "self");
+        insert_checkbox_habit(&conn, "h1", "self");
+        record_habit_day(&conn, "h1", "2026-07-16", "completed", None, None).unwrap();
+
+        let removed = undo_habit_log_row(&conn, "h1", "2026-07-16").unwrap();
+
+        assert_eq!(removed.status, "completed");
+        let lookup = get_habit_log_row(&conn, "h1", "2026-07-16");
+        assert!(lookup.is_err());
+        let habit = get_habit_row(&conn, "h1").unwrap();
+        assert_eq!(habit.streak_current, 0);
+        let domain = get_domain_by_id(&conn, "self").unwrap();
+        assert_eq!(domain.streak_current, 0);
     }
 }
 
