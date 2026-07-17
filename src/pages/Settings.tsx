@@ -9,6 +9,8 @@ import { useInboxStore } from '../store/useInboxStore';
 import { useTemplateStore } from '../store/useTemplateStore';
 import { useFocusStore } from '../store/useFocusStore';
 import { useFrictionStore } from '../store/useFrictionStore';
+import { useUpdaterStore } from '../store/useUpdaterStore';
+import { getVersion } from '@tauri-apps/api/app';
 import { db } from '../lib/db';
 import type { BackupHealthStatus, BackupHistoryItem, BackupPreview, Goal, InboxItem, Note, SyncBootstrapStatus } from '../lib/types';
 import { Modal } from '../components/shared/Modal';
@@ -104,6 +106,12 @@ export const SettingsPage: React.FC = () => {
   const { loadTaskTemplates } = useTemplateStore();
   const { loadFocusSessions } = useFocusStore();
   const { loadTaskFrictionLogs } = useFrictionStore();
+  const { status: updateStatus, version: updateVersion, error: updateError, checkNow, download, restart } = useUpdaterStore();
+  const [currentVersion, setCurrentVersion] = useState<string | null>(null);
+
+  useEffect(() => {
+    void getVersion().then(setCurrentVersion);
+  }, []);
 
   const [apiKeyInput, setApiKeyInput] = useState(appState?.api_key ?? '');
   const [backupDirectoryInput, setBackupDirectoryInput] = useState(appState?.backup_directory ?? '');
@@ -665,6 +673,39 @@ export const SettingsPage: React.FC = () => {
           </div>
           <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
             Before restore, import, domain deletion, or reset, create a safety backup if the latest snapshot does not feel current enough.
+          </div>
+        </div>
+      </div>
+
+      <div className="card" style={{ marginBottom: 'var(--space-3)' }}>
+        <PanelHeader
+          title="UPDATES"
+          right={<span style={rowLabelStyle}>{currentVersion ? `v${currentVersion}` : '...'}</span>}
+        />
+        <div className="card-body" style={{ display: 'grid', gap: 'var(--space-3)' }}>
+          <div style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-regular)', color: 'var(--color-text-muted)' }}>
+            {updateStatus === 'idle' && 'No check has run yet this session.'}
+            {updateStatus === 'checking' && 'Checking for a newer version...'}
+            {updateStatus === 'up_to_date' && 'You are running the latest version.'}
+            {updateStatus === 'available' && `Version ${updateVersion} is available.`}
+            {updateStatus === 'downloading' && 'Downloading the update...'}
+            {updateStatus === 'ready' && 'Update downloaded. Restart to install it.'}
+            {updateStatus === 'error' && `Could not check for updates: ${updateError ?? 'unknown error'}`}
+          </div>
+          <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+            <button className="btn btn-ghost" onClick={() => void checkNow()} disabled={updateStatus === 'checking' || updateStatus === 'downloading'}>
+              {updateStatus === 'checking' ? 'CHECKING...' : 'CHECK FOR UPDATES'}
+            </button>
+            {updateStatus === 'available' && (
+              <button className="btn btn-primary" onClick={() => void download()}>
+                DOWNLOAD UPDATE
+              </button>
+            )}
+            {updateStatus === 'ready' && (
+              <button className="btn btn-primary" onClick={() => void restart()}>
+                RESTART TO UPDATE
+              </button>
+            )}
           </div>
         </div>
       </div>
