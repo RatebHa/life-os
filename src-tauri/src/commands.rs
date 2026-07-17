@@ -6189,3 +6189,135 @@ mod debug_log_tests {
         assert!(!entries.iter().any(|e| e.message == "entry 0"));
     }
 }
+
+#[cfg(test)]
+mod goal_progress_tests {
+    use super::*;
+
+    fn setup_conn() -> Connection {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute(
+            "CREATE TABLE goals (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                parent_goal_id TEXT,
+                status TEXT NOT NULL DEFAULT 'active',
+                next_action TEXT,
+                review_date TEXT,
+                blocked_by TEXT,
+                health TEXT NOT NULL DEFAULT 'on_track',
+                target_date TEXT,
+                progress_percent INTEGER NOT NULL DEFAULT 0,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            )",
+            [],
+        ).unwrap();
+        conn
+    }
+
+    fn base_goal_payload(domain_id: &str) -> CreateGoalPayload {
+        CreateGoalPayload {
+            domain_id: domain_id.to_string(),
+            title: "Ship the release".to_string(),
+            description: None,
+            parent_goal_id: None,
+            next_action: None,
+            review_date: None,
+            blocked_by: None,
+            health: None,
+            target_date: None,
+        }
+    }
+
+    #[test]
+    fn create_goal_row_defaults_health_to_on_track() {
+        let conn = setup_conn();
+
+        let goal = create_goal_row(&conn, base_goal_payload("builder")).unwrap();
+
+        assert_eq!(goal.health, "on_track");
+        assert_eq!(goal.status, "active");
+        assert_eq!(goal.progress_percent, 0);
+    }
+
+    #[test]
+    fn create_goal_row_preserves_an_explicit_health_value() {
+        let conn = setup_conn();
+        let mut payload = base_goal_payload("builder");
+        payload.health = Some("at_risk".to_string());
+
+        let goal = create_goal_row(&conn, payload).unwrap();
+
+        assert_eq!(goal.health, "at_risk");
+    }
+
+    #[test]
+    fn update_goal_row_updates_only_the_provided_fields() {
+        let conn = setup_conn();
+        let goal = create_goal_row(&conn, base_goal_payload("builder")).unwrap();
+
+        let updated = update_goal_row(&conn, UpdateGoalPayload {
+            id: goal.id.clone(),
+            title: None,
+            description: None,
+            status: None,
+            next_action: None,
+            review_date: None,
+            blocked_by: None,
+            health: None,
+            target_date: None,
+            progress_percent: Some(40),
+        }).unwrap();
+
+        assert_eq!(updated.progress_percent, 40);
+        assert_eq!(updated.title, "Ship the release");
+        assert_eq!(updated.health, "on_track");
+    }
+
+    #[test]
+    fn update_goal_row_normalizes_blank_optional_fields_to_null() {
+        let conn = setup_conn();
+        let mut payload = base_goal_payload("builder");
+        payload.next_action = Some("Draft the changelog".to_string());
+        let goal = create_goal_row(&conn, payload).unwrap();
+
+        let updated = update_goal_row(&conn, UpdateGoalPayload {
+            id: goal.id.clone(),
+            title: None,
+            description: None,
+            status: None,
+            next_action: Some("   ".to_string()),
+            review_date: None,
+            blocked_by: None,
+            health: None,
+            target_date: None,
+            progress_percent: None,
+        }).unwrap();
+
+        assert_eq!(updated.next_action, None);
+    }
+
+    #[test]
+    fn update_goal_row_errors_when_the_goal_does_not_exist() {
+        let conn = setup_conn();
+
+        let result = update_goal_row(&conn, UpdateGoalPayload {
+            id: "does-not-exist".to_string(),
+            title: Some("New title".to_string()),
+            description: None,
+            status: None,
+            next_action: None,
+            review_date: None,
+            blocked_by: None,
+            health: None,
+            target_date: None,
+            progress_percent: None,
+        });
+
+        assert!(result.is_err());
+    }
+}
