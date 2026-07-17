@@ -6728,3 +6728,313 @@ mod sync_tests {
         }
     }
 }
+
+#[cfg(test)]
+mod backup_tests {
+    use super::*;
+
+    fn setup_conn() -> Connection {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute_batch(
+            "CREATE TABLE app_state (
+                id INTEGER PRIMARY KEY DEFAULT 1,
+                momentum_score INTEGER NOT NULL DEFAULT 50,
+                last_momentum_calc TEXT,
+                current_mit_task_id TEXT,
+                api_key TEXT,
+                onboarding_complete INTEGER NOT NULL DEFAULT 0,
+                last_opened_date TEXT,
+                backup_directory TEXT,
+                auto_backup_enabled INTEGER NOT NULL DEFAULT 0,
+                last_backup_at TEXT,
+                crt_intensity TEXT NOT NULL DEFAULT 'medium',
+                text_scale TEXT NOT NULL DEFAULT 'normal',
+                ui_density TEXT NOT NULL DEFAULT 'comfortable',
+                sync_enabled INTEGER NOT NULL DEFAULT 0,
+                sync_provider TEXT,
+                sync_supabase_url TEXT,
+                sync_supabase_anon_key TEXT,
+                sync_access_token TEXT,
+                sync_refresh_token TEXT,
+                sync_user_id TEXT,
+                sync_user_email TEXT,
+                sync_last_sync_at TEXT,
+                sync_last_sync_error TEXT,
+                sync_last_pushed_at TEXT,
+                sync_last_pulled_at TEXT
+            );
+            CREATE TABLE domains (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                icon TEXT NOT NULL,
+                color TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                streak_current INTEGER DEFAULT 0,
+                streak_longest INTEGER DEFAULT 0,
+                streak_freeze_tokens INTEGER DEFAULT 0,
+                last_activity_date TEXT
+            );
+            CREATE TABLE tasks (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                priority TEXT NOT NULL DEFAULT 'medium',
+                energy_level TEXT NOT NULL DEFAULT 'medium',
+                status TEXT NOT NULL DEFAULT 'todo',
+                is_mit INTEGER NOT NULL DEFAULT 0,
+                is_top_three INTEGER NOT NULL DEFAULT 0,
+                xp_value INTEGER NOT NULL DEFAULT 30,
+                xp_awarded INTEGER NOT NULL DEFAULT 0,
+                parent_task_id TEXT,
+                goal_id TEXT,
+                tags TEXT DEFAULT '[]',
+                time_estimate_minutes INTEGER,
+                due_date TEXT,
+                planned_for_date TEXT,
+                task_kind TEXT NOT NULL DEFAULT 'standard',
+                scheduled_for TEXT,
+                recurring_template_id TEXT,
+                recurrence_type TEXT,
+                recurrence_interval INTEGER,
+                recurrence_days TEXT DEFAULT '[]',
+                recurrence_anchor_date TEXT,
+                recurrence_rule TEXT,
+                time_actual_minutes INTEGER,
+                completed_at TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                attachments TEXT DEFAULT '[]'
+            );
+            CREATE TABLE habits (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                frequency TEXT NOT NULL DEFAULT 'daily',
+                target_days TEXT NOT NULL DEFAULT '[0,1,2,3,4,5,6]',
+                xp_per_completion INTEGER NOT NULL DEFAULT 15,
+                cadence_type TEXT NOT NULL DEFAULT 'daily',
+                cadence_days TEXT NOT NULL DEFAULT '[0,1,2,3,4,5,6]',
+                cadence_interval_days INTEGER NOT NULL DEFAULT 1,
+                cadence_weekly_target INTEGER NOT NULL DEFAULT 1,
+                cadence_anchor_date TEXT,
+                target_type TEXT NOT NULL DEFAULT 'checkbox',
+                target_value INTEGER NOT NULL DEFAULT 1,
+                minimum_value INTEGER,
+                unit_label TEXT,
+                minimum_version TEXT,
+                recovery_grace_days INTEGER NOT NULL DEFAULT 1,
+                restart_from_date TEXT,
+                streak_current INTEGER NOT NULL DEFAULT 0,
+                streak_longest INTEGER NOT NULL DEFAULT 0,
+                is_active INTEGER NOT NULL DEFAULT 1,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );
+            CREATE TABLE habit_logs (
+                id TEXT PRIMARY KEY,
+                habit_id TEXT NOT NULL,
+                completed_date TEXT NOT NULL,
+                xp_awarded INTEGER NOT NULL DEFAULT 15,
+                value_completed INTEGER NOT NULL DEFAULT 1,
+                status TEXT NOT NULL DEFAULT 'completed',
+                skip_reason TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT,
+                UNIQUE(habit_id, completed_date)
+            );
+            CREATE TABLE goals (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                parent_goal_id TEXT,
+                status TEXT NOT NULL DEFAULT 'active',
+                next_action TEXT,
+                review_date TEXT,
+                blocked_by TEXT,
+                health TEXT NOT NULL DEFAULT 'on_track',
+                target_date TEXT,
+                progress_percent INTEGER NOT NULL DEFAULT 0,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );
+            CREATE TABLE notes (
+                id TEXT PRIMARY KEY,
+                domain_id TEXT,
+                goal_id TEXT,
+                title TEXT NOT NULL,
+                content TEXT NOT NULL DEFAULT '',
+                tags TEXT NOT NULL DEFAULT '[]',
+                pinned INTEGER NOT NULL DEFAULT 0,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );
+            CREATE TABLE inbox_items (
+                id TEXT PRIMARY KEY,
+                content TEXT NOT NULL,
+                domain_id TEXT,
+                source_label TEXT,
+                suggested_kind TEXT,
+                status TEXT NOT NULL DEFAULT 'pending',
+                created_at TEXT NOT NULL,
+                triaged_at TEXT,
+                updated_at TEXT NOT NULL,
+                deleted_at TEXT
+            );
+            CREATE TABLE task_templates (
+                id TEXT PRIMARY KEY,
+                title TEXT NOT NULL,
+                description TEXT,
+                domain_id TEXT NOT NULL,
+                priority TEXT NOT NULL DEFAULT 'medium',
+                energy_level TEXT NOT NULL DEFAULT 'medium',
+                is_mit INTEGER NOT NULL DEFAULT 0,
+                tags TEXT NOT NULL DEFAULT '[]',
+                time_estimate_minutes INTEGER,
+                recurrence_rule TEXT,
+                source_task_id TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            );
+            CREATE TABLE focus_sessions (
+                id TEXT PRIMARY KEY,
+                task_id TEXT NOT NULL,
+                planned_minutes INTEGER NOT NULL DEFAULT 25,
+                actual_minutes INTEGER NOT NULL DEFAULT 0,
+                distraction_count INTEGER NOT NULL DEFAULT 0,
+                interruption_notes TEXT,
+                reflection TEXT,
+                created_at TEXT NOT NULL,
+                started_at TEXT NOT NULL,
+                ended_at TEXT NOT NULL
+            );
+            CREATE TABLE focus_timer_drafts (
+                task_id TEXT PRIMARY KEY,
+                planned_minutes INTEGER NOT NULL DEFAULT 25,
+                elapsed_seconds INTEGER NOT NULL DEFAULT 0,
+                distraction_count INTEGER NOT NULL DEFAULT 0,
+                interruption_notes TEXT,
+                reflection TEXT,
+                is_running INTEGER NOT NULL DEFAULT 0,
+                last_started_at TEXT,
+                updated_at TEXT NOT NULL
+            );
+            CREATE TABLE task_friction_logs (
+                id TEXT PRIMARY KEY,
+                task_id TEXT NOT NULL,
+                reason TEXT NOT NULL,
+                details TEXT,
+                action_type TEXT NOT NULL DEFAULT 'logged',
+                created_at TEXT NOT NULL
+            );
+            CREATE TABLE sync_queue (
+                id TEXT PRIMARY KEY,
+                entity_type TEXT NOT NULL,
+                entity_id TEXT NOT NULL,
+                operation_type TEXT NOT NULL,
+                payload_json TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                retry_count INTEGER NOT NULL DEFAULT 0,
+                last_error TEXT
+            );
+            CREATE TABLE sync_cursors (
+                entity_type TEXT PRIMARY KEY,
+                last_pulled_at TEXT
+            );"
+        ).unwrap();
+        conn.execute("INSERT INTO app_state (id, momentum_score, onboarding_complete) VALUES (1, 50, 0)", []).unwrap();
+        conn
+    }
+
+    fn insert_domain(conn: &Connection, id: &str) {
+        conn.execute(
+            "INSERT INTO domains (id, name, icon, color, created_at, updated_at)
+             VALUES (?1, ?1, 'icon', '#000000', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z')",
+            params![id],
+        ).unwrap();
+    }
+
+    fn temp_backup_dir(test_name: &str) -> PathBuf {
+        let dir = std::env::temp_dir().join(format!("life-os-backup-tests-{}-{}", test_name, Uuid::new_v4()));
+        fs::create_dir_all(&dir).unwrap();
+        dir
+    }
+
+    #[test]
+    fn write_backup_file_to_dir_creates_a_json_file_with_the_given_prefix() {
+        let conn = setup_conn();
+        insert_domain(&conn, "military");
+        let dir = temp_backup_dir("write");
+
+        let path = write_backup_file_to_dir(&conn, &dir, "life-os-backup").unwrap();
+
+        assert!(PathBuf::from(&path).exists());
+        assert!(path.contains("life-os-backup-"));
+        assert!(path.ends_with(".json"));
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn write_backup_file_to_dir_updates_last_backup_at() {
+        let conn = setup_conn();
+        let dir = temp_backup_dir("last-backup-at");
+
+        write_backup_file_to_dir(&conn, &dir, "life-os-backup").unwrap();
+
+        let last_backup_at: Option<String> = conn.query_row("SELECT last_backup_at FROM app_state WHERE id = 1", [], |row| row.get(0)).unwrap();
+        assert!(last_backup_at.is_some());
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn find_latest_backup_file_in_dir_returns_the_most_recently_written_file() {
+        let conn = setup_conn();
+        let dir = temp_backup_dir("find-latest");
+
+        write_backup_file_to_dir(&conn, &dir, "older").unwrap();
+        std::thread::sleep(std::time::Duration::from_millis(1100)); // file names are second-resolution; force a distinct modified time
+        let newer_path = write_backup_file_to_dir(&conn, &dir, "newer").unwrap();
+
+        let latest = find_latest_backup_file_in_dir(&dir).unwrap();
+
+        assert_eq!(latest.to_string_lossy().to_string(), newer_path);
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn find_latest_backup_file_in_dir_errors_when_the_directory_has_no_backups() {
+        let dir = temp_backup_dir("empty");
+
+        let result = find_latest_backup_file_in_dir(&dir);
+
+        assert_eq!(result, Err("No backup files found in the backup directory".to_string()));
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn a_written_backup_file_round_trips_through_import_payload_into_db() {
+        let conn1 = setup_conn();
+        insert_domain(&conn1, "military");
+        let dir = temp_backup_dir("round-trip");
+
+        let path = write_backup_file_to_dir(&conn1, &dir, "life-os-backup").unwrap();
+        let data = fs::read_to_string(&path).unwrap();
+        let payload: ImportPayload = serde_json::from_str(&data).unwrap();
+
+        let mut conn2 = setup_conn();
+        import_payload_into_db(&mut conn2, payload).unwrap();
+
+        let name: String = conn2.query_row("SELECT name FROM domains WHERE id = 'military'", [], |row| row.get(0)).unwrap();
+        assert_eq!(name, "military");
+        fs::remove_dir_all(&dir).ok();
+    }
+}
