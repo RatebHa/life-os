@@ -2361,7 +2361,7 @@ pub fn delete_domain(state: State<'_, DbState>, id: String) -> Result<(), String
 
     let tasks: i64 = conn.query_row("SELECT COUNT(*) FROM tasks WHERE domain_id = ?1 AND deleted_at IS NULL", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
     let habits: i64 = conn.query_row("SELECT COUNT(*) FROM habits WHERE domain_id = ?1 AND deleted_at IS NULL", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
-    let goals: i64 = conn.query_row("SELECT COUNT(*) FROM goals WHERE domain_id = ?1", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
+    let goals: i64 = conn.query_row("SELECT COUNT(*) FROM goals WHERE domain_id = ?1 AND deleted_at IS NULL", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
     let notes: i64 = conn.query_row("SELECT COUNT(*) FROM notes WHERE domain_id = ?1", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
     let inbox_items: i64 = conn.query_row("SELECT COUNT(*) FROM inbox_items WHERE domain_id = ?1", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
     let templates: i64 = conn.query_row("SELECT COUNT(*) FROM task_templates WHERE domain_id = ?1", params![id], |row| row.get(0)).map_err(|e| e.to_string())?;
