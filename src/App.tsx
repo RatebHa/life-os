@@ -5,19 +5,19 @@ import { TitleBar } from './components/layout/TitleBar';
 import { TopBar } from './components/layout/TopBar';
 import { TabBar } from './components/layout/TabBar';
 import { FooterBar } from './components/layout/FooterBar';
-import { CommandCenter } from './pages/CommandCenter';
-import { TodayPage } from './pages/Today';
-import { TasksPage } from './pages/Tasks';
-import { HabitsPage } from './pages/Habits';
-import { GoalsPage } from './pages/Goals';
-import { AnalyticsPage } from './pages/Analytics';
-import { DomainPage } from './pages/DomainPage';
-import { SettingsPage } from './pages/Settings';
-import { NotesPage } from './pages/Notes';
-import { CalendarPage } from './pages/Calendar';
-import { WeeklyReviewPage } from './pages/WeeklyReview';
-import { InboxPage } from './pages/Inbox';
-import { TemplatesPage } from './pages/Templates';
+const CommandCenter = React.lazy(() => import('./pages/CommandCenter').then((m) => ({ default: m.CommandCenter })));
+const TodayPage = React.lazy(() => import('./pages/Today').then((m) => ({ default: m.TodayPage })));
+const TasksPage = React.lazy(() => import('./pages/Tasks').then((m) => ({ default: m.TasksPage })));
+const HabitsPage = React.lazy(() => import('./pages/Habits').then((m) => ({ default: m.HabitsPage })));
+const GoalsPage = React.lazy(() => import('./pages/Goals').then((m) => ({ default: m.GoalsPage })));
+const AnalyticsPage = React.lazy(() => import('./pages/Analytics').then((m) => ({ default: m.AnalyticsPage })));
+const DomainPage = React.lazy(() => import('./pages/DomainPage').then((m) => ({ default: m.DomainPage })));
+const SettingsPage = React.lazy(() => import('./pages/Settings').then((m) => ({ default: m.SettingsPage })));
+const NotesPage = React.lazy(() => import('./pages/Notes').then((m) => ({ default: m.NotesPage })));
+const CalendarPage = React.lazy(() => import('./pages/Calendar').then((m) => ({ default: m.CalendarPage })));
+const WeeklyReviewPage = React.lazy(() => import('./pages/WeeklyReview').then((m) => ({ default: m.WeeklyReviewPage })));
+const InboxPage = React.lazy(() => import('./pages/Inbox').then((m) => ({ default: m.InboxPage })));
+const TemplatesPage = React.lazy(() => import('./pages/Templates').then((m) => ({ default: m.TemplatesPage })));
 import { ErrorToast } from './components/shared/ErrorToast';
 import { DebugConsole } from './components/shared/DebugConsole';
 import { UndoToast } from './components/shared/UndoToast';
@@ -512,31 +512,33 @@ const AppInner: React.FC = () => {
       <TabBar />
       <Sidebar />
       <main className="app-main">
-        <Routes>
-          <Route path="/" element={<Navigate to="/today" replace />} />
-          <Route path="/today" element={<TodayPage />} />
-          <Route path="/overview" element={<CommandCenter />} />
-          <Route path="/command-center" element={<Navigate to="/overview" replace />} />
-          <Route path="/tasks" element={<TasksPage />} />
-          <Route path="/inbox" element={<InboxPage />} />
-          <Route path="/habits" element={<HabitsPage />} />
-          <Route path="/goals" element={<GoalsPage />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
-          <Route path="/domain/:domainId" element={<DomainPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/notes" element={<NotesPage />} />
-          <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/review" element={<Navigate to="/weekly-review" replace />} />
-          <Route
-            path="/weekly-review"
-            element={(
-              <RouteErrorBoundary scope="weekly-review">
-                <WeeklyReviewPage />
-              </RouteErrorBoundary>
-            )}
-          />
-          <Route path="/templates" element={<TemplatesPage />} />
-        </Routes>
+        <React.Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<Navigate to="/today" replace />} />
+            <Route path="/today" element={<TodayPage />} />
+            <Route path="/overview" element={<CommandCenter />} />
+            <Route path="/command-center" element={<Navigate to="/overview" replace />} />
+            <Route path="/tasks" element={<TasksPage />} />
+            <Route path="/inbox" element={<InboxPage />} />
+            <Route path="/habits" element={<HabitsPage />} />
+            <Route path="/goals" element={<GoalsPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/domain/:domainId" element={<DomainPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/notes" element={<NotesPage />} />
+            <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/review" element={<Navigate to="/weekly-review" replace />} />
+            <Route
+              path="/weekly-review"
+              element={(
+                <RouteErrorBoundary scope="weekly-review">
+                  <WeeklyReviewPage />
+                </RouteErrorBoundary>
+              )}
+            />
+            <Route path="/templates" element={<TemplatesPage />} />
+          </Routes>
+        </React.Suspense>
       </main>
       <FooterBar />
       <ErrorToast />
